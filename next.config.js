@@ -61,6 +61,7 @@ module.exports = withBundleAnalyzer({
   eslint: {
     dirs: ['pages', 'components', 'lib', 'layouts', 'scripts', 'config'],
   },
+  experimental: { nftTracing: true },
   images: {
     domains: ['firebasestorage.googleapis.com'],
   },
