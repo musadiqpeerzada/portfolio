@@ -2,7 +2,7 @@
 title: 'TypeScript Unleashed: Why You Should Embrace It for Web Development'
 date: '2023-09-26'
 tags: ['typescript', 'web development']
-draft: true
+draft: false
 summary: 'Enhancing Productivity and Code Reliability for Modern Developers'
 images: ['/static/blogs/typescript-unleashed-why-you-should-embrace-it-for-web-development']
 authors: ['default']
