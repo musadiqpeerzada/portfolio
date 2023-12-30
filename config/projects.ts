@@ -32,5 +32,28 @@ export interface Project {
 }
 
 export const projects: Project[] = [
-
+  {
+    title: 'GIgnoreX',
+    slug: 'gignorex',
+    banner: '/static/projects/gignorex/banner.png',
+    website: 'https://www.npmjs.com/package/gignorex',
+    description:
+      'This tool is designed to handle Git-ignore functionality for files that editors or IDEs produce (such as configuration files) that you don`t want to push to Git but also don`t want to add explicitly to the .gitignore file.',
+    shortDescription:
+      'a cli for ignoring files by vcs without adding them to the .gitignore file.',
+    repository: 'https://github.com/musadiqpeerzada/gignorex',
+    stack: [
+      Stack.javascript,
+      Stack.git,
+    ],
+    dimensions: [340, 620],
+    screenshots: [
+      '/static/projects/gignorex/add.png',
+      '/static/projects/gignorex/list_and_remove.png',
+    ],
+    deployment: {
+      web: 'https://www.npmjs.com/package/gignorex',
+    },
+    subProjects: [],
+  }
 ];
