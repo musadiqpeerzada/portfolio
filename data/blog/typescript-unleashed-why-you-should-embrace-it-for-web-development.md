@@ -4,7 +4,7 @@ date: '2023-09-26'
 tags: ['typescript', 'web development']
 draft: false
 summary: 'Enhancing Productivity and Code Reliability for Modern Developers'
-images: ['/static/blogs/typescript-unleashed-why-you-should-embrace-it-for-web-development']
+images: ['/static/blogs/typescript-unleashed-why-you-should-embrace-it-for-web-development.jpg']
 authors: ['default']
 ---
 
