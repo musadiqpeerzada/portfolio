@@ -37,6 +37,7 @@ export enum Stack {
   docker,
   kubernetes,
   terraform,
+  git
 }
 
 export const WorkStack = [
@@ -152,5 +153,9 @@ export const StackInfo: Record<Stack, StackInfoMap> = {
   [Stack.java]: {
     value: 'Java',
     color: Colors.java
+  },
+  [Stack.git]: {
+    value: 'Git',
+    color: Colors.git
   }
 };
