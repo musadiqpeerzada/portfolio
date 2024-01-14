@@ -16,7 +16,7 @@ const QuoteComponent = () => {
         }
         const quotes = await response.json();
         let randomIndex = Math.floor(Math.random() * quotes.length);
-        while (quotes[randomIndex].en.length < 200) {
+        while (quotes[randomIndex].en.length > 200) {
           randomIndex = Math.floor(Math.random() * quotes.length);
         }
         setQuote(quotes[randomIndex].en);
