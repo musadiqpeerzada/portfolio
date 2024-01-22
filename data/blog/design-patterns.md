@@ -73,7 +73,6 @@ import boto3
 class S3:
     client = None
 
-    @classmethod
     def get_client(self):
         if self.client is None:
             self.client = boto3.client('s3')
@@ -112,9 +111,8 @@ class FootballPlayer:
 ozil = FootballPlayer("Ozil", "CAM", ["Wizard"])
 
 real_madrid_ozil = ozil.clone()
-real_madrid_ozil.set_skills([*real_madrid_ozil.skills, "Abitlity to find Ronaldo", "Breaking passes"])
+real_madrid_ozil.set_skills([*real_madrid_ozil.skills, "Ability to find Ronaldo", "Breaking passes"])
 
-# Print the players to see the results
 print("Ozil: ")
 print(ozil)
 
@@ -126,7 +124,7 @@ Output
 Ozil: 
 Ozil, CAM, Skills: ['Wizard']
 Real Madrid Ozil:
-Ozil, CAM, Skills: ['Wizard', 'Abitlity to find Ronaldo', 'Breaking passes']
+Ozil, CAM, Skills: ['Wizard', 'Ability to find Ronaldo', 'Breaking passes']
 ```
 
 And then we can create n number of Ozil players and add skills as and when needed.
@@ -143,47 +141,40 @@ But in the Factory Method, we use different factories for each animal, like a Do
 
 
 ```python
-# Abstract Animal class
 class Animal:
     def speak(self):
         pass
 
-# Concrete Animal classes
 class Dog(Animal):
     def speak(self):
         return "Woof!"
 
-# Abstract Factory class
 class AnimalFactory:
     def create_animal(self):
         pass
 
-# Concrete Factory classes
 class DogFactory(AnimalFactory):
     def create_animal(self):
         return Dog()
 
 
-# Usage
 dog = DogFactory().create_animal()
-print(dog.speak())  # Output: Woof!
+print(dog.speak())  # Woof!
 
 ```
 Now to add a new animal, say cat
 ```python
 
-# Additional Concrete Animal class for Cat
 class Cat(Animal):
     def speak(self):
         return "Meow!"
 
-# Concrete Factory class for Lion
 class CatFactory(AnimalFactory):
     def create_animal(self):
         return Cat()
 
 cat = CatFactory().create_animal()
-print(cat.speak())  # Output: Meow!
+print(cat.speak())  # Meow!
 ```
 This way we can add new types of animals without altering the existing factories, staying true to the **Open/Closed Principle**: open for extension but closed for modification.
 
@@ -199,8 +190,6 @@ Consider working on an app that creates different types of animals for each habi
 Abstract Factory pattern allows us to have a unique factory for each habitat, like a JungleFactory or OceanFactory. Each factory creates a set of animals appropriate for its habitat, smoothening the addition of new habitats without complicating the existing code, thus keeping our development process organized and adaptable. We create an Animal Factory interface with createLandAnimal(), createBird(), and createWaterAnimal() methods. Then we create factories for each habitat which implement the Animal Factory.
 
 ```python
-
-# Abstract Factory Interface
 class HabitatFactory:
     def create_land_animal(self):
         pass
@@ -209,7 +198,6 @@ class HabitatFactory:
     def create_water_animal(self):
         pass
 
-# Concrete Factories
 class FarmFactory(HabitatFactory):
     def create_land_animal(self):
         return Cow()
@@ -456,39 +444,32 @@ Making a subclass for each animal may seem an option but it it will become diffi
 The Decorator Pattern solves these issues by wrapping objects with new functionalities at runtime, eliminating the need for numerous subclasses. We can have an Animal class
 
 ```python
-# Animal Interface
 class Animal:
     def __init__(self, name):
         self.name = name
         self.mobility = []
 
-# Decorator Base Class
 class AnimalDecorator(Animal):
     def __init__(self, animal):
         self.animal = animal
         self.name = animal.name
         self.mobility = animal.mobility
 
-# Walking Decorator
 class WalkingDecorator(AnimalDecorator):
     def __init__(self, animal):
         super().__init__(animal)
         self.mobility.append("walk")
 
-# Flying Decorator
 class FlyingDecorator(AnimalDecorator):
     def __init__(self, animal):
         super().__init__(animal)
         self.mobility.append("fly")
 
-# Swimming Decorator
 class SwimmingDecorator(AnimalDecorator):
     def __init__(self, animal):
         super().__init__(animal)
         self.mobility.append("swim")
 
-
-# Usage
 cat = WalkingDecorator(Animal("Cat"))
 print(f"{cat.name} can {', '.join(cat.mobility)}") #Cat can walk
 
@@ -516,7 +497,6 @@ print(f"{wingless_sparrow.name} can {', '.join(wingless_sparrow.mobility)}") #Wi
 So managing behaviors is easy but what if we want to add a new type of behavior? We can add new type of behavior simply by adding it's decorator. Let's add hop 🐇 as mobility behavior.
 
 ```python
-# Flying Decorator
 class HopingDecorator(AnimalDecorator):
     def __init__(self, animal):
         super().__init__(animal)
@@ -537,6 +517,91 @@ So with decorator pattern
 
 
 ### Adapter
+
+Adapter Design Pattern allows objects with incompatible interfaces to collaborate. It's used to enable two incompatible interfaces to work together without changing their existing code. This pattern is very useful in cases where you need to integrate new features or components with existing systems.
+
+Let's take an example of an app where we are using external payment services. Consider we use cashfree for now. The code for it will be simple.
+
+```python
+class Cashfree:
+    def make_payment(self, amount):
+        print(f"Cashfree payment of ₹{amount} processed")
+
+def send_money(payment_service, amount):
+    payment_service.make_payment(amount)
+
+payment_service = Cashfree()
+
+send_money(payment_service, 100) # Cashfree payment of ₹100 processed
+```
+Pretty straightforward till now. 
+Now let's say we need to add payment service with a different interface. One option is that in `send_money` we check the type of payment service and then call the method to make payment based on that. But every time we add a new payment service we will have to add new conditions. 
+
+In Adapter pattern, we create a .
+
+```python
+class PaymentService:
+    def make_payment(self, amount):
+        pass
+
+class CashfreeService:
+    def process_payment_cashfree(self, amount):
+        print(f"Cashfree payment of ₹{amount} processed")
+
+class CashfreeAdapter(PaymentService):
+    def __init__(self, cashfree_service):
+        self.cashfree_service = cashfree_service
+
+    def make_payment(self, amount):
+        self.cashfree_service.process_payment_cashfree(amount)
+
+
+class RazorpayService:
+    def execute_payment_razorpay(self, amount):
+        print(f"Razorpay payment of ₹{amount} processed")
+
+
+class RazorpayAdapter(PaymentService):
+    def __init__(self, razorpay_service):
+        self.razorpay_service = razorpay_service
+
+    def make_payment(self, amount):
+        self.razorpay_service.execute_payment_razorpay(amount)
+
+
+def send_money(payment_service, amount):
+    payment_service.make_payment(amount)
+
+
+cashfree_service = CashfreeAdapter(CashfreeService()) 
+send_money(cashfree_service, 100) #Cashfree payment of ₹100 processed
+
+razorpay_service = RazorpayAdapter(RazorpayService()) 
+
+send_money(razorpay_service, 100) #Razorpay payment of ₹100 processed
+```
+Already seems like lot of code changes 😮‍💨 but now if we want to add new payment service, it will be simpler and we won't need to modify existing code.
+Let's add PayU which has a different interface
+```python
+class PayUService:
+    def execute_payment_payu(self, amount):
+        print(f"PayU payment of ₹{amount} processed")
+
+
+class PayUAdapter(PaymentService):
+    def __init__(self, payu_service):
+        self.payu_service = payu_service
+
+    def make_payment(self, amount):
+        self.payu_service.execute_payment_payu(amount)
+
+payu_service = PayUAdapter(PayUService()) 
+
+send_money(payu_service, 100) #PayU payment of ₹100 processed
+```
+
+The Adapter Design Pattern aligns with the **Single Responsibility Principle** by isolating the interface conversion to a single class, and it adheres to the **Open/Closed Principle** by allowing systems to extend functionality with new adapters without altering existing code.
+
 ### Bridge
 ### Composite
 
