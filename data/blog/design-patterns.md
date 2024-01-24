@@ -603,6 +603,70 @@ send_money(payu_service, 100) #PayU payment of ₹100 processed
 The Adapter Design Pattern aligns with the **Single Responsibility Principle** by isolating the interface conversion to a single class, and it adheres to the **Open/Closed Principle** by allowing systems to extend functionality with new adapters without altering existing code.
 
 ### Bridge
+Bridge pattern involves dividing a complex class or a group of related classes into two separate hierarchies: abstraction and implementation. These hierarchies can be developed and modified independently of each other, which simplifies the class structure and enhances flexibility in development.
+
+Let's consider an app that can send messages. The app separates the content(text, image, video) from the channels(email, sms, push notifications). We can have separate implementation for each delivery method, but the code will keep ever increasing with addition of new channels or content types. To add a new channel, we need to implement it for all content types and vice versa.
+In Bridge pattern, we create a MessageChannel interface and a Message interface. All the channels implement the MessageChannel interface, and all the content types implement the Message interface. To send a text message via email, we create a EmailChannel and pass it to the TextMessage, so the sender of Message is EmailChannel and emailChannel.send will eventually send the message.
+
+```python
+class MessageChannel:
+    def send(self, content):
+        pass
+
+class EmailChannel(MessageChannel):
+    def send(self, content):
+        print(f"Sending via Email: {content}")
+
+class SMSChannel(MessageChannel):
+    def send(self, content):
+        print(f"Sending via SMS: {content}")
+
+class Message:
+    def __init__(self, sender):
+        self.sender = sender
+
+    def send(self, content):
+        pass
+
+class TextMessage(Message):
+    def send(self, content):
+        self.sender.send(f"Text: {content}")
+
+class ImageMessage(Message):
+    def send(self, content):
+        self.sender.send(f"Image: {content}")
+
+text_message = TextMessage(EmailChannel())
+text_message.send("Hello!") # Sending via Email: Text: Hello!
+
+image_message = ImageMessage(SMSChannel()) # Sending via SMS: Image: image.jpg
+image_message.send("image.jpg")
+```
+Now to add new communication channel like push notifications, we just need to add PushNotification class.
+
+```python
+class PushNotificationChannel(MessageChannel):
+    def send(self, content):
+        print(f"Sending via Push Notification: {content}")
+
+text_notification_message = ImageMessage(PushNotificationChannel()) 
+text_notification_message.send("Hello!") # Sending via Push Notification: Hello!
+```
+We can now send push notification of any content type. To add a new type of content, we can add a new interface say VideoMessage and simply use it.
+
+```python
+class VideoMessage(Message):
+    def send(self, content):
+        self.sender.send(f"Video: {content}")
+
+video_message = VideoMessage(EmailChannel())
+video_message.send("video.mp4") # Sending via Email: Video: video.mp4
+```
+Now we can send video's via any channel.
+
+
+Bridge pattern decouples an abstraction from its implementation, allowing them to be developed independently. This pattern enhances flexibility and scalability in software design, particularly useful in systems where both components and their behaviors are expected to change frequently or independently.
+
 ### Composite
 
 ### Facade
