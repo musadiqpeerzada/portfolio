@@ -36,7 +36,7 @@ Learning design patterns offers several advantages in software development:
 
 - **Efficiency**: They provide reusable solutions to common problems, saving time and effort by avoiding reinventing the wheel for similar issues.
 
-- **Best Practices**: Understanding patterns makes us aware of best practices and standardized ways, improving the overall quality and maintainability of your code.
+- **Best Practices**: Understanding patterns makes us aware of best practices and standardized ways, improving the overall quality and maintainability of code.
 
 - **Communication**: They establish a common language among developers, enabling clear communication and collaboration among teams.
 
@@ -44,7 +44,7 @@ Learning design patterns offers several advantages in software development:
 
 - **Problem-solving Skills**: They enhance our problem-solving skills by offering tested, well-defined solutions that can be applied in various scenarios.
 
-- **Career Growth**: Proficiency in design patterns is highly valued in the industry, boosting your employability and potential for career advancement in software development.
+- **Career Growth**: Proficiency in design patterns is highly valued in the industry, boosting employability and potential for career advancement in software development.
 
 Overall, learning design patterns enhances our ability to write cleaner, more maintainable, and efficient code while promoting a deeper understanding of software architecture and design principles.
 
@@ -270,7 +270,7 @@ Growl!
 ```
 This helps adding new habitats easily by providing a structured and flexible approach to creating objects (in this case, animals) for each habitat.
 
-Overall, Abstract Factory decouples the object creation code from the specific implementations of classes. This decoupling allows to effortlessly add a new type of classes by creating new factory classes, adhering to open-closed principle. It makes the codebase more adaptable, organized, and easier to manage as you expand your application with diverse habitats.
+Overall, Abstract Factory decouples the object creation code from the specific implementations of classes. This decoupling allows to effortlessly add a new type of classes by creating new factory classes, adhering to open-closed principle. It makes the codebase more adaptable, organized, and easier to manage as we expand our application with diverse habitats.
 
 
 ### Builder
@@ -434,91 +434,9 @@ The Director essentially acts as a middleman. It leverages the Builder to create
 ## Structural Patterns
 Structural patterns deal with object composition and class relationships, enabling the creation of larger structures from individual parts. 
 
-### Decorator
-
-Decorator pattern allows to dynamically add responsibilities to objects. It is a flexible alternative to subclassing for extending functionality. This pattern is useful when you want to add features to individual objects without affecting other instances of the same class. It involves a "decorator" object which wraps the original object, extending its behavior without modifying its code.
-
-Let's consider we need to create animals where each animal can have different behaviors like a cat can walk, a crocodile can swim and walk, a sparrow can walk and fly, while as a penguin can walk, fly and swim, a wingless sparrow can just walk. We adding behaviors like flying or swimming to specific animal types leads to a multitude of subclasses for each behavior combination, like FlyingBird or SwimmingFish. This results in a complex and rigid class hierarchy, challenging to maintain and extend. 
-Making a subclass for each animal may seem an option but it it will become difficult and inefficient as we come across different behavior of animals, maybe mutated animals exist as well you never know. We will end up with infinite number of subclasses and will need to alter code for each new animal addition, making the system difficult to maintain and extend.
-
-The Decorator Pattern solves these issues by wrapping objects with new functionalities at runtime, eliminating the need for numerous subclasses. We can have an Animal class
-
-```python
-class Animal:
-    def __init__(self, name):
-        self.name = name
-        self.mobility = []
-
-class AnimalDecorator(Animal):
-    def __init__(self, animal):
-        self.animal = animal
-        self.name = animal.name
-        self.mobility = animal.mobility
-
-class WalkingDecorator(AnimalDecorator):
-    def __init__(self, animal):
-        super().__init__(animal)
-        self.mobility.append("walk")
-
-class FlyingDecorator(AnimalDecorator):
-    def __init__(self, animal):
-        super().__init__(animal)
-        self.mobility.append("fly")
-
-class SwimmingDecorator(AnimalDecorator):
-    def __init__(self, animal):
-        super().__init__(animal)
-        self.mobility.append("swim")
-
-cat = WalkingDecorator(Animal("Cat"))
-print(f"{cat.name} can {', '.join(cat.mobility)}") #Cat can walk
-
-
-crocodile = WalkingDecorator(SwimmingDecorator(Animal("Crocodile")))
-print(f"{crocodile.name} can {', '.join(crocodile.mobility)}") #Crocodile can swim, walk
-
-penguin = WalkingDecorator(SwimmingDecorator(FlyingDecorator(Animal("Penguin"))))
-print(f"{penguin.name} can {', '.join(penguin.mobility)}") #Penguin can fly, swim, walk
-```
-
-We can add any combination of behaviors without needing to change the code at all. So adding a duck is as simple as
-
-```python
-duck = WalkingDecorator(SwimmingDecorator("Duck"))
-print(f"{duck.name} can {', '.join(duck.mobility)}") #Duck can swim, walk
-```
-We can also handle mutants (maybe accidents), let's add a wingless sparrow 😢
-
-```python
-wingless_sparrow = WalkingDecorator(Animal("Wingless Sparrow"))
-print(f"{wingless_sparrow.name} can {', '.join(wingless_sparrow.mobility)}") #Wingless Sparrow can walk
-```
-
-So managing behaviors is easy but what if we want to add a new type of behavior? We can add new type of behavior simply by adding it's decorator. Let's add hop 🐇 as mobility behavior.
-
-```python
-class HopingDecorator(AnimalDecorator):
-    def __init__(self, animal):
-        super().__init__(animal)
-        self.mobility.append("hop")
-```
-Now we can add frog and rabbit and kangaroo as well 
-
-```python
-frog = SwimmingDecorator(HopingDecorator(Animal("Frog"))) 
-print(f"{frog.name} can {', '.join(frog.mobility)}") # Frog can hop, swim
-```
-
-So with decorator pattern 
-- no need to create a new class for each combination of behaviors
-- behaviors can be added or removed at runtime.
-- adding a new type of behavior requires only a new decorator, not altering the entire class structure
-
-
-
 ### Adapter
 
-Adapter Design Pattern allows objects with incompatible interfaces to collaborate. It's used to enable two incompatible interfaces to work together without changing their existing code. This pattern is very useful in cases where you need to integrate new features or components with existing systems.
+Adapter Design Pattern allows objects with incompatible interfaces to collaborate. It's used to enable two incompatible interfaces to work together without changing their existing code. This pattern is very useful in cases where we need to integrate new features or components with existing systems.
 
 Let's take an example of an app where we are using external payment services. Consider we use cashfree for now. The code for it will be simple.
 
@@ -668,6 +586,167 @@ Now we can send video's via any channel.
 Bridge pattern decouples an abstraction from its implementation, allowing them to be developed independently. This pattern enhances flexibility and scalability in software design, particularly useful in systems where both components and their behaviors are expected to change frequently or independently.
 
 ### Composite
+Composite pattern allows to compose objects into **tree structures** to represent hierarchies. It enables to treat individual objects and compositions of these objects uniformly. This is mostly used when the core model of our app can be represented as a tree.
+
+Let's take an example of app working on file structures, we can either have a directory or a file. Each directory can have subdirectories or files . This fits very well in the tree structure. We need to calculate the number of files in a directory. We can make two classes one for files and one for directories. `file.count` always returns 1 and `directory.count` checks if the item is a file, then returns 1 else if it is a subdirectory, calls `directory.count(subdirectory)` recursively. But every time we want to do something with them, we have to check: "Is this a file or a folder?" If it's a folder, leading to a lot of repetitive and complicated code.
+
+Using composite pattern, we can make a FileSystemComponent and then each type of file structure, file, directory etc implement it. Now we have a common interface to play with.
+
+```python
+class FileSystemComponent:
+    def count(self):
+        pass
+
+class File(FileSystemComponent):
+    def __init__(self, name):
+        self.name = name
+
+    def count(self):
+        return 1
+
+class Directory(FileSystemComponent):
+    def __init__(self, name):
+        self.name = name
+        self.contents = []
+
+    def add(self, component):
+        self.contents.append(component)
+
+    def count(self):
+        return sum(child.count() for child in self.contents)
+
+
+
+file1 = File('file1')
+file2 = File('file2')
+
+directory = Directory('directory')
+directory.add(file1)
+directory.add(file2)
+
+subDirectory = Directory('subDirectory')
+subDirectory.add(File('file1'))
+subDirectory.add(File('file2'))
+
+directory.add(subDirectory)
+
+print(directory.count()) # 4
+```
+It doesn't seem being much helpful till now. But shit, we forgot that even [symlinks](https://en.wikipedia.org/wiki/Symbolic_link) exist. Let's try to incorporate that as well. We can simply create SymLink class which implements FileSystemComponent and we are good to go. It is this easy to add new types of structures without modifying existing code.
+
+```python
+class Symlink(FileSystemComponent):
+    def __init__(self, name, target):
+        self.name = name
+        self.target = target
+
+    def count(self):
+        return 0 # since it is a link to a file, not an actual file
+
+
+
+file1 = File("file1")
+file2 = File("file2")
+file3 = File("file3")
+
+directory = Directory("directory")
+directory.add(file1)
+directory.add(file2)
+
+subDirectory = Directory("subDirectory")
+subDirectory.add(file3)
+
+directory.add(subDirectory)
+
+symlink = Symlink("symlink_to_file3", file3)
+
+directory.add(symlink)
+print(directory.count()) # 3
+```
+
+So the composite pattern lets us group objects into tree structures to treat them uniformly and simplifies handling complex hierarchies by treating individual and composite objects the same way, making code more flexible and easier to maintain.
+
+
+### Decorator
+
+Decorator pattern allows to dynamically add responsibilities to objects. It is a flexible alternative to subclassing for extending functionality. This pattern is useful when we want to add features to individual objects without affecting other instances of the same class. It involves a "decorator" object which wraps the original object, extending its behavior without modifying its code.
+
+Let's consider we need to create animals where each animal can have different behaviors like a cat can walk, a crocodile can swim and walk, a sparrow can walk and fly, while as a penguin can walk, fly and swim, a wingless sparrow can just walk. We adding behaviors like flying or swimming to specific animal types leads to a multitude of subclasses for each behavior combination, like FlyingBird or SwimmingFish. This results in a complex and rigid class hierarchy, challenging to maintain and extend. 
+Making a subclass for each animal may seem an option but it it will become difficult and inefficient as we come across different behavior of animals, maybe mutated animals exist as well you never know. We will end up with infinite number of subclasses and will need to alter code for each new animal addition, making the system difficult to maintain and extend.
+
+The Decorator Pattern solves these issues by wrapping objects with new functionalities at runtime, eliminating the need for numerous subclasses. We can have an Animal class
+
+```python
+class Animal:
+    def __init__(self, name):
+        self.name = name
+        self.mobility = []
+
+class AnimalDecorator(Animal):
+    def __init__(self, animal):
+        self.animal = animal
+        self.name = animal.name
+        self.mobility = animal.mobility
+
+class WalkingDecorator(AnimalDecorator):
+    def __init__(self, animal):
+        super().__init__(animal)
+        self.mobility.append("walk")
+
+class FlyingDecorator(AnimalDecorator):
+    def __init__(self, animal):
+        super().__init__(animal)
+        self.mobility.append("fly")
+
+class SwimmingDecorator(AnimalDecorator):
+    def __init__(self, animal):
+        super().__init__(animal)
+        self.mobility.append("swim")
+
+cat = WalkingDecorator(Animal("Cat"))
+print(f"{cat.name} can {', '.join(cat.mobility)}") #Cat can walk
+
+
+crocodile = WalkingDecorator(SwimmingDecorator(Animal("Crocodile")))
+print(f"{crocodile.name} can {', '.join(crocodile.mobility)}") #Crocodile can swim, walk
+
+penguin = WalkingDecorator(SwimmingDecorator(FlyingDecorator(Animal("Penguin"))))
+print(f"{penguin.name} can {', '.join(penguin.mobility)}") #Penguin can fly, swim, walk
+```
+
+We can add any combination of behaviors without needing to change the code at all. So adding a duck is as simple as
+
+```python
+duck = WalkingDecorator(SwimmingDecorator("Duck"))
+print(f"{duck.name} can {', '.join(duck.mobility)}") #Duck can swim, walk
+```
+We can also handle mutants (maybe accidents), let's add a wingless sparrow 😢
+
+```python
+wingless_sparrow = WalkingDecorator(Animal("Wingless Sparrow"))
+print(f"{wingless_sparrow.name} can {', '.join(wingless_sparrow.mobility)}") #Wingless Sparrow can walk
+```
+
+So managing behaviors is easy but what if we want to add a new type of behavior? We can add new type of behavior simply by adding it's decorator. Let's add hop 🐇 as mobility behavior.
+
+```python
+class HopingDecorator(AnimalDecorator):
+    def __init__(self, animal):
+        super().__init__(animal)
+        self.mobility.append("hop")
+```
+Now we can add frog and rabbit and kangaroo as well 
+
+```python
+frog = SwimmingDecorator(HopingDecorator(Animal("Frog"))) 
+print(f"{frog.name} can {', '.join(frog.mobility)}") # Frog can hop, swim
+```
+
+So with decorator pattern 
+- no need to create a new class for each combination of behaviors
+- behaviors can be added or removed at runtime.
+- adding a new type of behavior requires only a new decorator, not altering the entire class structure
+
 
 ### Facade
 ### Flyweight
