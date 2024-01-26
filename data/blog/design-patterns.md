@@ -975,7 +975,76 @@ Proxy pattern is used in a number of other ways:
 
 ## Behavioral Patterns
 Behavioral patterns concentrate on interactions between objects, defining how they communicate and collaborate.  
+
 ### Chain of Responsibility 
+
+Chain of Responsibility pattern allows an object to pass a request along a chain of handlers. Instead of sending a request to a specific handler, a list of handlers is iterated over to process the request until one of them handles it.
+
+Consider working on a backend service where every incoming HTTP request needs to be logged, authenticated and then validated. We can have a central function or a set of functions that are called sequentially for every request that comes into the system. This function would first log the request details, then authenticate it and finally validate the request data. The next function in the sequence will only be called if the current function passes it's checks. This approach will lead to a cluttered codebase which is hard to maintain and extend, as changes to one aspect (like authentication logic) might require modifications to the entire request handling function.
+
+With chain of responsibility, we can create a Base RequestInterceptor class and then interceptor for logging, authentication and validation. Each interceptor handles a specific concern and decides whether to pass the request to the next interceptor or to terminate the chain.
+
+```python
+class RequestInterceptor:
+    def __init__(self, next_interceptor=None):
+        self._next = next_interceptor
+
+    def handle_request(self, request):
+        if self._next:
+            return self._next.handle_request(request)
+        return "Request Processed", 200
+
+    def process_request(self, request):
+        return self.handle_request(request)
+
+    @staticmethod
+    def create_chain(*interceptors):
+        for i in range(len(interceptors) - 1):
+            interceptors[i]._next = interceptors[i + 1]
+        return interceptors[0]
+
+
+class LoggingInterceptor(RequestInterceptor):
+    def handle_request(self, request):
+        print(f"Logging request: {request}")
+        return super().handle_request(request)
+
+class AuthenticationInterceptor(RequestInterceptor):
+    def handle_request(self, request):
+        if not request.get("is_authenticated", False):
+            return "Authentication Failed", 403
+        return super().handle_request(request)
+
+class ValidationInterceptor(RequestInterceptor):
+    def handle_request(self, request):
+        if not request.get("data"):
+            return "Invalid Data", 400
+        return super().handle_request(request)
+
+
+request_interceptor = RequestInterceptor.create_chain(
+    LoggingInterceptor(),
+    AuthenticationInterceptor(),
+    ValidationInterceptor()
+)
+
+response = request_interceptor.process_request({
+    "is_authenticated": True,
+    "data": "Some valid data"
+})
+
+print(response)
+```
+Output:
+```bash
+Logging request: {'is_authenticated': True, 'data': 'Some valid data'}
+('Request Processed', 200)
+```
+The client code looks very clean now and we can add other interceptors as well without any changes to existing interceptors. Same concept is used in express where these interceptors are called `middlewares`.
+
+
+So chain of responsibility pattern enhances flexibility and decouples request senders from receivers, enabling dynamic request handling and simplifying maintenance. It aligns with the open-closed principle, allowing for easy addition or reordering of handlers without altering the core application logic, thus facilitating scalable and adaptable design structures.
+
 ### Iterator
 ### Command
 ### Mediator
