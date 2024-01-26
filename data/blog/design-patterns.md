@@ -837,6 +837,69 @@ We just added `self.email_service.send_order_confirmation_email('abc@pqr.com', t
 So the Facade Pattern thus helps in reducing the complexity of the system from the perspective of the client and decouples the client from the subsystem, making the system easier to use and maintain.
 
 ### Flyweight
+
+Flyweight pattern focuses on decreasing memory and resource usage, thereby improving performance in large-scale systems. It achieves this by sharing as much as possible with related objects; the intrinsic state is shared, and the extrinsic state is passed in from the client.
+
+Let's take an example of a library system designed to track every book and every copy of each book. So there can be a book and the book can have multiple copies. Each copy can have a borrower. We can simply create a general book class and then create objects for each copy book. But the issue with this approach is that our objects book copies will have same data apart from copy number and borrower. So the memory size of objects increases as a lot of redundant data is stored. More resources are being consumed.
+With flyweight pattern, apart from a general Book class, we create a BookCopy class and an flyweight class BookFactory. The BookFactory has just one copy of each book and  BookCopy creates a copy of same book and also implements borrow_book and return_book since a copy of book can be borrowed not the book itself. The Book class stores common details about the book.
+
+```python
+class Book:
+    def __init__(self, title, author, ISBN):
+        self.title = title
+        self.author = author
+        self.ISBN = ISBN
+        print(f"New book instance created {self.get_details()}")
+
+    def get_details(self):
+        return f"Title: {self.title}, Author: {self.author}, ISBN: {self.ISBN}"
+
+
+class BookCopy:
+    def __init__(self, book, copy_id):
+        self.book = book
+        self.copy_id = copy_id
+        self.borrower = None
+
+    def borrow(self, borrower_name):
+        self.borrower = borrower_name
+        print(f"Book ->  {self.book.get_details()}, Copy ID: {self.copy_id}, Borrowed By: {self.borrower}")
+
+    def return_book(self):
+        self.borrower = None
+        print(f"Book: {self.book.get_details()}, Copy ID: {self.copy_id}, Returned")
+
+
+class BookFactory:
+    _books = {}
+
+    @classmethod
+    def get_book(cls, title, author, ISBN):
+        if ISBN not in cls._books:
+            cls._books[ISBN] = Book(title, author, ISBN)
+        return cls._books[ISBN]
+
+
+book_instance_1 = BookFactory.get_book("Dive Into Design Patterns", "Alexander Shvets", "00001")
+book_instance_2 = BookFactory.get_book("Dive Into Design Patterns", "Alexander Shvets", "00001")
+
+book_copy1 = BookCopy(book_instance_1, "Copy 1")
+book_copy2 = BookCopy(book_instance_2, "Copy 2")
+book_copy1.borrow("John Doe") # 
+book_copy1.borrow("Peter")
+book_copy1.return_book()
+```
+Output:
+```bash
+New book instance created Title: Dive Into Design Patterns, Author: Alexander Shvets, ISBN: 00001
+Book ->  Title: Dive Into Design Patterns, Author: Alexander Shvets, ISBN: 00001, Copy ID: Copy 1, Borrowed By: John Doe
+Book ->  Title: Dive Into Design Patterns, Author: Alexander Shvets, ISBN: 00001, Copy ID: Copy 1, Borrowed By: Peter
+Book: Title: Dive Into Design Patterns, Author: Alexander Shvets, ISBN: 00001, Copy ID: Copy 1, Returned
+> 
+```
+
+So we have a single book instance and each copy of that book shares the same book instance and just adds fields specific to copies only. This reduces the resource consumption and thereby improves performance in large-scale systems. 
+
 ### Proxy
 
 ## Behavioral Patterns
