@@ -902,6 +902,77 @@ So we have a single book instance and each copy of that book shares the same boo
 
 ### Proxy
 
+Proxy pattern provides an object that acts as a placeholder for another object used by a client to control access to it. It's often used when working with objects that are expensive to create or operate, or when additional actions are needed when accessing an object. A proxy receives client requests, does some work (access control, caching, etc.) before passing the request to a service object.
+
+Let's continue our last example of library but now we have a digital library where users read digitally. We can have a DigitalLibrary class with fetch book and then each time we fetch book when the user requests. The class will also check if the user is allowed to access this book. This approach can be inefficient and slow, especially for large files and repeated requests. 
+
+Using proxy, we can add a DigitalLibraryProxy class which acts as a placeholder for library and expose DigitalLibraryProxy to the client. The client will interact with this class only. In the DigitalLibraryProxy, we can add access control and caching in the DigitalLibraryProxy class to load books faster.
+
+```python
+from datetime import datetime
+import time
+class DigitalLibrary:
+    def __init__(self):
+        self.documents = {"doc1": "Content of Document 1", "doc2": "Content of Document 2"}
+
+    def fetch_document(self, doc_id):
+        print(f"Fetching document {doc_id} from storage")
+        time.sleep(5) # fetching takes time
+        return self.documents.get(doc_id, "Document not found")
+
+class LibraryProxy:
+    def __init__(self):
+        self.library = DigitalLibrary()
+        self.cache = {}
+        self.access_permissions = {"user1": ["doc1"], "user2": ["doc1", "doc2"]}
+
+    def has_access(self, user_id, doc_id):
+        return doc_id in self.access_permissions.get(user_id, [])
+
+    def fetch_document(self, user_id, doc_id):
+        print(f"{datetime.now()} - {user_id} Requested {doc_id}")
+        if not self.has_access(user_id, doc_id):
+            return f"Access Denied for user {user_id} to document {doc_id}"
+        
+        doc = None
+        if doc_id in self.cache:
+            doc =  self.cache[doc_id]
+
+        if not doc:
+            doc = self.library.fetch_document(doc_id)
+            self.cache[doc_id] = doc
+        
+        print(f"{datetime.now()} -  Sent {doc_id} to {user_id}")
+        return doc
+
+proxy = LibraryProxy()
+print(proxy.fetch_document('user1', 'doc1'))
+print(proxy.fetch_document('user2', 'doc1'))
+print(proxy.fetch_document('user1', 'doc2'))
+```
+Output
+```bash
+2024-01-26 11:14:54.956682 - user1 Requested doc1
+Fetching document doc1 from storage
+2024-01-26 11:14:59.956843 -  Sent doc1 to user1
+Content of Document 1
+2024-01-26 11:14:59.956935 - user2 Requested doc1
+2024-01-26 11:14:59.956964 -  Sent doc1 to user2
+Content of Document 1
+2024-01-26 11:14:59.956984 - user1 Requested doc2
+Access Denied for user user1 to document doc2
+```
+We can also easily extend the DigitalLibraryProxy to include other features without altering the underlying library system.
+
+Proxy pattern is used in a number of other ways:
+- **Virtual Proxy**: Used for lazy initialization of expensive objects. 
+- **Remote Proxy**: Represents an object located in a different address space.
+- **Smart Reference Proxy**: Adds additional actions when an object is accessed or referenced.
+- **Logging Proxy**: Keeps a log of operations performed on the proxied object.
+- **Firewall Proxy**: Controls network traffic to protect from malicious activities.
+- **Synchronization Proxy**: Adds thread-safety to object access in a multi-threaded application.
+- **Complexity Hiding Proxy**: Hides the complexity and centralizes access to a complex system.
+
 ## Behavioral Patterns
 Behavioral patterns concentrate on interactions between objects, defining how they communicate and collaborate.  
 ### Chain of Responsibility 
