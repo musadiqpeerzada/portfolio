@@ -749,6 +749,93 @@ So with decorator pattern
 
 
 ### Facade
+
+Facade Pattern provides a simplified interface to a complex subsystem. It doesn't encapsulate the subsystem but provides a simplified interface to it, making it easier for the client to interact with the subsystem. Facade is particularly useful when a system is very complex or difficult to understand because the system has a large number of interdependent classes. 
+
+Consider working on place order functionality of an e-commerce app. Before placing the order we need to check inventory process payment and then ship the order and the processes are interdependent. We can have Inventory, PaymentProcessor and ShippingService class that the client calls before placing the order. The client looks something like: 
+
+```python
+
+class Inventory:
+    def check_stock(self, item_id):
+        return True
+
+class PaymentProcessor:
+    def process_payment(self, account_details, amount):
+        return True
+
+class ShippingService:
+    def initiate_shipping(self, order_details):
+        return "TrackingNumber123"
+
+#client code
+def place_order(item_id, account_details, order_details):
+    inventory = Inventory()
+    payment_processor = PaymentProcessor()
+    shipping_service = ShippingService()
+
+    if not inventory.check_stock(item_id):
+        return "Item out of stock"
+
+    if not payment_processor.process_payment(account_details, order_details['amount']):
+        return "Payment failed"
+
+    tracking_number = shipping_service.initiate_shipping(order_details)
+    return f"Order placed successfully, tracking number: {tracking_number}"
+
+result = place_order('item123', {'card_number': '1234-5678-9012-3456'}, {'amount': 100, 'address': '123 Main St'}) 
+print(result) # Order placed successfully, tracking number: TrackingNumber123
+```
+
+Now if we need to send email on order confirmation, we need to add EmailSender class and then use it in the place_order of the client code.
+But with facade pattern, we introduce a OrderFacade interface which handles all the checks and processing for placing the order and the client simply needs to call `OrderFacade.place_order`.
+
+```python
+class OrderFacade:
+    def __init__(self):
+        self.inventory = Inventory()
+        self.payment_processor = PaymentProcessor()
+        self.shipping_service = ShippingService()
+
+    def place_order(self, item_id, account_details, order_details):
+        if not self.inventory.check_stock(item_id):
+            return "Item out of stock"
+        if not self.payment_processor.process_payment(account_details, order_details['amount']):
+            return "Payment failed"
+        tracking_number = self.shipping_service.initiate_shipping(order_details)
+        return f"Order placed successfully, tracking number: {tracking_number}"
+
+# client code
+order_facade = OrderFacade()
+result = order_facade.place_order('item123', {'card_number': '1234-5678-9012-3456'}, {'amount': 100, 'address': '123 Main St'})
+print(result) #Order placed successfully, tracking number: TrackingNumber123
+```
+So the client code got simplified and now does not have to do all the checks and processing, now even if we want to send order confirmation email, we can add that in place_order of OrderFacade and won't have to touch the client code.
+
+```python
+class EmailService:
+    def send_order_confirmation_email(self, email, tracking_number):
+        print(f"Sending order confirmation email to {email}")
+
+class OrderFacade:
+    def __init__(self):
+        self.inventory = Inventory()
+        self.payment_processor = PaymentProcessor()
+        self.shipping_service = ShippingService()
+        self.email_service = EmailService()
+
+    def place_order(self, item_id, account_details, order_details):
+        if not self.inventory.check_stock(item_id):
+            return "Item out of stock"
+        if not self.payment_processor.process_payment(account_details, order_details['amount']):
+            return "Payment failed"
+        tracking_number = self.shipping_service.initiate_shipping(order_details)
+        self.email_service.send_order_confirmation_email('abc@pqr.com', tracking_number)
+        return f"Order placed successfully, tracking number: {tracking_number}"
+```
+We just added `self.email_service.send_order_confirmation_email('abc@pqr.com', tracking_number)` in place order of OrderFacade and we are done. The client does not need to change anything. We hide the complex logic of placing order in the facade and gave the client a simple abstract interface to play with.
+So the Facade Pattern thus helps in reducing the complexity of the system from the perspective of the client and decouples the client from the subsystem, making the system easier to use and maintain.
+
 ### Flyweight
 ### Proxy
 
