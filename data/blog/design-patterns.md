@@ -1045,8 +1045,71 @@ The client code looks very clean now and we can add other interceptors as well w
 
 So chain of responsibility pattern enhances flexibility and decouples request senders from receivers, enabling dynamic request handling and simplifying maintenance. It aligns with the open-closed principle, allowing for easy addition or reordering of handlers without altering the core application logic, thus facilitating scalable and adaptable design structures.
 
-### Iterator
 ### Command
+
+Command Pattern turns a request into a stand-alone object that contains all information about the request. This transformation allows us to parameterize methods with different requests, delay or queue a request's execution, and support un-doable operations.
+
+Consider working on an app that needs to fetch user data and posts from a social media API.
+We can create a SocialMediaClient class with methods for fetching user data and user posts.
+```python
+class SocialMediaClient:
+    def fetch_user_data(self, user_id):
+        # some api call here
+        return {"name": "ABC", "age": "19"}
+
+    def fetch_user_posts(self, user_id):
+        # some api call here
+        return ['post1', 'post2']
+
+# Usage
+client = SocialMediaClient()
+user_data = client.fetch_user_data("123")
+print(user_data)
+user_posts = client.fetch_user_posts("123")
+print(user_posts)
+```
+This seems pretty much straightforward and easily implementable but the SocialMediaClient class is tightly coupled with the specific requests it makes. Any change in the API endpoints or the request logic requires changes. Also it's challenging to add new kinds of requests or modify existing ones without altering the SocialMediaClient class.
+
+With Command Pattern, we can create commands for each api call. So we create a Command interface and FetchUserDataCommand, FetchUserPostsCommand implementing command. The SocialMediaClient will just call execute method of the command without knowing what command it is and what does it do. 
+```python
+# Command Interface
+class Command:
+    def execute(self):
+        pass
+
+class FetchUserDataCommand(Command):
+    def __init__(self, user_id):
+        self.user_id = user_id
+
+    def execute(self):
+        # some api call here
+        return {"name": "ABC", "age": "19"}
+
+class FetchUserPostsCommand(Command):
+    def __init__(self, user_id):
+        self.user_id = user_id
+
+    def execute(self):
+        # some api call here
+        return ['post1', 'post2']
+
+
+class SocialMediaClient:
+    def perform_request(self, command: Command):
+        return command.execute()
+
+# Client Code
+client = SocialMediaClient()
+user_data_command = FetchUserDataCommand("123")
+user_posts_command = FetchUserPostsCommand("123")
+
+print(client.perform_request(user_data_command)) #{'name': 'ABC', 'age': '19'}
+print(client.perform_request(user_posts_command)) #['post1', 'post2']
+```
+Now we can easily add more commands without modifying the existing code.
+So command pattern is a versatile with broad applications in software development. It's ability to encapsulate requests as objects offers significant advantages in terms of flexibility, extensibility, and separation of concerns. By using the Command Pattern, developers can create systems that are easier to extend and maintain, while also providing rich features like undo/redo mechanisms, command queuing, and macro recording.
+
+### Iterator
 ### Mediator
 ### Memento
 ### Observer
