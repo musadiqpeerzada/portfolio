@@ -1110,6 +1110,109 @@ Now we can easily add more commands without modifying the existing code.
 So command pattern is a versatile with broad applications in software development. It's ability to encapsulate requests as objects offers significant advantages in terms of flexibility, extensibility, and separation of concerns. By using the Command Pattern, developers can create systems that are easier to extend and maintain, while also providing rich features like undo/redo mechanisms, command queuing, and macro recording.
 
 ### Iterator
+consider a scenario where you are building a social media application that aggregates feeds from various sources such as posts, stories, and notifications. Each of these feeds is stored in a different data structure.
+
+Let's continue our previous example of social media. We need to fetch posts from various social media channels and show it on our feed. But the issue is that all return the posts in a different data structure. So, for each type of data structure, we need to iterate in a specific way that works for that structure and tomorrow if they change the data structure, we need to update our code to iterate accordingly. This leads to a tightly coupled code and inconsistent iteration logic across different data structures make the codebase messier.
+
+With ite
+```python
+from collections.abc import Iterable, Iterator
+
+class Iterator(Iterator):
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        pass
+
+class ListIterator(Iterator):
+    def __init__(self, collection):
+        self._collection = collection
+        self._index = 0
+
+    def __next__(self):
+        if self._index < len(self._collection):
+            result = self._collection[self._index]
+            self._index += 1
+            return result
+        else:
+            raise StopIteration
+
+class ObjectListIterator(Iterator):
+    def __init__(self, collection):
+        self._collection = collection
+        self._index = 0
+
+    def __next__(self):
+        if self._index < len(self._collection):
+            result = self._collection[self._index]['content']
+            self._index += 1
+            return result
+        else:
+            raise StopIteration
+
+
+list_feed = ['List Feed 1', 'List Feed 2', 'List Feed 3']
+object_array_feed = [
+    {'id': 1, 'content': 'Object Feed 1', 'timestamp': '2024-01-01'},
+    {'id': 2, 'content': 'Object Feed 2', 'timestamp': '2024-01-02'},
+    {'id': 3, 'content': 'Object Feed 3', 'timestamp': '2024-01-03'}
+]
+
+list_iterator = ListIterator(list_feed)
+object_list_iterator = ObjectListIterator(object_array_feed)
+
+for iterator in [list_iterator, object_list_iterator]:
+    for feed in iterator:
+        print(feed)
+```
+Output:
+```bash
+List Feed 1
+List Feed 2
+List Feed 3
+Object Feed 1
+Object Feed 2
+Object Feed 3
+```
+Now if we need to fetch posts from a new social media that sends posts as a string, all we need to do is add a StringIterator class that implements Iterator and then use it in the client code.
+```python
+class StringIterator(Iterator):
+    def __init__(self, collection):
+        self._collection = collection.split('\n')
+        self._index = 0
+
+    def __next__(self):
+        if self._index < len(self._collection):
+            result = self._collection[self._index]
+            self._index += 1
+            return result
+        else:
+            raise StopIteration
+
+#client code
+string_feed = "String Feed 1\nString Feed 2\nString Feed 3"
+
+string_iterator = StringIterator(string_feed)
+for iterator in [list_iterator, object_list_iterator, string_iterator]:
+    for feed in iterator:
+        print(feed)
+```
+Output:
+```bash
+List Feed 1
+List Feed 2
+List Feed 3
+Object Feed 1
+Object Feed 2
+Object Feed 3
+String Feed 1
+String Feed 2
+String Feed 3
+```
+This way we can iterate over new datatype without changes to the existing code.
+
+So iterator pattern makes the code clearer, easier to reuse, and more flexible. It organizes the way we move through different types of data by using special iterator classes, making it simpler to work with and change the code when needed.
 ### Mediator
 ### Memento
 ### Observer
