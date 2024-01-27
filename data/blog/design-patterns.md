@@ -1114,7 +1114,7 @@ consider a scenario where you are building a social media application that aggre
 
 Let's continue our previous example of social media. We need to fetch posts from various social media channels and show it on our feed. But the issue is that all return the posts in a different data structure. So, for each type of data structure, we need to iterate in a specific way that works for that structure and tomorrow if they change the data structure, we need to update our code to iterate accordingly. This leads to a tightly coupled code and inconsistent iteration logic across different data structures make the codebase messier.
 
-With ite
+With iterator pattern, we create an Iterator interface and then it is implemented by our actual iterators like ListIterator and ObjectListIterator. These iterators implement their methods for iteration.
 ```python
 from collections.abc import Iterable, Iterator
 
@@ -1213,8 +1213,86 @@ String Feed 3
 This way we can iterate over new datatype without changes to the existing code.
 
 So iterator pattern makes the code clearer, easier to reuse, and more flexible. It organizes the way we move through different types of data by using special iterator classes, making it simpler to work with and change the code when needed.
+
 ### Mediator
+
+Mediator pattern enables objects to communicate with each other without needing to know each other's identities, reducing the dependencies among them. It introduces a component, the mediator, that takes on the responsibility of managing the communication between different objects. This significantly simplifies the interactions within a system, especially in systems with many interacting objects or components.
+
+Consider working on a chat application. We can create a User class with methods like add_client, send_message, receive_message. Each user object directly manages and maintains references to other users it needs to communicate with. This direct interaction is established through methods of user class. But this approach has lot of issues like high coupling between user objects, making the system rigid and difficult to maintain. Each user needs direct references to others for communication, leading to complexity and scalability challenges as the number of users grows.
+
+Using the mediator pattern, we introduce a ChatRoom class (the mediator) that handles communication between users. Users no longer communicate directly with each other but do so through the ChatRoom. The ChatRoom class maintains a list of users and provides methods for users to send and receive messages.
+
+```python
+class ChatRoom:
+    def display_message(self, user, message):
+        print(f"[{user.name}]: {message}")
+
+class User:
+    def __init__(self, name, chat_room):
+        self.name = name
+        self.chat_room = chat_room
+
+    def send_message(self, message):
+        self.chat_room.display_message(self, message)
+
+chat_room = ChatRoom()
+alice = User("Alice", chat_room)
+bob = User("Bob", chat_room)
+
+alice.send_message("Hi, Bob!")
+bob.send_message("Hello, Alice!")
+
+```
+This reduces the dependencies between the users, leading to a more decoupled system that's easier to manage and extend.
+
+So, the mediator pattern centralizes complex communications between objects into a single mediator, significantly reducing system complexity and enhancing maintainability by promoting loose coupling. This design pattern is crucial for developing software systems that are both scalable and flexible.
+
 ### Memento
+
+Memento Pattern allows an object to save its state so that it can be restored to this state at a later time, without revealing the details of its implementation. This pattern is particularly useful for implementing undo mechanisms or for saving and restoring the state of an object.
+
+Let'take an example of working on a simple turn-based game where players can move characters on a board, and each move alters the game state. Seems doable but the user should be able to undo moves and save/load game states. We can directly manipulate the game state for each move and maintain a stack of actions to reverse moves for undo functionality, requiring manual tracking and reversal logic for each action type. This direct manipulation and manual tracking approach makes the logic complicated, tightly couples game state with action history. Also maintaining it won't be easy.
+
+Using Memento Pattern we create a Memento Class to capture and externalize an object's internal state so that the object can be restored to this state later, without violating encapsulation.
+
+```python
+import copy
+
+class Memento:
+    def __init__(self, state):
+        self._state = copy.deepcopy(state)
+
+    def get_state(self):
+        return self._state
+
+class Game:
+    def __init__(self):
+        self._positions = {}
+        self._history = []
+
+    def move_character(self, character, position):
+        self._save_state()
+        self._positions[character] = position
+        print(f"Moved {character} to {position}.")
+
+    def _save_state(self):
+        memento = Memento(self._positions)
+        self._history.append(memento)
+
+    def undo_move(self):
+        if self._history:
+            memento = self._history.pop()
+            self._positions = memento.get_state()
+            print("Undo last move.")
+
+game = Game()
+game.move_character("Hero", (10, 10))  # Move Hero to position (10, 10)
+game.move_character("Hero", (20, 20))  # Move Hero to position (20, 20)
+game.undo_move()  # Undo last move
+```
+
+By encapsulating the state saving and restoring logic within the Memento and Originator(Game here), the pattern decouples the state management from the rest of the application, leading to a cleaner, more maintainable design.
+
 ### Observer
 ### State
 ### Strategy
