@@ -23,7 +23,9 @@ export const getStaticProps: GetStaticProps<{
 
 const Banner = dynamic(import('@/components/Banner'));
 
-const QuoteComponent = dynamic(import('@/components/Quote'))
+const QuoteComponent = dynamic(import('@/components/Quote'));
+const MemeComponent = dynamic(import('@/components/Meme'));
+
 export default function Home({
   author,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
@@ -34,7 +36,8 @@ export default function Home({
         description={siteMetadata.description}
       />
       <Banner frontMatter={author} />
-      <QuoteComponent/>
+      <QuoteComponent />
+      <MemeComponent/>
     </>
   );
 }
