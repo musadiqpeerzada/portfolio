@@ -1294,6 +1294,72 @@ game.undo_move()  # Undo last move
 By encapsulating the state saving and restoring logic within the Memento and Originator(Game here), the pattern decouples the state management from the rest of the application, leading to a cleaner, more maintainable design.
 
 ### Observer
+
+
+Observer pattern allows an object, known as the subject, to maintain a list of its dependents, called observers. The subject notifies the observers automatically of any state changes, usually by calling one of their methods. It's a foundational pattern for creating event-driven systems and is particularly useful in scenarios where an object needs to be notified of changes occurring in another object.
+
+Consider working on a simple drawing app where users can create various shapes and change their properties, like color and size, through a user interface. The application includes a properties panel that displays the current properties of the selected shape, such as its color, size, and position. We can have a Shape and a PropertiesPanel class that interact with each other to update the properties of the selected shape. Each time the color or size of shape changes, the respective methods of shape class notify it to the property panel. But now each shape instance has to maintain a reference to the PropertiesPanel, creating a dependency that makes the system less flexible and harder to maintain. Moreover if we want to add a new shape, we'll have to modify both the Shape class and the PropertiesPanel class.
+
+Using observer pattern, we add two new interfaces - Subject and Observer. The Shape class implements the subject and the PropertiesPanel implements the observer class. 
+
+
+The Shape class is the subject and the ShapeObserver class is the observer. The Shape class maintains a list of observers and notifies them of any changes in its state.
+
+Applying the Observer pattern involves the shapes acting as subjects that notify observers (like the properties panel) about changes in their state. This decouples the shapes from the properties panel and improves flexibility, scalability, and reusability.
+
+```python
+class Subject:
+    def __init__(self):
+        self._observers = []
+
+    def register_observer(self, observer):
+        self._observers.append(observer)
+
+    def notify_observers(self, property, value):
+        for observer in self._observers:
+            observer.update(property, value)
+
+class Shape(Subject):
+    def __init__(self):
+        super().__init__()
+        self.color = "white"
+        self.size = 1
+
+    def change_color(self, color):
+        self.color = color
+        self.notify_observers('color', self.color)
+
+    def change_size(self, size):
+        self.size = size
+        self.notify_observers('size', self.size)
+
+class Observer:
+    def update(self, property, value):
+        pass
+
+class PropertiesPanel(Observer):
+    def update(self, property, value):
+        if property == 'color':
+            self.update_color_display(value)
+        elif property == 'size':
+            self.update_size_display(value)
+
+    def update_color_display(self, color):
+        print(f"Color updated to: {color}")
+
+    def update_size_display(self, size):
+        print(f"Size updated to: {size}")
+
+shape = Shape()
+properties_panel = PropertiesPanel()
+shape.register_observer(properties_panel)
+shape.change_color("blue") # Color updated to: blue
+shape.change_size(10) # Size updated to: 10
+```
+
+With observer pattern, we decoupled shapes from the UI, enabling easy addition of new features and making the code more modular, flexible, and reusable.
+So, observer pattern allows objects to observe and react to events in other objects without direct interaction. This pattern is especially valuable in applications where changes in one component need to be reflected across various parts of the system, making it a go-to choice for event-driven programming and complex user interfaces.
+
 ### State
 ### Strategy
 ### Template Method
