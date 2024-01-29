@@ -1361,6 +1361,72 @@ With observer pattern, we decoupled shapes from the UI, enabling easy addition o
 So, observer pattern allows objects to observe and react to events in other objects without direct interaction. This pattern is especially valuable in applications where changes in one component need to be reflected across various parts of the system, making it a go-to choice for event-driven programming and complex user interfaces.
 
 ### State
+
+State pattern allows an object to change its behavior when its internal state changes, appearing as if it has changed its class. This pattern is particularly useful in situations where an object's behavior is highly dependent on its state, and there are numerous states or the complexity of state-specific behavior is high. The State pattern is closely related to the concept of a [Finite-State Machine](https://en.wikipedia.org/wiki/Finite-state_machine).
+
+Imagine working on a media player with operations like play, stop, and pause. A simple implementation of these operations might involve extensive if-else or switch statements to handle behavior specific to the current state of the player. This approach leads to complex, tightly coupled code filled with conditional statements, making it difficult to maintain, extend, and prone to bugs when changing states or behaviors.
+
+With state pattern, we define a State interface that defines the common behavior for all states. Then we define classes for different states that implement the state interface. Now we have only those methods available that are relevant to the current state.
+```python
+class State:
+    def play(self, player):
+        pass
+
+    def pause(self, player):
+        pass
+
+    def stop(self, player):
+        pass
+
+class PlayingState(State):
+    def pause(self, player):
+        print("Already playing")
+
+    def pause(self, player):
+        print("Pausing playback")
+        player.state = PausedState()
+
+    def stop(self, player):
+        print("Stopping playback")
+        player.state = StoppedState()
+
+class PausedState(State):
+    def play(self, player):
+        print("Resuming playback")
+        player.state = PlayingState()
+
+    def stop(self, player):
+        print("Stopping playback")
+        player.state = StoppedState()
+
+class StoppedState(State):
+    def play(self, player):
+        print("Starting playback")
+        player.state = PlayingState()
+
+class MediaPlayer:
+    def __init__(self):
+        self.state = StoppedState()
+
+    def play(self):
+        self.state.play(self)
+
+    def pause(self):
+        self.state.pause(self)
+
+    def stop(self):
+        self.state.stop(self)
+
+# Usage
+player = MediaPlayer()
+player.play()
+player.pause()
+player.stop()
+```
+Each state is now encapsulated in its own class, greatly simplifying the MediaPlayer class and making the system more extensible and easier to maintain. Adding a new state or changing the behavior of an existing state involves modifying or adding a single class, without touching the core logic of the media player.
+
+So, with state pattern, the system becomes more modular, easier to extend, and simpler to maintain, as state-specific behavior is created within state classes rather than being spread across the system.
+
 ### Strategy
 ### Template Method
 ### Visitor
