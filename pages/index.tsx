@@ -24,7 +24,6 @@ export const getStaticProps: GetStaticProps<{
 const Banner = dynamic(import('@/components/Banner'));
 
 const QuoteComponent = dynamic(import('@/components/Quote'));
-const MemeComponent = dynamic(import('@/components/Meme'));
 
 export default function Home({
   author,
@@ -37,7 +36,6 @@ export default function Home({
       />
       <Banner frontMatter={author} />
       <QuoteComponent />
-      <MemeComponent/>
     </>
   );
 }
