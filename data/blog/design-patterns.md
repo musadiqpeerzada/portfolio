@@ -1428,5 +1428,51 @@ Each state is now encapsulated in its own class, greatly simplifying the MediaPl
 So, with state pattern, the system becomes more modular, easier to extend, and simpler to maintain, as state-specific behavior is created within state classes rather than being spread across the system.
 
 ### Strategy
+
+Strategy Pattern enables an algorithm's behavior to be selected at runtime. Instead of implementing a single algorithm directly, code receives run-time instructions as to which algorithm to use in a family of algorithms.
+
+Consider working on an e-commerce app where user different type of user's get different percentage of discount on checkout. We can have a Checkout class which takes customer type and cart amount. It then calculates the discounted price based on the customer type using a number of conditionals (such as if-else or switch-case). But the discount logic is tightly coupled within a Checkout class, leading to complex, hard-to-maintain code that violates the Open/Closed Principle as new discount types are introduced.
+
+Using strategy pattern, we create an interface DiscountStrategy interface and then implement concrete discount strategies like NewCustomerDiscount and ProCustomerDiscount which implement the DiscountStrategy. The Checkout class now takes a discount strategy and amount and to calculate final amount calls the apply discount method of it's discount strategy.
+
+```python
+class DiscountStrategy:
+    def apply_discount(self, amount):
+        pass
+
+class NewCustomerDiscount(DiscountStrategy):
+    def apply_discount(self, amount):
+        return amount - (amount * 0.10)
+
+class ProCustomerDiscount(DiscountStrategy):
+    def apply_discount(self, amount):
+        return amount - (amount * 0.20)
+
+class NoDiscount(DiscountStrategy):
+    def apply_discount(self, amount):
+        return amount
+
+class Checkout:
+    def __init__(self, strategy: DiscountStrategy, amount):
+        self.strategy = strategy
+        self.amount = amount
+
+    def calculate_final_amount(self):
+        return self.strategy.apply_discount(self.amount)
+
+new_customer_checkout = Checkout(NewCustomerDiscount(), 100)
+pro_customer_checkout = Checkout(ProCustomerDiscount(), 100)
+
+print(f"Final amount for new customer: {new_customer_checkout.calculate_final_amount()}")
+print(f"Final amount for Pro customer: {pro_customer_checkout.calculate_final_amount()}")
+```
+Output:
+```bash
+Final amount for new customer: 90.0
+Final amount for VIP customer: 80.0
+```
+
+Now, the checkout class is now decoupled from the specific discount calculations. Each discount strategy is encapsulated in its own class, adhering to the DiscountStrategy interface. We can now add a new discount type simply by creating a new class that implements the DiscountStrategy interface, without modifying existing code.
+
 ### Template Method
 ### Visitor
