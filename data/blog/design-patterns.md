@@ -1,6 +1,6 @@
 ---
-title: Design Patterns (WIP)
-date: 2024-01-20
+title: Design Patterns
+date: 2024-01-31
 tags:
   - clean
   - code
@@ -1475,4 +1475,123 @@ Final amount for VIP customer: 80.0
 Now, the checkout class is now decoupled from the specific discount calculations. Each discount strategy is encapsulated in its own class, adhering to the DiscountStrategy interface. We can now add a new discount type simply by creating a new class that implements the DiscountStrategy interface, without modifying existing code.
 
 ### Template Method
+
+The Template Method defines the program skeleton of an algorithm in an superclass, deferring some steps to subclasses. It lets subclass redefine certain steps of an algorithm without changing it's structure.
+
+Consider working on an app where we need to send various types of mails to users like welcome mail, notification mail, etc. One simple approach will be to create classes of each mail type and then use them as and when needed. But there can be lot of similarities between these like header, footer etc leading to code duplication and increased maintenance effort, making the application harder to scale and adapt to changes.
+
+Using Template pattern, we can create an EmailTemplate class with static methods like send_email, generate_header, generate_footer etc. and then create concrete classes like WelcomeMail, NotificationEmail, etc. that extend the EmailTemplate class and override the generate_body method.
+```python
+class EmailTemplate:
+    def send_email(self, name):
+        header = self.generate_header()
+        body = self.generate_body(data)
+        footer = self.generate_footer()
+        print(f"Sending Email: {header}\n{body}\n{footer}")
+
+    def generate_header(self):
+        return "Header Content"
+
+    def generate_body(self, name):
+        pass
+
+    def generate_footer(self):
+        return "Footer Content"
+
+class WelcomeEmail(EmailTemplate):
+    def generate_body(self, name):
+        return f"Hello {name}, thank you for joining us!"
+
+class NotificationEmail(EmailTemplate):
+    def generate_body(self, name):
+        return f"Hi {name}, Just wanted to notify you something."
+
+welcome_email = WelcomeEmail()
+welcome_email.send_email('JAN')
+```
+Output:
+```bash
+Sending Email: Header Content
+Hello JAN, thank you for joining us!
+Footer Content
+```
+Now even if the footer or header changes, we don't need to maintain it across all the classes. Even if we add new types of mails, we just need to add a class for that and we are good to go.
+
+So, template pattern promotes code reuse and reduces redundancy by encapsulating what is common across different implementations, while its flexibility allows for customization of specific steps without altering the structure. This approach simplifies maintenance, improves scalability, and ensures consistency in behavior, making it a powerful tool for designing adaptable and efficient software systems.
+
 ### Visitor
+
+Visitor pattern separates algorithms from the objects on which they operate. This allows new operations to be added to existing objects without modifying them. It's particularly useful in situations where an object structure includes many classes with differing interfaces, and you need to perform operations on these objects that depend on their concrete classes.
+
+Consider working on a car simulation software where we need to perform various operations like check and repair on different parts of a car, like wheels, engine, and body. A simpler approach would be to make classes for all the parts with methods to check and repair. Then create a Car class where all the parts will be added to the car in construction. The Car class will also have check and repair methods which will in turn call check and repair on all parts of the car. But this approach is inflexible and duplicates a lot of code. To add new operations, existing code will need to be modified, violating open/close principal.
+
+Using visitor pattern, we create a `CarPartVisitor` interface with methods for visiting different car parts. Each car part class implements an `accept` method that takes a `CarPartVisitor` and invokes the appropriate visit method. The `Car` class aggregates these parts and also accepts visitors, calling the visit to each part. New operations are added by implementing new visitors, like `CarCheckVisitor` and `CarRepairVisitor`, allowing operations without altering the car or its parts. This design separates operation logic from the object structure, enhancing extensibility and maintainability.
+
+```python
+class CarPartVisitor:
+    def visitWheel(self, wheel):
+        pass
+
+    def visitEngine(self, engine):
+        pass
+
+    def visitBody(self, body):
+        pass
+
+class CarPart:
+    def accept(self, visitor: CarPartVisitor):
+        pass
+
+class Wheel(CarPart):
+    def accept(self, visitor: CarPartVisitor):
+        visitor.visitWheel(self)
+
+class Engine(CarPart):
+    def accept(self, visitor: CarPartVisitor):
+        visitor.visitEngine(self)
+
+class Body(CarPart):
+    def accept(self, visitor: CarPartVisitor):
+        visitor.visitBody(self)
+
+class Car(CarPart):
+    def __init__(self):
+        self.parts = [Wheel() for _ in range(4)] + [Engine(), Body()]
+
+    def accept(self, visitor: CarPartVisitor):
+        for part in self.parts:
+            part.accept(visitor)
+
+class CarCheckVisitor(CarPartVisitor):
+    def visitWheel(self, wheel):
+        print("Checking wheel.")
+
+    def visitEngine(self, engine):
+        print("Checking engine.")
+
+    def visitBody(self, body):
+        print("Checking body.")
+
+class CarRepairVisitor(CarPartVisitor):
+    def visitWheel(self, wheel):
+        print("Repairing wheel.")
+
+    def visitEngine(self, engine):
+        print("Repairing engine.")
+
+    def visitBody(self, body):
+        print("Repairing body.")
+```
+Visitor pattern by externalizing operations into visitor classes, allows easy extension without modifying existing car part classes, thus preventing code duplication and adhering to the Open-Closed Principle.
+
+So, visitor pattern allows extending functionality in complex object structures without altering the objects themselves. It decouples operations from the object structure, and enables adding new features with minimal disruption, reducing code duplication and enhancing maintainability. This pattern is particularly useful in scenarios requiring frequent addition of new operations across a set of interrelated classes.
+
+
+
+
+
+Inflexibility: Adding new operations (e.g., upgrade, modify) requires changing all the part classes and the Car class.
+Violation of Open-Closed Principle: Every time a new operation is needed, the existing classes must be modified, which is against the principle of being open for extension but closed for modification.
+Code Duplication: Similar methods (like check and repair) need to be written in multiple classes, leading to code duplication.
+
+Initially, all operations are implemented within the classes representing these parts. As the software grows, this approach leads to cluttered classes with mixed responsibilities. To address this, you decide to refactor the code using the Visitor pattern to separate operations from the object structure, making the system more flexible and maintainable.
