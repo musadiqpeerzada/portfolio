@@ -1553,9 +1553,9 @@ So, visitor pattern allows extending functionality in complex object structures 
 Want to dive deeper into design patterns? Here are some great resources to help you on your journey. These books and websites break down complex ideas into easy-to-understand lessons that can boost your coding skills.
 
 ### Books
-"Head First Design Patterns" by Eric Freeman and others
-"Design Patterns: Elements of Reusable Object-Oriented Software" by Erich Gamma and others
+- "Head First Design Patterns" by Eric Freeman and others
+- "Design Patterns: Elements of Reusable Object-Oriented Software" by Erich Gamma and others
 
 ### Online Resources
-[Refactoring Guru](https://refactoring.guru/design-patterns).
-[Source Making](https://sourcemaking.com/design_patterns)
+- [Refactoring Guru](https://refactoring.guru/design-patterns).
+- [Source Making](https://sourcemaking.com/design_patterns)
