@@ -91,7 +91,8 @@ But we have a million dollar question now? How do you define a responsibility? o
 - **Define Responsibilities**: Each task group identified in the previous step represents a responsibility. Ensure these responsibilities are distinct and focused, with a clear purpose. Eg: User Responsibility: Managing everything about user sign-up, updates and validation. User Database Layer Responsibility: Handling all database interactions for user information storage. User Notification Responsibility: Taking care of all aspects of sending notifications to users.
 
 - **Design Classes**: For every responsibility, design a class. The class name should clearly indicate its responsibility, making the system's structure intuitive and easy to navigate. Eg:
-  ```python
+
+  ````python
   class User:
   def register(self, user_details):
   #validate and create user account
@@ -115,10 +116,11 @@ But we have a million dollar question now? How do you define a responsibility? o
         ```
 
   By starting with these steps, we can lay a solid foundation for Single Responsibility in our system, leading to a cleaner, more modular design from the beginning.
+  ````
 
 ### Conclusion
 
-The Single Responsibility Principle is like giving each piece of your code a single task, making your software easier to understand and change. This approach keeps things simple, reduces bugs, and makes it easier to add new features later. It's like organizing your tools so each has its own place, streamlining both minor fixes and major updates, leading to more reliable and flexible software.
+The Single Responsibility Principle is like giving each piece of our code a single task, making our software easier to understand and change. This approach keeps things simple, reduces bugs, and makes it easier to add new features later. It's like organizing tools so each has its own place, streamlining both minor fixes and major updates, leading to more reliable and flexible software.
 
 ## Open/Closed Principle
 
@@ -194,7 +196,7 @@ Now our app has size filter and the existing code is not modified at all. This b
 
 ### Steps
 
-To adhere to the Open/Closed Principle (OCP) when starting on a project, we can follow these simplified steps:
+To adhere to the Open/Closed Principle (OCP), we can follow these simplified steps:
 
 - **Define Clear Abstractions**: We first need to identify the core functionalities and entities in our application (such as items, filters, and properties like color and size in our case). Define abstract representations for these entities so that they can be extended without modification.
 
@@ -213,6 +215,86 @@ By following these steps, we'll be build a system that is both extendable with n
 Open/Closed Principle guides us in designing software that is adaptable to change without requiring modifications to existing code. By adhering to this principle, we create a development environment where extending functionality is straightforward and safe, minimizing the risk of bugs in existing features. This approach not only makes our codebase more robust and maintainable but also enhances its ability to evolve with new requirements, ensuring long-term sustainability and efficiency in the software development process.
 
 ## Liskov Substitution Principle
+
+Liskov Substitution Principle states that objects of a subclass should be able to replace objects of the super class without affecting the correctness of the program. If we have a Square and a Circle (sub)class both extending Shape (super)class, we should be able to use circle object wherever we have square object without breaking things. It makes the code reliable and ensures that inheritance relationships in our code are well-designed and maintain the expected behavior.
+
+### Why use it?
+
+- **Behavioral Consistency:** When derived classes maintain a consistent behavior with their base classes, we won't be surprised, we can rely on the same expected behavior. Hence our code will be more predictable and less error-prone.
+
+- **Code Reusability:** Since our code is generic, it can be reused for all sub classes saving a lot of development time and efforts.
+
+- **Polymorphism:** It enables polymorphism and hence our code works with objects of different classes in a uniform way, which makes the code more flexible and extensible.
+
+- **Maintainability:** Since changes to derived classes no longer affect code that use the base class. This separation makes it easier to maintain and modify code without introducing unexpected issues.
+
+- **Design Clarity:** The class hierarchy becomes clear and structured, improving the overall design of the code. It helps to create a well-defined relationship between base and derived classes, making code easier to understand and maintain.
+
+- **Testing:** Sub classes can be tested in isolation, without needing to consider the specifics of derived classes. This simplifies the testing process and makes it easier to identify and fix issues.
+
+### Example
+
+Consider an app where we need to create birds.
+
+```python
+class Bird:
+    def walk(self):
+        print('It walks')
+
+    def fly(self):
+        print('It flies')
+
+class Eagle(Bird):
+        pass
+
+    def fly(self):
+        pass
+
+class Ostrich(Bird):
+    def fly(self):
+        print("But it can't fly")
+```
+
+Although it seems pretty workable, but it violates Liskov Substitution Principle since the behavior of ostrich is not similar to that of eagle and hence can't be substituted. `Eagle.fly()` gives `It flies` but `Ostrich.fly()` gives `But it can't fly`.
+To make it adhere to LSP, we need to further break down birds into FlyingBirds and WalkingBirds.
+
+```python
+class FlyingBird:
+    def fly(self):
+      print('It flies')
+
+class WalkingBird:
+    def walk(self):
+        print('It walks')
+
+class Parrot(FlyingBird, WalkingBird):
+    pass
+
+class Ostrich(WalkingBird):
+    pass
+```
+
+Now we can substitute Ostrich or Parrot in place of WalkingBird and Parrot in place of FlyingBird without being surprised.
+
+### Steps
+
+To adhere to LSP when starting a project from scratch, consider the following general steps:
+
+- **Define Clear Contracts**: Ensure that each class has a clear and concise contract(methods and properties). This includes pre-conditions, post-conditions, and invariants that the class must adhere to.
+
+- **Use Substitution Mindset**: When designing subclasses, think about whether they can truly substitute the parent class. Any method in a subclass should be able to work as a drop-in replacement for the same method in the parent class without altering the desirable properties of the program (correctness, task performed, etc.).
+
+- **Ensure Behavioral Compatibility**: Subclasses should not only adhere to the structure of the superclass but also to its behavior. This means that subclasses should not alter the expected behavior of the superclass. For example, if a method in the superclass returns an integer within a certain range, the subclass method should adhere to the same constraints.
+
+- **Substitute Exceptions Carefully**: If a method in the superclass does not declare or throw certain exceptions, the subclass method should avoid introducing new checked exceptions, as this would alter the expected behavior and potentially break client code that uses the superclass.
+
+- **Use Composition Over Inheritance**: When in doubt, prefer composition over inheritance. If a subclass cannot fully adhere to the contract of the superclass, it might be better to use composition to reuse the functionality instead of inheritance.
+
+By following these steps, we can ensure the design adheres to the Liskov Substitution Principle from the outset, leading to a more robust, maintainable, and scalable system.
+
+### Conclusion
+
+Liskov Substitution Principle ensures that subclasses can be used interchangeably with their parent class without affecting the correctness of code. It emphasizes the importance of designing subclasses that fulfill the contracts and behaviors of their parent classes. Adhering to LSP enhances code reusability, maintainability, and ensures a robust class hierarchy in object-oriented programming. Ultimately, LSP guides us in creating more flexible and scalable systems.
 
 ## Interface Segregation Principle
 
