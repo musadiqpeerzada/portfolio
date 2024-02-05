@@ -298,4 +298,105 @@ Liskov Substitution Principle ensures that subclasses can be used interchangeabl
 
 ## Interface Segregation Principle
 
+Interface Segregation Principle (ISP) states that client should not be forced to depend upon interfaces that they don’t use. It can be rephrased as no code should be forced to depend on methods it does not use. This means that larger interfaces should be split into smaller, more specific ones so that implementing classes only need to be concerned with the methods that are relevant to them, rather than being forced to implement methods they will never use. This principle aims to reduce the side effects and frequency of required changes by minimizing the dependencies between classes.
+
+### Why use it?
+
+Interface Segregation Principle offers several advantages in software design and development:
+
+- **Increased Modularity**: Having more specific interfaces, systems become more modular. This modularity allows for parts of the system to be updated or changed with minimal impact on other parts.
+
+- **Enhanced Code Reusability**: Smaller, well-defined interfaces can be more easily reused across different parts of a system or in different projects, as they are less likely to contain unnecessary methods that aren't needed everywhere.
+
+- **Easier Maintenance and Evolution**: Systems become easier to maintain and evolve since changes to one part of the system are less likely to require changes to unrelated parts. This is because the interfaces are more focused and decoupled.
+
+- **Reduced Side Effects**: Implementing classes are less affected by changes in unrelated methods, reducing the risk of side effects from changes in the interface they implement.
+
+- **Improved Understandability**: Smaller, focused interfaces are easier to understand than large, monolithic ones. Developers can quickly grasp what they need to implement without wading through irrelevant methods.
+
+- **Better Testing**: Smaller interfaces make it easier to write tests, as each test can focus on a smaller set of functionalities. This leads to more comprehensive and easier-to-manage test suites.
+
+- **Flexibility**: Developers have the flexibility to implement only the interfaces their classes need, promoting a more flexible and dynamic approach to design.
+
+- **Encourages Single Responsibility Principle**: ISP naturally encourages adherence to the Single Responsibility Principle by ensuring that interfaces are only responsible for one particular set of functionalities, making the system more cohesive.
+
+By applying ISP, software developers can create systems that are easier to understand, maintain, and extend, leading to higher quality software and more efficient development processes.
+
+### Example
+
+Consider an ed-tech app that acts differently for adults and children. It let's adults borrow books or read online but to reduce screen time in children it lets them only borrow books. A simple implementation can be
+
+```python
+from abc import ABC, abstractmethod
+
+class EdTech:
+   @abstractmethod
+    def borrow_book(self, book):
+        pass
+
+   @abstractmethod
+    def read_book(self):
+        pass
+
+class AdultUser(EdTech):
+    def borrow_book(self, book):
+        print(f"Borrowing book: {book}")
+
+    def read_book(self):
+        print("Reading Book")
+
+class ChildUser(EdTech):
+    def borrow_books(self, book):
+        print(f"Borrowing book: {book}")
+
+    def read_book(self):
+        raise NotImplementedError("Internet access not allowed for children")
+```
+
+In this implementation, ChildUser is forced to implement read_book, which it doesn't need (and shouldn't have access to), and hence violates ISP.
+
+To adhere to ISP, we split EdTech into two separate interfaces: one for borrowing books and another for reading the book online.
+
+```python
+from abc import ABC, abstractmethod
+class BookBorrowingService:
+    @abstractmethod
+    def borrow_books(self, book):
+        pass
+
+class BookReadingService:
+    @abstractmethod
+    def read_book(self):
+       pass
+
+class AdultUser(BookBorrowingService, BookReadingService):
+    def borrow_books(self, book):
+        print(f"Borrowing book: {book}")
+
+    def read_book(self):
+        print("Browsing the Internet")
+
+class ChildUser(BookBorrowingService):
+    def borrow_books(self, book):
+        print(f"Borrowing book: {book}")
+```
+
+Now the ChildUser is not forced to implement read_book and adheres to ISP.
+
+### Steps
+
+- **Identify Actors and Use Cases**: We can start by identifying the different actors (clients) that will interact with our system and the use cases they will perform. Understanding the specific needs and roles of each actor helps in defining interfaces that are relevant to each actor.
+
+- **Define Smaller Interfaces**: Create specific, compact interfaces for single capabilities or closely related actions, avoiding large, general-purpose interfaces to ensure classes implement only relevant methods.
+
+- **Segregate Interfaces Based on Functionality**: Organize interfaces by distinct functionalities or responsibilities, like separating file operation interfaces into reading, writing, and modifying.
+
+- **Implement Interface Inheritance Where Appropriate**: Use base interfaces for common methods across multiple interfaces, ensuring not to force clients to depend on unused methods, thus adhering to ISP principles.
+
+By following these steps and keeping the Interface Segregation Principle in mind from the outset, we can design a system that is modular, flexible, and easier to maintain and extend.
+
+### Conclusion
+
+Interface Segregation Principle is about understanding the needs of clients and designing interfaces in a way that they only contain what is necessary for each client. This leads to codebase that is easier to navigate, understand, and change, which is essential for long-term software quality and sustainability.
+
 ## Dependency Inversion Principle
