@@ -400,3 +400,79 @@ By following these steps and keeping the Interface Segregation Principle in mind
 Interface Segregation Principle is about understanding the needs of clients and designing interfaces in a way that they only contain what is necessary for each client. This leads to codebase that is easier to navigate, understand, and change, which is essential for long-term software quality and sustainability.
 
 ## Dependency Inversion Principle
+
+Dependency Inversion Principle (DIP) states that the high-level module must not depend on the low-level module, but they should depend on abstractions. It aims to reduce the coupling between different parts of a system, making it more flexible and easier to maintain. By depending on interfaces or abstract classes rather than concrete implementations, systems become more modular, allowing for easier changes and testing.
+
+### Why use it?
+
+- **Reduced Coupling**: Depending on abstractions rather than concrete implementations, the coupling between different modules or classes is reduces. It makes each component more independent and easier to manage.
+
+- **Increased Flexibility**: Changes to specific implementations of an abstraction require minimal to no changes in the high-level modules that depend on these abstractions making it more flexible.
+
+- **Enhanced Testability**: It facilitates unit testing by allowing easy substitution of real dependencies with mock objects, since components depend on abstractions that can be implemented by both real objects and test doubles.
+
+- **Improved Code Maintenance**: Since dependencies are abstracted, maintaining and updating the system becomes more straightforward. Changes in one part of the system have limited impact on others, reducing the risk of unintended consequences when modifying code.
+
+- **Better Code Organization**: With clear separation between high-level policies and low-level implementation details, the code is organized in a better way and leads to a more readable and understandable codebase.
+
+- **Scalability**: New functionalities or modules that adhere to the existing abstractions can be added easily, without altering the core high-level policies or logic, enhancing the scalability.
+
+### Example
+
+Consider working on logger for an app, a simple file logger can look like
+
+```python
+class FileLogger:
+    def log(self, message):
+        print(f"Logging to a file: {message}")
+
+class ReportGenerator:
+    def __init__(self):
+        self.logger = FileLogger()
+
+    def generate_report(self, data):
+        self.logger.log("Report generated.")
+```
+
+But now if we want to add a new type of logger like stdout or a web logger, we need to update the ReportGenerator as well even though logging is a different concern altogether.
+We can create an interface Logger and then all types of loggers implement it, now even if we add a new type of logger, our ReportGenerator code does not change.
+
+```python
+from abc import ABC, abstractmethod
+
+class Logger(ABC):
+    @abstractmethod
+    def log(self, message):
+        pass
+
+class FileLogger(Logger):
+    def log(self, message):
+        print(f"Logging to a file: {message}")
+
+class ReportGenerator:
+    def __init__(self, logger: Logger):
+        self.logger = logger
+
+    def generate_report(self, data):
+        self.logger.log("Report generated.")
+```
+
+### Steps
+
+Certainly! Here are the simplified steps rephrased for clarity:
+
+- **Functionality Segregation:** Determine the operations that the main application logic requires from the supporting elements.
+
+- **Abstraction Definition:** Design interfaces or abstract classes that outline these operations without specifying how they're achieved.
+
+- **Concrete Implementation:** Develop the actual components that perform these tasks, ensuring they adhere to the predefined interfaces.
+
+- **Dependency Provision:** Use dependency injection to supply instances of the low-level components to the high-level ones, usually through constructor parameters.
+
+- **Focus on Cohesion:** Ensure each interface has a clear and narrow focus to simplify implementation and future modifications.
+
+By following these steps, it can ensured that high-level and low-level modules depend on abstractions rather than concrete details, making code more flexible and easier to maintain or extend.
+
+### Conclusion
+
+Dependency Inversion Principle helps make code easier to change, test, and maintain by ensuring that different parts of code don't rely too heavily on each other. Instead of having high-level parts directly use low-level parts, both should use general interfaces. This way, changing one part doesn't require big changes to the rest of the program. It makes the program more flexible and easier to manage over time.
