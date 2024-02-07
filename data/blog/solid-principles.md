@@ -1,11 +1,11 @@
 ---
 title: Solid Principles
-date: 2024-02-03
+date: 2024-02-07
 tags:
   - clean
   - code
   - solid principles
-draft: true
+draft: false
 summary: Embracing the SOLID Principles in Software Engineering.
 images:
   - /static/blogs/solid_principles.png
@@ -31,9 +31,9 @@ By sticking to these principles, we can make our coding projects a lot smoother 
 
 ## Single Responsibility Principle
 
-Single Responsibility Principle is a foundational concept in software engineering, particularly in object-oriented design. It says that a class should have one and only one reason to change, meaning it _should only have a single responsibility_ or functionality. But we engineers have a nag of asking **why**? How does that help? So let's check the the purpose it serves.
+Single Responsibility Principle aims to make software systems more understandable, flexible, and maintainable. It states that a class should have one and only one reason to change, meaning it _should only have a single responsibility_ or functionality. This principle encourages us to separate concerns by encapsulating different functionalities in different classes, ensuring that each class addresses a single aspect of the overall functionality.
 
-### Why use it?
+### Advantages
 
 - **Maintainability**: Classes with a single responsibility are easier to understand and modify. When a code change is required, our time should go in making the change not looking for the place where code needs to be changed.
 - **Testability**: Since classes have a single responsibility, they are smaller and hence easier to test, as there are fewer potential test cases and interactions to consider.
@@ -78,45 +78,15 @@ class UserNotify:
 
 Now every class has a defined role. Let's say we are now asked to change the notification media to email, we know which class is responsible for it and where do we need to make the changes. Moreover, we just need to test Notify class.
 
-### Steps
+### Steps to apply
 
-But we have a million dollar question now? How do you define a responsibility? or maybe how to break classes? Let's check it out:
+To make our code adhere to Single Responsibility Principle, we can follow the following steps:
 
-- **Clarify Requirements**: Understand the system we are supposed to build, what functionalities it should perform. We must be aware of all use cases the system needs to handle. Eg: sign up users, updating user, checking if user exits, fetching user details, save user information in a database and notify users upon successful sign-up.
-
-- **Identify Tasks**: Based on the functionalities our system needs to perform, break down each functionality into smaller tasks. This will help in recognizing the various operations our classes need to manage. Eg: validate input data, create a user account, updating a user, check if user already exists, fetch user, insert user details and notify user
-
-- **Group Tasks**: Combine tasks that logically fit together. These might be tasks that operate on the same data or contribute to a same feature. Each group should reflect a single responsibility. Eg: User Manager Group: Input validation, user account creation, user update. DataBase Group: checking existing data, insertion and fetch tasks. User Notification Group: sending notifications.
-
-- **Define Responsibilities**: Each task group identified in the previous step represents a responsibility. Ensure these responsibilities are distinct and focused, with a clear purpose. Eg: User Responsibility: Managing everything about user sign-up, updates and validation. User Database Layer Responsibility: Handling all database interactions for user information storage. User Notification Responsibility: Taking care of all aspects of sending notifications to users.
-
-- **Design Classes**: For every responsibility, design a class. The class name should clearly indicate its responsibility, making the system's structure intuitive and easy to navigate. Eg:
-
-  ````python
-  class User:
-  def register(self, user_details):
-  #validate and create user account
-
-            def update(self, userId, user_details):
-              #validate and update user account
-
-        class UserModel:
-            def save(self, user_details):
-              #insert user data
-
-            def check(self, userId):
-              #check if user exits in db
-
-            def get(self, userId):
-              #fetch the user from db
-
-        class UserNotify:
-            def notify(self, user_email):
-                # Compose and send confirmation message
-        ```
-
-  By starting with these steps, we can lay a solid foundation for Single Responsibility in our system, leading to a cleaner, more modular design from the beginning.
-  ````
+- **Clarify Requirements**: Understand the system we are supposed to build, what functionalities it should perform. We must be aware of all use cases the system needs to handle.
+- **Identify Tasks**: Based on the functionalities our system needs to perform, break down each functionality into smaller tasks. This will help in recognizing the various operations our classes need to manage.
+- **Group Tasks**: Combine tasks that logically fit together. These might be tasks that operate on the same data or contribute to a same feature. Each group should reflect a single responsibility.
+- **Define Responsibilities**: Each task group identified in the previous step represents a responsibility. Ensure these responsibilities are distinct and focused, with a clear purpose.
+- **Design Classes**: For every responsibility, design a class. The class name should clearly indicate its responsibility, making the system's structure intuitive and easy to navigate.
 
 ### Conclusion
 
@@ -127,23 +97,16 @@ The Single Responsibility Principle is like giving each piece of our code a sing
 Open/Closed Principle states that software entities (classes, modules, functions, etc.) should be _open for extension but closed for modification_. This means that we should be able to add new functionality to an entity without changing its existing code. So, it implies two things:
 
 - **Open for Extension**: We should be able to add new features without altering the existing code. This is typically achieved by using interfaces, abstract classes, or inheritance, allowing the entity to adopt new behaviors.
-
 - **Closed for Modification**: The existing code of the entity should remain unchanged when we add new features. This reduces the risk of introducing new bugs into existing functionality and promotes code stability and reusability.
+  So, the principle encourages us to write code that doesn't need to be changed every time the requirements change but can be extended by adding new code. This leads to a more modular, scalable, and maintainable codebase.
 
-So, the principle encourages us to write code that doesn't need to be changed every time the requirements change but can be extended by adding new code. This leads to a more modular, scalable, and maintainable codebase.
-
-### Why use it?
+### Advantages
 
 - **Enhanced Flexibility and Scalability**: Our system is designed in a way that it can adapt to new functionalities with minimal changes to existing code. This makes our system more flexible and easier to scale, as it can grow and evolve with new requirements.
-
 - **Reduced Risk of Bugs**: Since existing code remains unchanged when new features are added, the likelihood of introducing bugs into the already tested and working code is significantly reduced. This leads to a more stable and reliable system.
-
 - **Increased Reusability**: Components designed to be open for extension are more likely to be reusable in different parts of the system or even in different projects, as they can be extended to fit new contexts without modification.
-
 - **Easier Maintenance**: Our code becomes more organized, modular and easy to understand, maintain, and debug. When changes are required, they can often be made at a higher level (such as adding new subclasses or implementing new interfaces), without needing to dive deep into the internals of existing components.
-
 - **Promotes the Use of Interfaces and Abstraction**: OCP encourages us to think in terms of abstractions and interfaces, which leads to cleaner and more abstract designs. This reduces dependencies on concrete implementations, making the system more flexible and easier to adapt or extend.
-
 - **Better Testing and Integration**: Components designed to be open for extension but closed for modification are often easier to test and integrate. Since new functionality can be added in a way that doesn't interfere with existing behavior, tests for existing functionality are valid and reliable forever.
 
 ### Example
@@ -194,21 +157,16 @@ class Size(Property):
 
 Now our app has size filter and the existing code is not modified at all. This brings down the development time, testing time ensuring faster and quality releases
 
-### Steps
+### Steps to apply
 
 To adhere to the Open/Closed Principle (OCP), we can follow these simplified steps:
 
 - **Define Clear Abstractions**: We first need to identify the core functionalities and entities in our application (such as items, filters, and properties like color and size in our case). Define abstract representations for these entities so that they can be extended without modification.
-
 - **Identify Extension Points**: We need to determine the aspects of our application that are most likely to change or expand in the future. This could include functionality, data entities, algorithms, etc.
-
 - **Define Abstractions**: For each extension point identified, we need to define a high-level abstraction (such as an interface or an abstract class). This abstraction should capture the essence of the functionality without tying it to any specific implementations.
-
 - **Implement Abstractions**: We can then create concrete implementations of these abstractions for our current requirements. Just like we had an property abstraction for filtering, we implemented it for the color.
-
 - **Leverage Polymorphism**: We can use polymorphism to allow for different implementations of the same abstraction to be used interchangeably. This is key in allowing new extensions to be added without changing the code that uses the abstraction.
-
-By following these steps, we'll be build a system that is both extendable with new features and closed for modifications to existing code, hence making it robust, maintainable, and scalable.
+  By following these steps, we'll be build a system that is both extendable with new features and closed for modifications to existing code, hence making it robust, maintainable, and scalable.
 
 ### Conclusion
 
@@ -218,18 +176,13 @@ Open/Closed Principle guides us in designing software that is adaptable to chang
 
 Liskov Substitution Principle states that objects of a subclass should be able to replace objects of the super class without affecting the correctness of the program. If we have a Square and a Circle (sub)class both extending Shape (super)class, we should be able to use circle object wherever we have square object without breaking things. It makes the code reliable and ensures that inheritance relationships in our code are well-designed and maintain the expected behavior.
 
-### Why use it?
+### Advantages
 
 - **Behavioral Consistency:** When derived classes maintain a consistent behavior with their base classes, we won't be surprised, we can rely on the same expected behavior. Hence our code will be more predictable and less error-prone.
-
 - **Code Reusability:** Since our code is generic, it can be reused for all sub classes saving a lot of development time and efforts.
-
 - **Polymorphism:** It enables polymorphism and hence our code works with objects of different classes in a uniform way, which makes the code more flexible and extensible.
-
 - **Maintainability:** Since changes to derived classes no longer affect code that use the base class. This separation makes it easier to maintain and modify code without introducing unexpected issues.
-
 - **Design Clarity:** The class hierarchy becomes clear and structured, improving the overall design of the code. It helps to create a well-defined relationship between base and derived classes, making code easier to understand and maintain.
-
 - **Testing:** Sub classes can be tested in isolation, without needing to consider the specifics of derived classes. This simplifies the testing process and makes it easier to identify and fix issues.
 
 ### Example
@@ -276,21 +229,15 @@ class Ostrich(WalkingBird):
 
 Now we can substitute Ostrich or Parrot in place of WalkingBird and Parrot in place of FlyingBird without being surprised.
 
-### Steps
+### Steps to apply
 
-To adhere to LSP when starting a project from scratch, consider the following general steps:
+To make our system adhere to LSP, we can follow the following general steps:
 
 - **Define Clear Contracts**: Ensure that each class has a clear and concise contract(methods and properties). This includes pre-conditions, post-conditions, and invariants that the class must adhere to.
-
 - **Use Substitution Mindset**: When designing subclasses, think about whether they can truly substitute the parent class. Any method in a subclass should be able to work as a drop-in replacement for the same method in the parent class without altering the desirable properties of the program (correctness, task performed, etc.).
-
 - **Ensure Behavioral Compatibility**: Subclasses should not only adhere to the structure of the superclass but also to its behavior. This means that subclasses should not alter the expected behavior of the superclass. For example, if a method in the superclass returns an integer within a certain range, the subclass method should adhere to the same constraints.
-
 - **Substitute Exceptions Carefully**: If a method in the superclass does not declare or throw certain exceptions, the subclass method should avoid introducing new checked exceptions, as this would alter the expected behavior and potentially break client code that uses the superclass.
-
 - **Use Composition Over Inheritance**: When in doubt, prefer composition over inheritance. If a subclass cannot fully adhere to the contract of the superclass, it might be better to use composition to reuse the functionality instead of inheritance.
-
-By following these steps, we can ensure the design adheres to the Liskov Substitution Principle from the outset, leading to a more robust, maintainable, and scalable system.
 
 ### Conclusion
 
@@ -300,24 +247,17 @@ Liskov Substitution Principle ensures that subclasses can be used interchangeabl
 
 Interface Segregation Principle (ISP) states that client should not be forced to depend upon interfaces that they don’t use. It can be rephrased as no code should be forced to depend on methods it does not use. This means that larger interfaces should be split into smaller, more specific ones so that implementing classes only need to be concerned with the methods that are relevant to them, rather than being forced to implement methods they will never use. This principle aims to reduce the side effects and frequency of required changes by minimizing the dependencies between classes.
 
-### Why use it?
+### Advantages
 
 Interface Segregation Principle offers several advantages in software design and development:
 
 - **Increased Modularity**: Having more specific interfaces, systems become more modular. This modularity allows for parts of the system to be updated or changed with minimal impact on other parts.
-
 - **Enhanced Code Reusability**: Smaller, well-defined interfaces can be more easily reused across different parts of a system or in different projects, as they are less likely to contain unnecessary methods that aren't needed everywhere.
-
 - **Easier Maintenance and Evolution**: Systems become easier to maintain and evolve since changes to one part of the system are less likely to require changes to unrelated parts. This is because the interfaces are more focused and decoupled.
-
 - **Reduced Side Effects**: Implementing classes are less affected by changes in unrelated methods, reducing the risk of side effects from changes in the interface they implement.
-
 - **Improved Understandability**: Smaller, focused interfaces are easier to understand than large, monolithic ones. Developers can quickly grasp what they need to implement without wading through irrelevant methods.
-
 - **Better Testing**: Smaller interfaces make it easier to write tests, as each test can focus on a smaller set of functionalities. This leads to more comprehensive and easier-to-manage test suites.
-
 - **Flexibility**: Developers have the flexibility to implement only the interfaces their classes need, promoting a more flexible and dynamic approach to design.
-
 - **Encourages Single Responsibility Principle**: ISP naturally encourages adherence to the Single Responsibility Principle by ensuring that interfaces are only responsible for one particular set of functionalities, making the system more cohesive.
 
 By applying ISP, software developers can create systems that are easier to understand, maintain, and extend, leading to higher quality software and more efficient development processes.
@@ -328,7 +268,6 @@ Consider an ed-tech app that acts differently for adults and children. It let's 
 
 ```python
 from abc import ABC, abstractmethod
-
 class EdTech:
    @abstractmethod
     def borrow_book(self, book):
@@ -354,7 +293,6 @@ class ChildUser(EdTech):
 ```
 
 In this implementation, ChildUser is forced to implement read_book, which it doesn't need (and shouldn't have access to), and hence violates ISP.
-
 To adhere to ISP, we split EdTech into two separate interfaces: one for borrowing books and another for reading the book online.
 
 ```python
@@ -383,17 +321,14 @@ class ChildUser(BookBorrowingService):
 
 Now the ChildUser is not forced to implement read_book and adheres to ISP.
 
-### Steps
+### Steps to apply
+
+Following steps can be helpful in making our code adhere to ISP:
 
 - **Identify Actors and Use Cases**: We can start by identifying the different actors (clients) that will interact with our system and the use cases they will perform. Understanding the specific needs and roles of each actor helps in defining interfaces that are relevant to each actor.
-
 - **Define Smaller Interfaces**: Create specific, compact interfaces for single capabilities or closely related actions, avoiding large, general-purpose interfaces to ensure classes implement only relevant methods.
-
 - **Segregate Interfaces Based on Functionality**: Organize interfaces by distinct functionalities or responsibilities, like separating file operation interfaces into reading, writing, and modifying.
-
 - **Implement Interface Inheritance Where Appropriate**: Use base interfaces for common methods across multiple interfaces, ensuring not to force clients to depend on unused methods, thus adhering to ISP principles.
-
-By following these steps and keeping the Interface Segregation Principle in mind from the outset, we can design a system that is modular, flexible, and easier to maintain and extend.
 
 ### Conclusion
 
@@ -403,18 +338,13 @@ Interface Segregation Principle is about understanding the needs of clients and 
 
 Dependency Inversion Principle (DIP) states that the high-level module must not depend on the low-level module, but they should depend on abstractions. It aims to reduce the coupling between different parts of a system, making it more flexible and easier to maintain. By depending on interfaces or abstract classes rather than concrete implementations, systems become more modular, allowing for easier changes and testing.
 
-### Why use it?
+### Advantages
 
 - **Reduced Coupling**: Depending on abstractions rather than concrete implementations, the coupling between different modules or classes is reduces. It makes each component more independent and easier to manage.
-
 - **Increased Flexibility**: Changes to specific implementations of an abstraction require minimal to no changes in the high-level modules that depend on these abstractions making it more flexible.
-
 - **Enhanced Testability**: It facilitates unit testing by allowing easy substitution of real dependencies with mock objects, since components depend on abstractions that can be implemented by both real objects and test doubles.
-
 - **Improved Code Maintenance**: Since dependencies are abstracted, maintaining and updating the system becomes more straightforward. Changes in one part of the system have limited impact on others, reducing the risk of unintended consequences when modifying code.
-
 - **Better Code Organization**: With clear separation between high-level policies and low-level implementation details, the code is organized in a better way and leads to a more readable and understandable codebase.
-
 - **Scalability**: New functionalities or modules that adhere to the existing abstractions can be added easily, without altering the core high-level policies or logic, enhancing the scalability.
 
 ### Example
@@ -457,21 +387,15 @@ class ReportGenerator:
         self.logger.log("Report generated.")
 ```
 
-### Steps
+### Steps to apply
 
-Certainly! Here are the simplified steps rephrased for clarity:
+To adhere to DIP, following steps can be applied:
 
 - **Functionality Segregation:** Determine the operations that the main application logic requires from the supporting elements.
-
 - **Abstraction Definition:** Design interfaces or abstract classes that outline these operations without specifying how they're achieved.
-
 - **Concrete Implementation:** Develop the actual components that perform these tasks, ensuring they adhere to the predefined interfaces.
-
 - **Dependency Provision:** Use dependency injection to supply instances of the low-level components to the high-level ones, usually through constructor parameters.
-
 - **Focus on Cohesion:** Ensure each interface has a clear and narrow focus to simplify implementation and future modifications.
-
-By following these steps, it can ensured that high-level and low-level modules depend on abstractions rather than concrete details, making code more flexible and easier to maintain or extend.
 
 ### Conclusion
 
