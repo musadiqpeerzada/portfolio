@@ -27,8 +27,7 @@ Maintaining code quality is our duty. A doctor won't skip sanitizing his work to
 - Tired of working on the same piece of code.
 - Pressure to complete tasks quickly.
   These reasons majorly lead to code that is chaotic.
-
-We often promise to _fix it later_ but then never gets addressed. We have all seen TODOs in code added years ago, but were never picked up and that is what LeBlanc's Law states: `Later equals never.`
+  We often promise to _fix it later_ but then never gets addressed. We have all seen TODOs in code added years ago, but were never picked up and that is what LeBlanc's Law states: `Later equals never.`
 
 ### What Defines Clean Code?
 
@@ -48,11 +47,10 @@ The importance of naming lies in its ability to convey purpose. Selecting descri
 
 ```python
 d = 7
-
 days_in_a_week = 7
 ```
 
-What do you get from the above variables? Although the value is same but `days_in_a_week` clearly indicates what it is, what will it be used for but `d` does not.
+What do we get from the above variables? Although the value is same but `days_in_a_week` clearly indicates what it is, what will it be used for but `d` does not.
 
 ```python
 def get(l):
@@ -76,8 +74,8 @@ Also we must be cautious with names that are very similar and may take some time
 
 ### Make Meaningful Distinctions
 
-We often introduce unnecessary complexity by trying to overcome language constraints, like naming variables too similarly or using unconventional spellings to differentiate them, like using "listt" because "list" is a keyword. Even sometimes if we need two different things in our code to have different names but you run out of ideas, we might end up slightly changing one name in a way that doesn't make sense, like misspelling it on purpose. This can lead to weird situations where fixing the spelling stops the code from working. It's not enough to just add random numbers or extra words to make the names different for the computer; the names should also clearly show how they're different to anyone reading the code.
-Using names like "a1", "a2", etc., doesn't help at all because they don't tell you anything about what the variable is for. It's much clearer if we use names which give information about the variable or function.
+We often introduce unnecessary complexity by trying to overcome language constraints, like naming variables too similarly or using unconventional spellings to differentiate them, like using "listt" because "list" is a keyword. Even sometimes if we need two different things in our code to have different names but run out of ideas, we might end up slightly changing one name in a way that doesn't make sense, like misspelling it on purpose. This can lead to weird situations where fixing the spelling stops the code from working. It's not enough to just add random numbers or extra words to make the names different for the computer; the names should also clearly show how they're different to anyone reading the code.
+Using names like "a1", "a2", etc., doesn't help at all because they don't tell anything about what the variable is for. It's much clearer if we use names which give information about the variable or function.
 Apart from this, adding words that don't help distinguish, like "Info" or "Data" to a name, don't help either. It's like adding "the" or "an" to apple but it is still the same apple. Functions named "get_active_users", "get_active_users_data", and "get_active_users_info" don't tell anything about what each one does differently.
 
 ### Use Pronounceable Names
@@ -89,7 +87,6 @@ Clearer names, ease the communication about the code. We can say things like, "H
 
 We almost everyday search for specific files or variables in our code. So we must choose names that can ease this process of searching or at minimum be searchable. Using single-letter names or just numbers can make it hard to search them later. For example, if we try to find where we used a specific number, like 7, we might get a lot of results because that number appears in many places. It's much easier to search for something like `NUMBER_OF_DAYS_IN_A_WEEK` because it's unique and descriptive. This is especially true for long numbers, where someone might accidentally mix up the digits and create a hard-to-find bug.
 Generally, longer names are better because they're easier to find with a search. The idea is to use names that make sense and are easy to search for, especially if they are going to be used in many places in code.
-
 Here's an example of how using descriptive names can make a difference:
 
 ```python
@@ -112,7 +109,7 @@ We already deal with a lot of complex information. Adding extra codes or symbols
 
 ### Avoid Mental Mapping
 
-When naming things in code, make sure the names are straightforward so that others don't have to guess what they mean. Never underestimate their imagination. The goal is to write code that is easy to understand for anyone who might read it, not just for yourself.
+When naming things in code, make sure the names are straightforward so that others don't have to guess what they mean. Never underestimate their imagination. The goal is to write code that is easy to understand for anyone who might read it, not just for oneself.
 
 ### Class Names
 
@@ -124,11 +121,11 @@ Methods should be named with verbs or verb phrases that clearly state what they 
 
 ### Don't Be Cute
 
-Don't use "funny" names in your code; it might seem humorous at the moment, but it can make your code harder to understand and maintain. For example, use clear names like deleteItems instead of holyHandGrenade, or abort instead of eatMyShorts.
+Don't use "funny" names in code; it might seem humorous at the moment, but it can make the code harder to understand and maintain. For example, use clear names like deleteItems instead of holyHandGrenade, or abort instead of eatMyShorts.
 
 ### Pick One Word per Concept
 
-Choose one word for one concept and stick with it throughout your code. It's confusing if one class uses fetch, another uses retrieve, and another uses get to do essentially the same thing.
+Choose one word for one concept and stick with it throughout the code. It's confusing if one class uses fetch, another uses retrieve, and another uses get to do essentially the same thing.
 
 ### Add Meaningful Context
 
@@ -145,3 +142,101 @@ Not every name makes sense on its own. Sometimes we need to give more context, e
 ### Don’t Add Gratuitous Context
 
 Adding too much context, especially unnecessary or repetitive context, can make names longer without making them clearer. For example, in an application called "PaymentService," we don't need to start every class name with PS.
+
+## Chapter 3: Functions
+
+Functions are the first line of organization in any code.
+
+### Small
+
+Functions should always be as small as possible. Code inside conditional statements or loops should just be one line, often just a call to another function. This approach helps to keep the main function small and code easier to understand. Functions should be straightforward enough that they don't need many levels of nested structures, like loops inside if statements inside other loops. Ideally, function shouldn't be indented more than once or twice, this make it simpler and more readable.
+
+### Do One Thing
+
+**FUNCTIONS SHOULD DO ONE THING. THEY SHOULD DO IT WELL. THEY SHOULD DO IT ONLY.**
+Being said that the challenge often lies in defining what that "one thing" is. A good way to check is if all the steps in the function contribute directly to the high-level goal its name suggests, without introducing unrelated tasks or details, then the function is well-focused. Functions that mix different levels of abstraction typically are doing more than one thing and could be simplified or broken down.
+
+#### Sections within Functions
+
+If a function is divided into sections like declarations, initializations, and so on, it's a sign that the function might be doing more than one thing. Each function should be focused enough that it doesn't need such divisions, as every part of the function should contribute to the single task it's designed to perform.
+
+### One Level of Abstraction per Function
+
+Ensuring that functions stick to "doing one thing" involves maintaining a consistent level of abstraction throughout the function.
+
+#### Reading Code from Top to Bottom: The Stepdown Rule
+
+The code should be readable like a top-down narrative. Every function should be followed by those at the next level of abstraction so that the program can be read, descending one level of abstraction at a time as we read down the list of functions.
+
+### Switch Statements
+
+Switch statements make functions large and complex, especially when they cover multiple cases. Switch statements have following issues:
+
+- Violate Single Responsibility Principle and Open/Closed Principle.
+- Grows with each new case added, leading to bloated code.
+- Does more than one thing, making it harder to understand and maintain.
+- Often leads to duplicate code.
+  To address these issues, we can encapsulate the switch statement within an abstract factory. This hides the complexity and ensures the switch statement is used only to create instances of objects in a polymorphic manner.
+  It is not always possible to get rid of switch statements, following are some general rules to make switch statements more manageable:
+- Should appear only once
+- Used to create polymorphic objects
+- Hidden behind an inheritance relationship, making them invisible to the rest of the system
+  This approach aligns with the principles of good software design by keeping functions focused and adhering to SRP and OCP, while also leveraging polymorphism to handle varying behaviors based on object types.
+
+### Use Descriptive Names
+
+Naming functions thoughtfully is crucial for writing clean and understandable code. A well-chosen name communicates what a function does, making the code easier to read and maintain. Here are some key points:
+
+- **Descriptive Names:** Choose names that clearly describe what the function does.
+- **Length of Names:** It is ok to have longer names if they are more descriptive. A longer, clear name is better than a short, vague one.
+- **Spend Time on Naming:** Don't rush naming, take time to find the most descriptive name. Try different names and see how they fit within the context of code.
+- **Consistency:** Use consistent naming conventions across code. This helps in understanding the code's flow and its various components.
+
+### Function Arguments Simplified\*\*
+
+Function arguments can add complexity to the code. Here are some guidelines to manage them:
+
+- **Fewer Arguments:** Aim for fewer arguments in functions. The ideal is having none, but one or two arguments are acceptable. More than three should be avoided.
+- **Testing Complexity:** More arguments mean more combinations to test, which can complicate the testing process.
+- **Argument Objects:** If a function requires many arguments, consider grouping some of these arguments into a class. For example, instead of passing multiple parts of address separately, pass a `Address` object.
+- **Variable Arguments:** Functions accepting variable arguments should still adhere to the rule of keeping arguments to a minimum. Treat them as if they were a single list argument.
+- **Verbs and Keywords in Names:** Use verbs for functions that perform actions and ensure that the function names and arguments form meaningful phrases. This helps in understanding what the function does and what the arguments represent.
+
+### Have No Side Effects
+
+Side effects in functions lead to unpredictable behavior and difficult-to-track bugs. A function should do exactly what its name suggests and no more. Here are the key points to consider:
+
+- **Transparent:** When a function does something not clearly communicated by its name or its obvious purpose, it introduces a side effect. These hidden actions can affect the state of the application in unexpected ways.
+- **Clarity in Naming:** If a function must perform additional actions, its name should reflect all its effects to avoid surprises. However, this often leads to functions that do more than one thing, which is also not advisable.
+- **Mutating Arguments:** Mutating arguments can be confusing because it suggests a function is modifying something passed to it, rather than operating on its own state or returning a new value. This can lead to code that's hard to understand and maintain.
+- **Object-Oriented Solutions:** In object-oriented programming, many needs for output arguments are eliminated. Methods should operate on the state of their own object, making the effects of calling a method clearer and keeping the code more encapsulated.
+
+### Command Query Separation
+
+Functions should either perform an action or provide information, but not both. This principle, known as Command-Query Separation, enhances clarity and prevents confusion.
+A command changes the state of an object (e.g., setting a value), while a query returns information about an object without changing its state (e.g., checking a value).
+
+### Prefer Exceptions to Returning Error Codes
+
+Using error codes for command functions can complicate code, leading to nested structures and immediate error handling requirements. Exceptions and isolating try/catch blocks into different functions allow for separating error handling from the main logic, making the code cleaner and more readable. A function should focus on a single responsibility. If a function deals with error handling, it should not perform other tasks.
+
+### Don't Repeat Yourself
+
+The "Don't Repeat Yourself" (DRY) principle is the crux of functions, aiming to minimize redundancy in code. This principle suggests that every piece of knowledge or logic should be unique, singular, and authoritative within a system.
+Duplication leads to certain issues, such as:
+
+- Increased Maintenance: Duplication means any change needs to be made in multiple places, increasing the effort required for updates and the risk of inconsistencies.
+- Error Propagation: Repeated code segments increase the chances of errors being replicated across the system.
+- Readability and Clarity: Reducing duplication often enhances the readability and understandability of the code.
+  To avoid duplication in our code we can use various methods like:
+- **Abstraction:** Grouping similar logic into functions, classes, or modules to avoid repeating the same code.
+- **Object-Oriented Principles:** Techniques like inheritance and polymorphism help to reduce code duplication by sharing common logic among related classes.
+- **Design Patterns:** Many design patterns, such as Factory or Strategy, can help organize code to minimize duplication.
+
+### Structured Programming
+
+While structured programming principles, such as having a single entry and exit point in functions, aim to improve code quality, they are most beneficial in larger functions. In small, well-refactored functions, adhering too strictly to these principles might not provide significant value.
+
+### How Do You Write Functions Like This?
+
+Creating effective functions is similar to writing in general: start with a draft and iteratively refine it for clarity, conciseness, and effectiveness. This process involves not just mechanical changes but also thoughtful consideration of how each part of the code contributes to the whole, ensuring adherence to principles like DRY, and making the code express its purpose clearly.
