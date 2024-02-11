@@ -2,10 +2,8 @@
 title: Design Patterns
 date: 2024-01-31
 tags:
-  - clean
-  - code
-  - design
-  - patterns
+  - clean code
+  - design patterns
 draft: false
 summary: Journey into Design Patterns.
 images:
@@ -25,12 +23,12 @@ So design patterns are general blueprints for solving common problems in softwar
 Design patterns are different from algorithms. While algorithms are step-by-step instructions for solving specific problems, design patterns are blueprints guiding how to structure software to solve recurring problems efficiently.
 
 Design patterns are typically classified into three main categories based on their purpose:
- - Creational Patterns
- - Structural Patterns
- - Behavioral Patterns
+
+- Creational Patterns
+- Structural Patterns
+- Behavioral Patterns
 
 Each category addresses different aspects of software design and aids in solving various problems encountered during software development.
-
 
 ## Why learn Design Patterns?
 
@@ -55,12 +53,14 @@ So let's start exploring the patterns.
 ## Creational Patterns
 
 These patterns focus on object creation mechanisms, providing flexibility in creating objects or classes and reusing code.
+
 ### Singleton
 
 Singleton pattern ensures that a class has only one instance but provides a global access to that instance.
 
 Consider working on an app that connects to database. Do we need to create a new connection every time we need to access data?
 If we create a new connection each time, we might:
+
 - end up with different connections having different configurations (maybe a different connection string altogether)
 - exceed the number of concurrent connections
 - consume more resources
@@ -76,16 +76,17 @@ class S3:
     def get_client(self):
         if self.client is None:
             self.client = boto3.client('s3')
-        return self.client    
+        return self.client
 ```
+
 When ` S3.get_client` is called the first time, it sets the client and after that every time returns the same client.
-**Note**: In multithreaded environments, use synchronization (like locks) to ensure thread-safe singletons. 
+**Note**: In multithreaded environments, use synchronization (like locks) to ensure thread-safe singletons.
 
 ### Prototype
 
 The Prototype pattern helps to enable the creation of new objects by copying existing ones, known as prototypes. This approach is used instead of creating new objects from scratch, especially when the process of constructing a new object is costly or complex.
 
-Let's consider an example of a football game where we have many variants of same player based on player form. (Alexis Sanchez in Arsenal was way better 😜). We can create new objects of the same player from scratch each time but that doesn't make sense since the name, nationality, position, height, birth day etc are same. This will increase the complexity and what if the player later changes his nationality, then we need to change for every version of the player. 
+Let's consider an example of a football game where we have many variants of same player based on player form. (Alexis Sanchez in Arsenal was way better 😜). We can create new objects of the same player from scratch each time but that doesn't make sense since the name, nationality, position, height, birth day etc are same. This will increase the complexity and what if the player later changes his nationality, then we need to change for every version of the player.
 
 We can just create a BasePlayer class and then create players out of it. And then to create a special player we can clone the base player and add (or maybe update) its properties.
 
@@ -116,13 +117,16 @@ print(ozil)
 print('Real Madrid Ozil:')
 print(real_madrid_ozil)
 ```
+
 Output
+
 ```bash
-Ozil: 
+Ozil:
 Ozil, CAM, Skills: ['Wizard']
 Real Madrid Ozil:
 Ozil, CAM, Skills: ['Wizard', 'Ability to find Ronaldo', 'Breaking passes']
 ```
+
 And then we can create n number of Ozil players and add skills as and when needed.
 So in Prototype pattern, we have a template and then using that template we create objects, which is particularly useful in scenarios where object creation is resource-intensive or requires a lot of setup.
 
@@ -134,7 +138,6 @@ Consider we need to create animals like cat or dog. Each type of animal has its 
 
 If we create an interface for animals and then each type of animal implements this interface, we always get an animal interface irrespective of it's type.
 But in the Factory Method, we use different factories for each animal, like a DogFactory for dogs and a CatFactory for cats. Each factory knows how to make its corresponding animal. This is helpful because it keeps the code simple and organized. When we want to add a new type of animal, we just add a new factory without changing the existing code. This makes our code easy to manage and expand.
-
 
 ```python
 class Animal:
@@ -157,7 +160,9 @@ dog = DogFactory().create_animal()
 print(dog.speak())  # Woof!
 
 ```
+
 Now to add a new animal, say cat
+
 ```python
 class Cat(Animal):
     def speak(self):
@@ -170,6 +175,7 @@ class CatFactory(AnimalFactory):
 cat = CatFactory().create_animal()
 print(cat.speak())  # Meow!
 ```
+
 This way we can add new types of animals without altering the existing factories, staying true to the **Open/Closed Principle**: open for extension but closed for modification.
 
 ### Abstract Factory
@@ -217,9 +223,11 @@ def create_habitat(factory: HabitatFactory):
     print(bird.speak())
     print(water_animal.speak())
 
-create_habitat(FarmFactory()) 
+create_habitat(FarmFactory())
 ```
-Output: 
+
+Output:
+
 ```bash
 Moo!
 Cluck!
@@ -227,14 +235,15 @@ Quack!
 ```
 
 Now to add a new habitat, all we need to do is create a factory for that habitat and then add respective animal classes
+
 ```python
 class JungleFactory(HabitatFactory):
     def create_land_animal(self):
         return Tiger()
-    
+
     def create_bird(self):
         return Toucan()
-    
+
     def create_water_animal(self):
         return Crocodile()
 
@@ -253,12 +262,15 @@ class Crocodile:
 create_habitat(JungleFactory())
 
 ```
+
 Output
+
 ```bash
 Roar!
 Squawk!
 Growl!
 ```
+
 This helps adding new habitats easily by providing a structured and flexible approach to creating objects (in this case, animals) for each habitat.
 Overall, Abstract Factory decouples the object creation code from the specific implementations of classes. This decoupling allows to effortlessly add a new type of classes by creating new factory classes, adhering to open-closed principle. It makes the codebase more adaptable, organized, and easier to manage as we expand our application with diverse habitats.
 
@@ -334,7 +346,9 @@ whale = mammal_builder.set_name('Whale')
                       .build()
 print(whale)
 ```
+
 Output
+
 ```
 Cat -> Type: Mammal, Habitat: Domestic, Diet: Carnivore, Legs: 4, Sound: Meoww
 Whale -> Type: Mammal, Habitat: Ocean, Diet: Krill, Fish, Legs: None, Sound: None
@@ -371,10 +385,13 @@ eagle = bird_builder.set_name('Eagle')
                      .build()
 print(eagle)
 ```
+
 Output
+
 ```bash
 Eagle -> Type: Bird, Habitat: Forests and Mountains, Diet: Carnivore, Legs: 2, Sound: Screech, Wings: Large
 ```
+
 To further streamline the process, we introduce the AnimalDirector class. This acts as a guide, instructing the builder on the construction steps. The builder performs the building work, but the director orchestrates the process. This separation allows us to modify the construction process without changing the builder classes.
 
 ```python
@@ -409,7 +426,9 @@ bird_director = AnimalDirector(bird_builder)
 eagle = bird_director.construct_bird('Eagle', 'Forests and Mountains', 'Carnivore', 2, 'Screech', 'Large')
 print(eagle)
 ```
+
 Output
+
 ```bash
 Cat -> Type: Mammal, Habitat: Domestic, Diet: Carnivore, Legs: 4, Sound: Meoww!
 Eagle -> Type: Bird, Habitat: Forests and Mountains, Diet: Carnivore, Legs: 2, Sound: Screech, Wings: Large
@@ -417,9 +436,9 @@ Eagle -> Type: Bird, Habitat: Forests and Mountains, Diet: Carnivore, Legs: 2, S
 
 The Director essentially acts as a middleman. It leverages the Builder to create complex objects, simplifying the client code and abstracting the construction details.
 
-
 ## Structural Patterns
-Structural patterns deal with object composition and class relationships, enabling the creation of larger structures from individual parts. 
+
+Structural patterns deal with object composition and class relationships, enabling the creation of larger structures from individual parts.
 
 ### Adapter
 
@@ -439,8 +458,9 @@ payment_service = Cashfree()
 
 send_money(payment_service, 100) # Cashfree payment of ₹100 processed
 ```
-Pretty straightforward till now. 
-Now let's say we need to add payment service with a different interface. One option is that in `send_money` we check the type of payment service and then call the method to make payment based on that. But every time we add a new payment service we will have to add new conditions. 
+
+Pretty straightforward till now.
+Now let's say we need to add payment service with a different interface. One option is that in `send_money` we check the type of payment service and then call the method to make payment based on that. But every time we add a new payment service we will have to add new conditions.
 
 In Adapter pattern, we create a PaymentService interface and classes for each payment service. We also add adapter for each payment service which implement the PaymentService interface. The client now uses these adapters which have a common interface.
 
@@ -478,15 +498,17 @@ def send_money(payment_service, amount):
     payment_service.make_payment(amount)
 
 
-cashfree_service = CashfreeAdapter(CashfreeService()) 
+cashfree_service = CashfreeAdapter(CashfreeService())
 send_money(cashfree_service, 100) #Cashfree payment of ₹100 processed
 
-razorpay_service = RazorpayAdapter(RazorpayService()) 
+razorpay_service = RazorpayAdapter(RazorpayService())
 
 send_money(razorpay_service, 100) #Razorpay payment of ₹100 processed
 ```
+
 Already seems like lot of code changes 😮‍💨 but now if we want to add new payment service, it will be simpler and we won't need to modify existing code.
 Let's add PayU which has a different interface
+
 ```python
 class PayUService:
     def execute_payment_payu(self, amount):
@@ -499,10 +521,11 @@ class PayUAdapter(PaymentService):
     def make_payment(self, amount):
         self.payu_service.execute_payment_payu(amount)
 
-payu_service = PayUAdapter(PayUService()) 
+payu_service = PayUAdapter(PayUService())
 
 send_money(payu_service, 100) #PayU payment of ₹100 processed
 ```
+
 The Adapter Design Pattern aligns with the **Single Responsibility Principle** by isolating the interface conversion to a single class, and it adheres to the **Open/Closed Principle** by allowing systems to extend functionality with new adapters without altering existing code.
 
 ### Bridge
@@ -546,6 +569,7 @@ text_message.send('Hello!') # Sending via Email: Text: Hello!
 image_message = ImageMessage(SMSChannel()) # Sending via SMS: Image: image.jpg
 image_message.send('image.jpg')
 ```
+
 Now to add new communication channel like push notifications, we just need to add PushNotification class.
 
 ```python
@@ -553,9 +577,10 @@ class PushNotificationChannel(MessageChannel):
     def send(self, content):
         print(f'Sending via Push Notification: {content}')
 
-text_notification_message = ImageMessage(PushNotificationChannel()) 
+text_notification_message = ImageMessage(PushNotificationChannel())
 text_notification_message.send('Hello!') # Sending via Push Notification: Hello!
 ```
+
 We can now send push notification of any content type. To add a new type of content, we can add a new interface say VideoMessage and simply use it.
 
 ```python
@@ -566,6 +591,7 @@ class VideoMessage(Message):
 video_message = VideoMessage(EmailChannel())
 video_message.send('video.mp4') # Sending via Email: Video: video.mp4
 ```
+
 Now we can send video's via any channel.
 
 Bridge pattern decouples an abstraction from its implementation, allowing them to be developed independently. This pattern enhances flexibility and scalability in software design, particularly useful in systems where both components and their behaviors are expected to change frequently or independently.
@@ -616,6 +642,7 @@ directory.add(subDirectory)
 
 print(directory.count()) # 4
 ```
+
 It doesn't seem being much helpful till now. But shit, we forgot that even [symlinks](https://en.wikipedia.org/wiki/Symbolic_link) exist. Let's try to incorporate that as well. We can simply create SymLink class which implements FileSystemComponent and we are good to go. It is this easy to add new types of structures without modifying existing code.
 
 ```python
@@ -645,13 +672,14 @@ symlink = Symlink('symlink_to_file3', file3)
 directory.add(symlink)
 print(directory.count()) # 3
 ```
+
 So the composite pattern lets us group objects into tree structures to treat them uniformly and simplifies handling complex hierarchies by treating individual and composite objects the same way, making code more flexible and easier to maintain.
 
 ### Decorator
 
 Decorator pattern allows to dynamically add responsibilities to objects. It is a flexible alternative to subclassing for extending functionality. This pattern is useful when we want to add features to individual objects without affecting other instances of the same class. It involves a 'decorator' object which wraps the original object, extending its behavior without modifying its code.
 
-Let's consider we need to create animals where each animal can have different behaviors like a cat can walk, a crocodile can swim and walk, a sparrow can walk and fly, while as a penguin can walk, fly and swim, a wingless sparrow can just walk. We adding behaviors like flying or swimming to specific animal types leads to a multitude of subclasses for each behavior combination, like FlyingBird or SwimmingFish. This results in a complex and rigid class hierarchy, challenging to maintain and extend. 
+Let's consider we need to create animals where each animal can have different behaviors like a cat can walk, a crocodile can swim and walk, a sparrow can walk and fly, while as a penguin can walk, fly and swim, a wingless sparrow can just walk. We adding behaviors like flying or swimming to specific animal types leads to a multitude of subclasses for each behavior combination, like FlyingBird or SwimmingFish. This results in a complex and rigid class hierarchy, challenging to maintain and extend.
 Making a subclass for each animal may seem an option but it it will become difficult and inefficient as we come across different behavior of animals, maybe mutated animals exist as well you never know. We will end up with infinite number of subclasses and will need to alter code for each new animal addition, making the system difficult to maintain and extend.
 
 The Decorator Pattern solves these issues by wrapping objects with new functionalities at runtime, eliminating the need for numerous subclasses. We can have an Animal class
@@ -700,6 +728,7 @@ We can add any combination of behaviors without needing to change the code at al
 duck = WalkingDecorator(SwimmingDecorator('Duck'))
 print(f'{duck.name} can {', '.join(duck.mobility)}') #Duck can swim, walk
 ```
+
 We can also handle mutants (maybe accidents), let's add a wingless sparrow 😢
 
 ```python
@@ -715,23 +744,25 @@ class HopingDecorator(AnimalDecorator):
         super().__init__(animal)
         self.mobility.append('hop')
 ```
-Now we can add frog and rabbit and kangaroo as well 
+
+Now we can add frog and rabbit and kangaroo as well
 
 ```python
-frog = SwimmingDecorator(HopingDecorator(Animal('Frog'))) 
+frog = SwimmingDecorator(HopingDecorator(Animal('Frog')))
 print(f'{frog.name} can {', '.join(frog.mobility)}') # Frog can hop, swim
 ```
 
-So with decorator pattern 
+So with decorator pattern
+
 - no need to create a new class for each combination of behaviors
 - behaviors can be added or removed at runtime.
 - adding a new type of behavior requires only a new decorator, not altering the entire class structure
 
 ### Facade
 
-Facade Pattern provides a simplified interface to a complex subsystem. It doesn't encapsulate the subsystem but provides a simplified interface to it, making it easier for the client to interact with the subsystem. Facade is particularly useful when a system is very complex or difficult to understand because the system has a large number of interdependent classes. 
+Facade Pattern provides a simplified interface to a complex subsystem. It doesn't encapsulate the subsystem but provides a simplified interface to it, making it easier for the client to interact with the subsystem. Facade is particularly useful when a system is very complex or difficult to understand because the system has a large number of interdependent classes.
 
-Consider working on place order functionality of an e-commerce app. Before placing the order we need to check inventory process payment and then ship the order and the processes are interdependent. We can have Inventory, PaymentProcessor and ShippingService class that the client calls before placing the order. The client looks something like: 
+Consider working on place order functionality of an e-commerce app. Before placing the order we need to check inventory process payment and then ship the order and the processes are interdependent. We can have Inventory, PaymentProcessor and ShippingService class that the client calls before placing the order. The client looks something like:
 
 ```python
 class Inventory:
@@ -761,7 +792,7 @@ def place_order(item_id, account_details, order_details):
     tracking_number = shipping_service.initiate_shipping(order_details)
     return f'Order placed successfully, tracking number: {tracking_number}'
 
-result = place_order('item123', {'card_number': '1234-5678-9012-3456'}, {'amount': 100, 'address': '123 Main St'}) 
+result = place_order('item123', {'card_number': '1234-5678-9012-3456'}, {'amount': 100, 'address': '123 Main St'})
 print(result) # Order placed successfully, tracking number: TrackingNumber123
 ```
 
@@ -787,6 +818,7 @@ order_facade = OrderFacade()
 result = order_facade.place_order('item123', {'card_number': '1234-5678-9012-3456'}, {'amount': 100, 'address': '123 Main St'})
 print(result) #Order placed successfully, tracking number: TrackingNumber123
 ```
+
 So the client code got simplified and now does not have to do all the checks and processing, now even if we want to send order confirmation email, we can add that in place_order of OrderFacade and won't have to touch the client code.
 
 ```python
@@ -810,6 +842,7 @@ class OrderFacade:
         self.email_service.send_order_confirmation_email('abc@pqr.com', tracking_number)
         return f'Order placed successfully, tracking number: {tracking_number}'
 ```
+
 We just added `self.email_service.send_order_confirmation_email('abc@pqr.com', tracking_number)` in place order of OrderFacade and we are done. The client does not need to change anything. We hide the complex logic of placing order in the facade and gave the client a simple abstract interface to play with.
 So the Facade Pattern thus helps in reducing the complexity of the system from the perspective of the client and decouples the client from the subsystem, making the system easier to use and maintain.
 
@@ -818,7 +851,7 @@ So the Facade Pattern thus helps in reducing the complexity of the system from t
 Flyweight pattern focuses on decreasing memory and resource usage, thereby improving performance in large-scale systems. It achieves this by sharing as much as possible with related objects; the intrinsic state is shared, and the extrinsic state is passed in from the client.
 
 Let's take an example of a library system designed to track every book and every copy of each book. So there can be a book and the book can have multiple copies. Each copy can have a borrower. We can simply create a general book class and then create objects for each copy book. But the issue with this approach is that our objects book copies will have same data apart from copy number and borrower. So the memory size of objects increases as a lot of redundant data is stored. More resources are being consumed.
-With flyweight pattern, apart from a general Book class, we create a BookCopy class and an flyweight class BookFactory. The BookFactory has just one copy of each book and  BookCopy creates a copy of same book and also implements borrow_book and return_book since a copy of book can be borrowed not the book itself. The Book class stores common details about the book.
+With flyweight pattern, apart from a general Book class, we create a BookCopy class and an flyweight class BookFactory. The BookFactory has just one copy of each book and BookCopy creates a copy of same book and also implements borrow_book and return_book since a copy of book can be borrowed not the book itself. The Book class stores common details about the book.
 
 ```python
 class Book:
@@ -859,25 +892,28 @@ book_instance_2 = BookFactory.get_book('Dive Into Design Patterns', 'Alexander S
 
 book_copy1 = BookCopy(book_instance_1, 'Copy 1')
 book_copy2 = BookCopy(book_instance_2, 'Copy 2')
-book_copy1.borrow('John Doe') # 
+book_copy1.borrow('John Doe') #
 book_copy1.borrow('Peter')
 book_copy1.return_book()
 ```
+
 Output:
+
 ```bash
 New book instance created Title: Dive Into Design Patterns, Author: Alexander Shvets, ISBN: 00001
 Book ->  Title: Dive Into Design Patterns, Author: Alexander Shvets, ISBN: 00001, Copy ID: Copy 1, Borrowed By: John Doe
 Book ->  Title: Dive Into Design Patterns, Author: Alexander Shvets, ISBN: 00001, Copy ID: Copy 1, Borrowed By: Peter
 Book: Title: Dive Into Design Patterns, Author: Alexander Shvets, ISBN: 00001, Copy ID: Copy 1, Returned
-> 
+>
 ```
-So we have a single book instance and each copy of that book shares the same book instance and just adds fields specific to copies only. This reduces the resource consumption and thereby improves performance in large-scale systems. 
+
+So we have a single book instance and each copy of that book shares the same book instance and just adds fields specific to copies only. This reduces the resource consumption and thereby improves performance in large-scale systems.
 
 ### Proxy
 
 Proxy pattern provides an object that acts as a placeholder for another object used by a client to control access to it. It's often used when working with objects that are expensive to create or operate, or when additional actions are needed when accessing an object. A proxy receives client requests, does some work (access control, caching, etc.) before passing the request to a service object.
 
-Let's continue our last example of library but now we have a digital library where users read digitally. We can have a DigitalLibrary class with fetch book and then each time we fetch book when the user requests. The class will also check if the user is allowed to access this book. This approach can be inefficient and slow, especially for large files and repeated requests. 
+Let's continue our last example of library but now we have a digital library where users read digitally. We can have a DigitalLibrary class with fetch book and then each time we fetch book when the user requests. The class will also check if the user is allowed to access this book. This approach can be inefficient and slow, especially for large files and repeated requests.
 
 Using proxy, we can add a DigitalLibraryProxy class which acts as a placeholder for library and expose DigitalLibraryProxy to the client. The client will interact with this class only. In the DigitalLibraryProxy, we can add access control and caching in the DigitalLibraryProxy class to load books faster.
 
@@ -906,7 +942,7 @@ class LibraryProxy:
         print(f'{datetime.now()} - {user_id} Requested {doc_id}')
         if not self.has_access(user_id, doc_id):
             return f'Access Denied for user {user_id} to document {doc_id}'
-        
+
         doc = None
         if doc_id in self.cache:
             doc =  self.cache[doc_id]
@@ -914,7 +950,7 @@ class LibraryProxy:
         if not doc:
             doc = self.library.fetch_document(doc_id)
             self.cache[doc_id] = doc
-        
+
         print(f'{datetime.now()} -  Sent {doc_id} to {user_id}')
         return doc
 
@@ -923,7 +959,9 @@ print(proxy.fetch_document('user1', 'doc1'))
 print(proxy.fetch_document('user2', 'doc1'))
 print(proxy.fetch_document('user1', 'doc2'))
 ```
+
 Output
+
 ```bash
 2024-01-26 11:14:54.956682 - user1 Requested doc1
 Fetching document doc1 from storage
@@ -935,10 +973,12 @@ Content of Document 1
 2024-01-26 11:14:59.956984 - user1 Requested doc2
 Access Denied for user user1 to document doc2
 ```
+
 We can also easily extend the DigitalLibraryProxy to include other features without altering the underlying library system.
 
 Proxy pattern is used in a number of other ways:
-- **Virtual Proxy**: Used for lazy initialization of expensive objects. 
+
+- **Virtual Proxy**: Used for lazy initialization of expensive objects.
 - **Remote Proxy**: Represents an object located in a different address space.
 - **Smart Reference Proxy**: Adds additional actions when an object is accessed or referenced.
 - **Logging Proxy**: Keeps a log of operations performed on the proxied object.
@@ -947,9 +987,10 @@ Proxy pattern is used in a number of other ways:
 - **Complexity Hiding Proxy**: Hides the complexity and centralizes access to a complex system.
 
 ## Behavioral Patterns
-Behavioral patterns concentrate on interactions between objects, defining how they communicate and collaborate.  
 
-### Chain of Responsibility 
+Behavioral patterns concentrate on interactions between objects, defining how they communicate and collaborate.
+
+### Chain of Responsibility
 
 Chain of Responsibility pattern allows an object to pass a request along a chain of handlers. Instead of sending a request to a specific handler, a list of handlers is iterated over to process the request until one of them handles it.
 
@@ -1006,11 +1047,14 @@ response = request_interceptor.process_request({
 
 print(response)
 ```
+
 Output:
+
 ```bash
 Logging request: {'is_authenticated': True, 'data': 'Some valid data'}
 ('Request Processed', 200)
 ```
+
 The client code looks very clean now and we can add other interceptors as well without any changes to existing interceptors. Same concept is used in express where these interceptors are called `middlewares`.
 So chain of responsibility pattern enhances flexibility and decouples request senders from receivers, enabling dynamic request handling and simplifying maintenance. It aligns with the open-closed principle, allowing for easy addition or reordering of handlers without altering the core application logic, thus facilitating scalable and adaptable design structures.
 
@@ -1020,6 +1064,7 @@ Command Pattern turns a request into a stand-alone object that contains all info
 
 Consider working on an app that needs to fetch user data and posts from a social media API.
 We can create a SocialMediaClient class with methods for fetching user data and user posts.
+
 ```python
 class SocialMediaClient:
     def fetch_user_data(self, user_id):
@@ -1037,9 +1082,11 @@ print(user_data)
 user_posts = client.fetch_user_posts('123')
 print(user_posts)
 ```
+
 This seems pretty much straightforward and easily implementable but the SocialMediaClient class is tightly coupled with the specific requests it makes. Any change in the API endpoints or the request logic requires changes. Also it's challenging to add new kinds of requests or modify existing ones without altering the SocialMediaClient class.
 
-With Command Pattern, we can create commands for each api call. So we create a Command interface and FetchUserDataCommand, FetchUserPostsCommand implementing command. The SocialMediaClient will just call execute method of the command without knowing what command it is and what does it do. 
+With Command Pattern, we can create commands for each api call. So we create a Command interface and FetchUserDataCommand, FetchUserPostsCommand implementing command. The SocialMediaClient will just call execute method of the command without knowing what command it is and what does it do.
+
 ```python
 # Command Interface
 class Command:
@@ -1075,6 +1122,7 @@ user_posts_command = FetchUserPostsCommand('123')
 print(client.perform_request(user_data_command)) #{'name': 'ABC', 'age': '19'}
 print(client.perform_request(user_posts_command)) #['post1', 'post2']
 ```
+
 Now we can easily add more commands without modifying the existing code.
 So command pattern is a versatile with broad applications in software development. It's ability to encapsulate requests as objects offers significant advantages in terms of flexibility, extensibility, and separation of concerns. By using the Command Pattern, developers can create systems that are easier to extend and maintain, while also providing rich features like undo/redo mechanisms, command queuing, and macro recording.
 
@@ -1085,6 +1133,7 @@ consider a scenario where you are building a social media application that aggre
 Let's continue our previous example of social media. We need to fetch posts from various social media channels and show it on our feed. But the issue is that all return the posts in a different data structure. So, for each type of data structure, we need to iterate in a specific way that works for that structure and tomorrow if they change the data structure, we need to update our code to iterate accordingly. This leads to a tightly coupled code and inconsistent iteration logic across different data structures make the codebase messier.
 
 With iterator pattern, we create an Iterator interface and then it is implemented by our actual iterators like ListIterator and ObjectListIterator. These iterators implement their methods for iteration.
+
 ```python
 from collections.abc import Iterable, Iterator
 class Iterator(Iterator):
@@ -1135,7 +1184,9 @@ for iterator in [list_iterator, object_list_iterator]:
     for feed in iterator:
         print(feed)
 ```
+
 Output:
+
 ```bash
 List Feed 1
 List Feed 2
@@ -1144,7 +1195,9 @@ Object Feed 1
 Object Feed 2
 Object Feed 3
 ```
+
 Now if we need to fetch posts from a new social media that sends posts as a string, all we need to do is add a StringIterator class that implements Iterator and then use it in the client code.
+
 ```python
 class StringIterator(Iterator):
     def __init__(self, collection):
@@ -1167,7 +1220,9 @@ for iterator in [list_iterator, object_list_iterator, string_iterator]:
     for feed in iterator:
         print(feed)
 ```
+
 Output:
+
 ```bash
 List Feed 1
 List Feed 2
@@ -1179,6 +1234,7 @@ String Feed 1
 String Feed 2
 String Feed 3
 ```
+
 This way we can iterate over new datatype without changes to the existing code.
 So iterator pattern makes the code clearer, easier to reuse, and more flexible. It organizes the way we move through different types of data by using special iterator classes, making it simpler to work with and change the code when needed.
 
@@ -1210,6 +1266,7 @@ bob = User('Bob', chat_room)
 alice.send_message('Hi, Bob!')
 bob.send_message('Hello, Alice!')
 ```
+
 This reduces the dependencies between the users, leading to a more decoupled system that's easier to manage and extend.
 
 So, the mediator pattern centralizes complex communications between objects into a single mediator, significantly reducing system complexity and enhancing maintainability by promoting loose coupling. This design pattern is crucial for developing software systems that are both scalable and flexible.
@@ -1256,6 +1313,7 @@ game.move_character('Hero', (10, 10))  # Move Hero to position (10, 10)
 game.move_character('Hero', (20, 20))  # Move Hero to position (20, 20)
 game.undo_move()  # Undo last move
 ```
+
 By encapsulating the state saving and restoring logic within the Memento and Originator(Game here), the pattern decouples the state management from the rest of the application, leading to a cleaner, more maintainable design.
 
 ### Observer
@@ -1264,8 +1322,7 @@ Observer pattern allows an object, known as the subject, to maintain a list of i
 
 Consider working on a simple drawing app where users can create various shapes and change their properties, like color and size, through a user interface. The application includes a properties panel that displays the current properties of the selected shape, such as its color, size, and position. We can have a Shape and a PropertiesPanel class that interact with each other to update the properties of the selected shape. Each time the color or size of shape changes, the respective methods of shape class notify it to the property panel. But now each shape instance has to maintain a reference to the PropertiesPanel, creating a dependency that makes the system less flexible and harder to maintain. Moreover if we want to add a new shape, we'll have to modify both the Shape class and the PropertiesPanel class.
 
-Using observer pattern, we add two new interfaces - Subject and Observer. The Shape class implements the subject and the PropertiesPanel implements the observer class. 
-
+Using observer pattern, we add two new interfaces - Subject and Observer. The Shape class implements the subject and the PropertiesPanel implements the observer class.
 
 The Shape class is the subject and the ShapeObserver class is the observer. The Shape class maintains a list of observers and notifies them of any changes in its state.
 
@@ -1331,6 +1388,7 @@ State pattern allows an object to change its behavior when its internal state ch
 Imagine working on a media player with operations like play, stop, and pause. A simple implementation of these operations might involve extensive if-else or switch statements to handle behavior specific to the current state of the player. This approach leads to complex, tightly coupled code filled with conditional statements, making it difficult to maintain, extend, and prone to bugs when changing states or behaviors.
 
 With state pattern, we define a State interface that defines the common behavior for all states. Then we define classes for different states that implement the state interface. Now we have only those methods available that are relevant to the current state.
+
 ```python
 class State:
     def play(self, player):
@@ -1387,6 +1445,7 @@ player.play()
 player.pause()
 player.stop()
 ```
+
 Each state is now encapsulated in its own class, greatly simplifying the MediaPlayer class and making the system more extensible and easier to maintain. Adding a new state or changing the behavior of an existing state involves modifying or adding a single class, without touching the core logic of the media player.
 
 So, with state pattern, the system becomes more modular, easier to extend, and simpler to maintain, as state-specific behavior is created within state classes rather than being spread across the system.
@@ -1430,11 +1489,14 @@ pro_customer_checkout = Checkout(ProCustomerDiscount(), 100)
 print(f'Final amount for new customer: {new_customer_checkout.calculate_final_amount()}')
 print(f'Final amount for Pro customer: {pro_customer_checkout.calculate_final_amount()}')
 ```
+
 Output:
+
 ```bash
 Final amount for new customer: 90.0
 Final amount for VIP customer: 80.0
 ```
+
 Now, the checkout class is now decoupled from the specific discount calculations. Each discount strategy is encapsulated in its own class, adhering to the DiscountStrategy interface. We can now add a new discount type simply by creating a new class that implements the DiscountStrategy interface, without modifying existing code.
 
 ### Template Method
@@ -1444,6 +1506,7 @@ The Template Method defines the program skeleton of an algorithm in an superclas
 Consider working on an app where we need to send various types of mails to users like welcome mail, notification mail, etc. One simple approach will be to create classes of each mail type and then use them as and when needed. But there can be lot of similarities between these like header, footer etc leading to code duplication and increased maintenance effort, making the application harder to scale and adapt to changes.
 
 Using Template pattern, we can create an EmailTemplate class with static methods like send_email, generate_header, generate_footer etc. and then create concrete classes like WelcomeMail, NotificationEmail, etc. that extend the EmailTemplate class and override the generate_body method.
+
 ```python
 class EmailTemplate:
     def send_email(self, name):
@@ -1472,12 +1535,15 @@ class NotificationEmail(EmailTemplate):
 welcome_email = WelcomeEmail()
 welcome_email.send_email('JAN')
 ```
+
 Output:
+
 ```bash
 Sending Email: Header Content
 Hello JAN, thank you for joining us!
 Footer Content
 ```
+
 Now even if the footer or header changes, we don't need to maintain it across all the classes. Even if we add new types of mails, we just need to add a class for that and we are good to go.
 
 So, template pattern promotes code reuse and reduces redundancy by encapsulating what is common across different implementations, while its flexibility allows for customization of specific steps without altering the structure. This approach simplifies maintenance, improves scalability, and ensures consistency in behavior, making it a powerful tool for designing adaptable and efficient software systems.
@@ -1545,17 +1611,21 @@ class CarRepairVisitor(CarPartVisitor):
     def visitBody(self, body):
         print('Repairing body.')
 ```
+
 Visitor pattern by externalizing operations into visitor classes, allows easy extension without modifying existing car part classes, thus preventing code duplication and adhering to the Open-Closed Principle.
 
 So, visitor pattern allows extending functionality in complex object structures without altering the objects themselves. It decouples operations from the object structure, and enables adding new features with minimal disruption, reducing code duplication and enhancing maintainability. This pattern is particularly useful in scenarios requiring frequent addition of new operations across a set of interrelated classes.
 
 ## Further Reading
+
 Want to dive deeper into design patterns? Here are some great resources to help you on your journey. These books and websites break down complex ideas into easy-to-understand lessons that can boost your coding skills.
 
 ### Books
+
 - "Head First Design Patterns" by Eric Freeman and others
 - "Design Patterns: Elements of Reusable Object-Oriented Software" by Erich Gamma and others
 
 ### Online Resources
+
 - [Refactoring Guru](https://refactoring.guru/design-patterns).
 - [Source Making](https://sourcemaking.com/design_patterns)

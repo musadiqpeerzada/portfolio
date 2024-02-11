@@ -2,8 +2,7 @@
 title: Solid Principles
 date: 2024-02-07
 tags:
-  - clean
-  - code
+  - clean code
   - solid principles
 draft: false
 summary: Embracing the SOLID Principles in Software Engineering.

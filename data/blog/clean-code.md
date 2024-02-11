@@ -2,8 +2,7 @@
 title: Clean Code
 date: '2024-02-10'
 tags:
-  - clean
-  - code
+  - clean code
 draft: true
 summary: Takeaway from Clean Code by Uncle Bob.
 images:
@@ -192,7 +191,7 @@ Naming functions thoughtfully is crucial for writing clean and understandable co
 - **Spend Time on Naming:** Don't rush naming, take time to find the most descriptive name. Try different names and see how they fit within the context of code.
 - **Consistency:** Use consistent naming conventions across code. This helps in understanding the code's flow and its various components.
 
-### Function Arguments Simplified\*\*
+### Function Arguments Simplified
 
 Function arguments can add complexity to the code. Here are some guidelines to manage them:
 
@@ -240,3 +239,113 @@ While structured programming principles, such as having a single entry and exit 
 ### How Do You Write Functions Like This?
 
 Creating effective functions is similar to writing in general: start with a draft and iteratively refine it for clarity, conciseness, and effectiveness. This process involves not just mechanical changes but also thoughtful consideration of how each part of the code contributes to the whole, ensuring adherence to principles like DRY, and making the code express its purpose clearly.
+
+## Chapter 4: Comments
+
+**"Don't comment bad code—rewrite it"** ~ Brian W. Kernighan and P. J. Plaugher.
+Comments can indeed provide clarity or explain complex logic, but they're not inherently beneficial and can sometimes do more harm than good. Their value depends on context and accuracy. If the code could perfectly express the programmer's intent, comments might be unnecessary. Comments compensate for our inability to express something clearly through code, which is often a shortcoming on our end.
+The issue with comments is that:
+
+- Can become outdated as the code evolves, leading to misinformation.
+- Require maintenance, yet frequently neglected during code updates, leading to discrepancies between the code and its comments.
+- Are not reliable source of truth about what code exactly does.
+  Hence, we must aim to write code that's self-explanatory, reducing the reliance on comments to convey intent or logic. When writing a comment seems the only option, consider if there's a way to refactor the code to make the comment unnecessary.
+
+### Comments Do Not Make Up for Bad Code
+
+No comments are better that misleading comments. Code that expresses itself does not need comments. It is better to spend time on cleaning the mess than on writing comments to explain the it.
+
+### Explain Yourself in Code
+
+```python
+# Check to see if the number is even and divisible by 5
+if (number % 2 == 0) & (number % 5 == 0)
+```
+
+```python
+if (is_even_and_divisible_by_5(number))
+```
+
+The second snippet expresses itself and does not need any comments.
+
+### Good Comments
+
+Some comments can't be avoided. The only truly good comment is the comment we could not find a way to write in code.
+
+#### Legal Comments
+
+Certain comments for legal reasons like copyright and authorship can't be expressed in code and are necessary and reasonable to put into a comment.
+
+#### Explanation of Intent
+
+Sometimes a comment may give useful information about the implementation and give the intent behind a decision.
+
+#### Clarification
+
+Sometimes it is helpful to translate the meaning of some obscure argument or return value into something that's readable. Although it is better to find a way to make that argument or return value clear in its own right; but when its part of the standard library, or in code that you cannot alter, then a helpful clarifying comment can be useful.
+
+#### Warning of consequences
+
+Sometimes it is useful to warn about certain consequences.
+
+```python
+# takes time to run
+def time_consuming_task():
+    time.sleep(10000000)
+```
+
+### TODO Comments
+
+It may sometimes be reasonable to leave “To do” notes in the form of #TODO comments. TODOs are tasks that the we think should be done, but for some reason can’t do at the moment. It might be a reminder to delete a deprecated feature or a request for someone else to look at a problem. Whatever else a TODO might be, it is not an excuse to leave bad code in the system and we should regularly scan the code and try to remove the ones we can.
+
+### Bad Comments
+
+Most comments are bad. They are excuses for poor code or justifications for not so good decisions.
+
+#### Mumbling
+
+When adding a comment, make sure it's clear and adds real value. For example, instead of adding a comment "Handle the exception" just handle the exception. This way, the code effectively expresses itself without causing confusion.
+
+#### Redundant Comments
+
+Redundant comments are the comments for code that already clearly communicates, adding no additional value or insight. Effective comments should offer context, explanations, or clarifications that are not immediately obvious from the code itself.
+
+#### Misleading comments
+
+Sometimes, with all the best intentions, we make a statement in comments that isn't precise enough to be accurate. Our peers ought to trust the comment and the downfall of everything going wrong begins.
+
+#### Mandated Comments
+
+Having comments for each function like return value and arguments are not necessary if we name the function and the arguments in a prompt and accurate manner. These comments need unnecessary overhead to manage.
+
+#### Journal Comments
+
+Version Control Systems (like git, svn) serve their purpose very well, hence we don't need to add journal comments of who did what and what changed when.
+
+#### Noise Comments
+
+Comments for code that is clearly obvious are nothing but redundant and noise. Comments like these don't serve purpose and should be removed when encountered.
+
+#### Position Markers
+
+Comments like certain piece of code starts from here or for closing braces to indicate which block ends here don't serve any purpose. Modern IDEs are good enough to help with that. Moreover if the function or operation is too long to loose track of blocks, one should consider breaking down the function.
+
+#### Commented-Out Code
+
+Commented out code gathers like mud over the time at the bottom of dusty water. We comment it, others feel it is there for a reason and hence don't remove it and it keep bloating over time.
+
+#### Nonlocal Information
+
+If adding comment is unavoidable, it should be appear near the code it describes. Adding system wide information in the context of a local comment can lie hidden and undiscovered.
+
+#### Too Much Information
+
+If adding context is necessary to understand the code, add a reference like a link or some identifier (like RFC number) not the full content of it. Don't put interesting historical discussions or irrelevant descriptions of details into your comments.
+
+#### Inobvious Connection
+
+The connection between a comment and the code it describes should be obvious. The reader should easily understand why the comment was added to the code and what does it refer to in the code.
+
+#### Function Headers
+
+Short functions don’t need much description. A well-chosen name for a small function that does one thing is usually better than a comment header.
