@@ -387,3 +387,31 @@ Effective horizontal formatting in code focuses on line length, whitespace usage
 ### Team Rules
 
 In a team, it's crucial for all members to follow common coding style to ensure the codebase appears as if written by a single entity, not a collection of individuals. This enhances readability, maintainability, and overall quality of the software. Establishing and following team-agreed formatting rules, possibly codified into an IDE's formatter, helps maintain consistency across the project. While individual preferences may vary, the collective decision on coding style takes precedence in a team environment, contributing to a professional and coherent codebase.
+
+## Chapter 6: Objects and Data Structures
+
+### Data Abstraction
+
+Abstraction is not just putting a layer of functions between the variables. Abstraction is about hiding implementation. A class should not simply push its variables out through getters and setters. Rather it exposes abstract interfaces that allow its users to manipulate the essence of the data, without having to know its implementation.
+
+### Data/Object Anti-Symmetry
+
+- **Objects** encapsulate data and the operations that can be performed on that data. They hide their internal data and expose functionality. This encapsulation allows for more flexibility in changing the implementation without affecting the code that uses the object.
+- **Data Structures**, on the other hand, expose their data and have little to no meaningful functions. This makes it easier to add new functions but harder to add new data structures without modifying existing functions.
+  This distinction is crucial in deciding whether to use an object-oriented or a procedural approach.
+
+#### Law of Demeter
+
+The Law of Demeter is a design guideline that suggests an object should only call methods on:
+
+- Itself
+- Objects passed to it as a parameter
+- Objects it creates
+- Its direct component objects
+
+This law aims to reduce the dependencies between components, leading to a more modular and maintainable codebase.
+
+#### Data Transfer Objects
+
+These are simple containers for data to be transferred between software components or layers, without any business logic. They should be used judiciously, as overuse can lead to anemic domain models that lack encapsulated behavior.
+DTOs are very useful structures, especially when communicating with databases or parsing messages from sockets, and so on. They often become the first in a series of translation stages that convert raw data in a database into objects in the application code.
