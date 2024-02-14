@@ -400,7 +400,7 @@ Abstraction is not just putting a layer of functions between the variables. Abst
 - **Data Structures**, on the other hand, expose their data and have little to no meaningful functions. This makes it easier to add new functions but harder to add new data structures without modifying existing functions.
   This distinction is crucial in deciding whether to use an object-oriented or a procedural approach.
 
-#### Law of Demeter
+### Law of Demeter
 
 The Law of Demeter is a design guideline that suggests an object should only call methods on:
 
@@ -411,7 +411,43 @@ The Law of Demeter is a design guideline that suggests an object should only cal
 
 This law aims to reduce the dependencies between components, leading to a more modular and maintainable codebase.
 
-#### Data Transfer Objects
+### Data Transfer Objects
 
 These are simple containers for data to be transferred between software components or layers, without any business logic. They should be used judiciously, as overuse can lead to anemic domain models that lack encapsulated behavior.
 DTOs are very useful structures, especially when communicating with databases or parsing messages from sockets, and so on. They often become the first in a series of translation stages that convert raw data in a database into objects in the application code.
+
+## Chapter 7: Error Handling
+
+Error handling is crucial for maintaining clean, robust, and readable code. Proper error management ensures that your program can gracefully handle unexpected situations without compromising the main logic's clarity.
+
+### Use Exceptions Rather Than Return Codes
+
+Using exceptions rather than return codes for error handling can make your code cleaner and more readable. It separates error handling from the main logic.
+
+### Write Your Try-Catch-Finally Statement First
+
+Start with a try-catch-finally block when writing code that might throw exceptions. This approach helps in defining the error handling scope from the beginning, making your code more robust and predictable.
+
+### Use Unchecked Exceptions
+
+The consensus has shifted towards using unchecked exceptions. Checked exceptions can lead to verbose code and tight coupling, as they need to be declared or handled at every level of the call stack.
+
+### Provide Context with Exceptions
+
+Always include relevant context information with exceptions to help diagnose issues. This might include the operation that failed and the reasons for failure.
+
+### Don't Return Null
+
+Returning null from methods can lead to null pointer exceptions and generally requires additional null checks by the callers. Return empty collections or use the Optional class (in languages that support it) instead.
+
+### Don't Pass Null
+
+Avoid passing null as arguments to methods. This practice can lead to unexpected errors and complicates error handling. Consider using default objects or optional parameters instead.
+
+### Define Exception Classes Based on Caller's Needs
+
+Design your exception hierarchy and classes based on what is useful for the caller, not just based on where the error occurred or its type.
+
+### Define the Normal Flow
+
+Use patterns like SPECIAL CASE to handle exceptional cases without cluttering the main logic with error handling. This makes the code's normal path clear and straightforward.
