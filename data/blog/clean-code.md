@@ -451,3 +451,28 @@ Design your exception hierarchy and classes based on what is useful for the call
 ### Define the Normal Flow
 
 Use patterns like SPECIAL CASE to handle exceptional cases without cluttering the main logic with error handling. This makes the code's normal path clear and straightforward.
+
+## Chapter 8: Boundaries
+
+We don't always control all the software in our systems. We often use third-party packages or libraries. We even depend on our peers for certain components. We need to cleanly integrate this foreign code with our own.
+
+### Using Third-Party Code
+
+When integrating third-party code, it's crucial to manage its influence on our code. Directly using external APIs like can lead to unnecessary complexity and tight coupling with the third-party code.
+Encapsulating external APIs inside our own classes allows us to control their exposure and tailor their functionality for our specific needs. For instance, creating a domain-specific wrapper like a `Sensors` class can simplify the usage of these APIs by only exposing necessary functionalities and hiding implementation details. This approach not only enhances type safety with the prudent use of generics but also ensures that our rules and constraints are upheld within these wrappers. Moreover, by confining third-party code to specific areas, we minimize the ripple effect of changes, making application more resilient to alterations in external libraries. This strategy leads to a cleaner, more maintainable codebase that elegantly integrates third-party functionalities without being tightly coupled to them.
+
+### Exploring and Learning Boundaries
+
+When using third-party code, it's beneficial to write learning tests to understand its behavior. It's a good idea write some test for learn and understand how to use a third-party code. Newkirk calls such tests learning tests. These tests help us explore the API in isolation, ensuring we know how to configure and use it correctly before integrating it with your application. This approach reduces trial-and-error coding, clarifies the third-party code's functionality, and keeps your main codebase clean and focused on business logic.
+
+### Learning Tests Are Better Than Free
+
+Learning tests for third-party APIs are essentially an investment with no net cost, as they are part of the necessary learning process. They offer precise insights into the API, enhancing understanding without additional expense. Their value extends beyond initial learning; they serve as a safeguard for future updates to the third-party code, quickly highlighting any changes or incompatibilities. This proactive approach ensures that your application remains robust against external changes, making learning tests not just cost-effective but beneficial for maintaining and updating software dependencies.
+
+### Using Code That Does Not Yet Exist
+
+When facing an undefined external API while developing a software component, it's strategic to design own interface based on our current understanding and needs. This approach not only prevents our progress from being blocked but also ensures the code remains focused and expressive. By encapsulating the interaction with the future API through an adapter, we create a single point of modification, maintaining clean code and easing future integration. This method also facilitates testing by providing clear boundaries within the system, allowing for the use of mock implementations and ensuring your usage of the eventual API remains correct.
+
+### Clean Boundaries
+
+Effectively managing software boundaries, especially with third-party code, is vital for maintaining a flexible and maintainable system. Clear separation and thorough testing are key to setting expectations. Minimizing direct dependencies on external code helps avoid being constrained by it. Using patterns like wrappers or adapters to interface with third-party libraries ensures our code remains clear, consistent, and adaptable to changes.
