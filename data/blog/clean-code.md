@@ -476,3 +476,33 @@ When facing an undefined external API while developing a software component, it'
 ### Clean Boundaries
 
 Effectively managing software boundaries, especially with third-party code, is vital for maintaining a flexible and maintainable system. Clear separation and thorough testing are key to setting expectations. Minimizing direct dependencies on external code helps avoid being constrained by it. Using patterns like wrappers or adapters to interface with third-party libraries ensures our code remains clear, consistent, and adaptable to changes.
+
+## Chapter 9: Unit Tests
+
+The evolution of testing practices in software development has seen significant progress, particularly with the advent of Test Driven Development (TDD). In the past, unit tests were often an afterthought, created as temporary checks to ensure code functionality. Today, the approach is much more disciplined, with TDD guiding us to write tests before the actual code, ensuring thorough coverage and integration of tests with the production code.
+
+### The Three Laws of TDD
+
+- **First Law:** Write a failing unit test before any production code.
+- **Second Law:** Write just enough of a unit test to fail.
+- **Third Law:** writing only the necessary production code to pass the failing test.
+
+### Keeping Tests Clean
+
+Maintaining clean tests is crucial for the sustainability of your test suite. Clean tests are readable, understandable, and maintainable. Here are some guidelines to ensure your tests remain clean:
+
+### One Assert Per Test
+
+Keeping a single assert per test simplifies the test and makes it clear what is being tested. When a test fails, you know exactly what went wrong without sifting through multiple assertions.
+
+### Single Concept Per Test
+
+Each test should focus on a single concept. This approach not only keeps your tests concise but also makes it easier to identify and isolate issues when a test fails.
+
+#### F.I.R.S.T Principles:
+
+- **Fast**: Tests should run quickly to encourage developers to run them frequently.
+- **Independent**: Tests should not depend on each other. Each test should be able to run alone and in any order.
+- **Repeatable**: Tests should produce the same results regardless of the environment they are run in.
+- **Self-Validating**: Tests should clearly show whether they passed or failed, eliminating the need for manual interpretation of results.
+- **Timely**: Tests should be written just before the production code they test. Writing tests after the fact can lead to harder-to-test code and less thorough testing.
