@@ -418,15 +418,15 @@ DTOs are very useful structures, especially when communicating with databases or
 
 ## Chapter 7: Error Handling
 
-Error handling is crucial for maintaining clean, robust, and readable code. Proper error management ensures that your program can gracefully handle unexpected situations without compromising the main logic's clarity.
+Error handling is crucial for maintaining clean, robust, and readable code. Proper error management ensures that the code can gracefully handle unexpected situations without compromising the clarity of main logic.
 
 ### Use Exceptions Rather Than Return Codes
 
-Using exceptions rather than return codes for error handling can make your code cleaner and more readable. It separates error handling from the main logic.
+Using exceptions rather than return codes for error handling can make the code cleaner and more readable. It separates error handling from the main logic.
 
 ### Write Your Try-Catch-Finally Statement First
 
-Start with a try-catch-finally block when writing code that might throw exceptions. This approach helps in defining the error handling scope from the beginning, making your code more robust and predictable.
+Start with a try-catch-finally block when writing code that might throw exceptions. This approach helps in defining the error handling scope from the beginning, making code more robust and predictable.
 
 ### Use Unchecked Exceptions
 
@@ -446,7 +446,7 @@ Avoid passing null as arguments to methods. This practice can lead to unexpected
 
 ### Define Exception Classes Based on Caller's Needs
 
-Design your exception hierarchy and classes based on what is useful for the caller, not just based on where the error occurred or its type.
+Design exception hierarchy and classes based on what is useful for the caller, not just based on where the error occurred or its type.
 
 ### Define the Normal Flow
 
@@ -463,15 +463,15 @@ Encapsulating external APIs inside our own classes allows us to control their ex
 
 ### Exploring and Learning Boundaries
 
-When using third-party code, it's beneficial to write learning tests to understand its behavior. It's a good idea write some test for learn and understand how to use a third-party code. Newkirk calls such tests learning tests. These tests help us explore the API in isolation, ensuring we know how to configure and use it correctly before integrating it with your application. This approach reduces trial-and-error coding, clarifies the third-party code's functionality, and keeps your main codebase clean and focused on business logic.
+When using third-party code, it's beneficial to write learning tests to understand its behavior. It's a good idea write some test for learn and understand how to use a third-party code. Newkirk calls such tests learning tests. These tests help us explore the API in isolation, ensuring we know how to configure and use it correctly before integrating it with the application. This approach reduces trial-and-error coding, clarifies the third-party code's functionality, and keeps the main codebase clean and focused on business logic.
 
 ### Learning Tests Are Better Than Free
 
-Learning tests for third-party APIs are essentially an investment with no net cost, as they are part of the necessary learning process. They offer precise insights into the API, enhancing understanding without additional expense. Their value extends beyond initial learning; they serve as a safeguard for future updates to the third-party code, quickly highlighting any changes or incompatibilities. This proactive approach ensures that your application remains robust against external changes, making learning tests not just cost-effective but beneficial for maintaining and updating software dependencies.
+Learning tests for third-party APIs are essentially an investment with no net cost, as they are part of the necessary learning process. They offer precise insights into the API, enhancing understanding without additional expense. Their value extends beyond initial learning; they serve as a safeguard for future updates to the third-party code, quickly highlighting any changes or incompatibilities. This proactive approach ensures that the application remains robust against external changes, making learning tests not just cost-effective but beneficial for maintaining and updating software dependencies.
 
 ### Using Code That Does Not Yet Exist
 
-When facing an undefined external API while developing a software component, it's strategic to design own interface based on our current understanding and needs. This approach not only prevents our progress from being blocked but also ensures the code remains focused and expressive. By encapsulating the interaction with the future API through an adapter, we create a single point of modification, maintaining clean code and easing future integration. This method also facilitates testing by providing clear boundaries within the system, allowing for the use of mock implementations and ensuring your usage of the eventual API remains correct.
+When facing an undefined external API while developing a software component, it's strategic to design own interface based on our current understanding and needs. This approach not only prevents our progress from being blocked but also ensures the code remains focused and expressive. By encapsulating the interaction with the future API through an adapter, we create a single point of modification, maintaining clean code and easing future integration. This method also facilitates testing by providing clear boundaries within the system, allowing for the use of mock implementations and ensuring the usage of the eventual API remains correct.
 
 ### Clean Boundaries
 
@@ -489,7 +489,7 @@ The evolution of testing practices in software development has seen significant 
 
 ### Keeping Tests Clean
 
-Maintaining clean tests is crucial for the sustainability of your test suite. Clean tests are readable, understandable, and maintainable. Here are some guidelines to ensure your tests remain clean:
+Maintaining clean tests is crucial for the sustainability of the test suite. Clean tests are readable, understandable, and maintainable. Here are some guidelines to ensure tests remain clean:
 
 ### One Assert Per Test
 
@@ -497,7 +497,7 @@ Keeping a single assert per test simplifies the test and makes it clear what is 
 
 ### Single Concept Per Test
 
-Each test should focus on a single concept. This approach not only keeps your tests concise but also makes it easier to identify and isolate issues when a test fails.
+Each test should focus on a single concept. This approach not only keeps the tests concise but also makes it easier to identify and isolate issues when a test fails.
 
 #### F.I.R.S.T Principles:
 
