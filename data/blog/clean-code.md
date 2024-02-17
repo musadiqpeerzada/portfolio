@@ -506,3 +506,26 @@ Each test should focus on a single concept. This approach not only keeps your te
 - **Repeatable**: Tests should produce the same results regardless of the environment they are run in.
 - **Self-Validating**: Tests should clearly show whether they passed or failed, eliminating the need for manual interpretation of results.
 - **Timely**: Tests should be written just before the production code they test. Writing tests after the fact can lead to harder-to-test code and less thorough testing.
+
+## Chapter 10: Classes
+
+### Class Organization
+
+In a class, start with public static constants, followed by private static variables, and then private instance variables. Public variables are generally discouraged. After variables, list public functions, with private helper functions immediately after their corresponding public function, adhering to a logical flow. While encapsulation is important, flexibility for testing might require protected or package-scope access to certain elements, though this should be considered a last resort.
+
+### Classes Should Be Small
+
+Classes should prioritize being small and focused, with their size determined not by line count but by the number of responsibilities they have. A class like SuperDashboard, which has numerous public methods, can be considered overly large and potentially a "God class." Effective class naming and description should clearly reflect its single responsibility, without reliance on vague or broad terms. If a class name or its description uses conjunctions such as "and" or "but," it likely indicates multiple responsibilities, which contradicts the principle of having classes with a singular focus.
+
+### Single Responsibility Principle
+
+The Single Responsibility Principle (SRP) asserts that a class or module should have only one reason to change, emphasizing the importance of having a single responsibility. This principle guides class size and design, advocating for small, focused classes. SRP aids in creating better abstractions by encouraging the separation of concerns, leading to a system composed of many small, single-purpose classes. This approach facilitates understanding and managing complexity, ensuring each class addresses a specific part of the functionality and has a clear reason for change.
+
+### Cohesion
+
+Cohesion within classes is about ensuring that all methods and variables are closely related and serve a common purpose. High cohesion means that a class is focused on what it's supposed to be doing, with each method interacting with most or all of the class's variables. This concept often leads to many small, focused classes rather than fewer, larger ones, as the process of decomposing larger functions into smaller ones naturally reveals distinct responsibilities that can be encapsulated in separate classes. This approach not only makes the code more manageable but also enhances its maintainability and readability.
+
+### Organizing for Change
+
+Classes should be organized to accommodate change with minimal risk, adhering to principles like the Single Responsibility Principle (SRP) and the Open-Closed Principle (OCP). SRP suggests a class should have one reason to change, meaning it should fulfill a single responsibility. OCP states that classes should be open for extension but closed for modification, allowing new functionalities to be added without altering existing code. This approach minimizes the risk of introducing errors when the system evolves.
+To reduce dependencies on concrete implementations, which can lead to rigid and fragile systems, it's beneficial to rely on abstractions such as interfaces. This practice is in line with the Dependency Inversion Principle (DIP), which advocates for dependencies on abstractions rather than concrete classes. Such an organization not only makes the system more adaptable to change but also facilitates testing by allowing for easier substitution of implementations, for example, using stubs or mocks in tests instead of real dependencies.
