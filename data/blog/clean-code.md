@@ -529,3 +529,35 @@ Cohesion within classes is about ensuring that all methods and variables are clo
 
 Classes should be organized to accommodate change with minimal risk, adhering to principles like the Single Responsibility Principle (SRP) and the Open-Closed Principle (OCP). SRP suggests a class should have one reason to change, meaning it should fulfill a single responsibility. OCP states that classes should be open for extension but closed for modification, allowing new functionalities to be added without altering existing code. This approach minimizes the risk of introducing errors when the system evolves.
 To reduce dependencies on concrete implementations, which can lead to rigid and fragile systems, it's beneficial to rely on abstractions such as interfaces. This practice is in line with the Dependency Inversion Principle (DIP), which advocates for dependencies on abstractions rather than concrete classes. Such an organization not only makes the system more adaptable to change but also facilitates testing by allowing for easier substitution of implementations, for example, using stubs or mocks in tests instead of real dependencies.
+
+## Chapter 11: Systems
+
+“Complexity kills. It sucks the life out of developers, it makes products difficult to plan, build, and test.” ~Ray Ozzie, CTO, Microsoft Corporation
+
+### Separate Constructing a System from Using It
+
+Software systems benefit from separating the construction process from the runtime logic, allowing for cleaner organization and reduced risk during changes. This can be achieved through various design patterns and principles:
+
+- **Separation of Main**: The construction of objects and the wiring of dependencies are handled in the `main` function or modules called by `main`. The rest of the system operates under the assumption that all necessary objects are already constructed and connected, promoting a clear separation between construction and usage.
+- **Factories**: In scenarios where the application must control the creation of objects, the Abstract Factory pattern can be utilized. It allows the application to determine when objects are created while keeping the construction details separate from the application code, thus maintaining a clean separation.
+- **Dependency Injection(DI)**: It is an process for separating construction from use, applying the Inversion of Control (IoC) principle to dependency management. In DI, objects do not instantiate their dependencies; instead, dependencies are "injected" into them, typically by a DI container or framework. This approach further decouples the construction process from the application logic, enabling more flexible and manageable code.
+
+### Scaling Up
+
+Software systems, like cities, evolve over time from simple to complex structures. This growth necessitates a flexible design to accommodate changes without significant rework. Effective software design separates concerns, ensuring that the system's architecture can grow incrementally. This approach contrasts with rigid architectures which tightly coupled business logic to the application container, making testing difficult and hindered reuse and object-oriented principles. Addressing cross-cutting concerns, such as persistence and security, in a modular way is crucial. Aspect-Oriented Programming (AOP) offers a solution by allowing behavior modifications through declarative means, enhancing modularity and maintainability.
+
+### Test Drive the System Architecture
+
+Test-driving the system architecture involves developing it incrementally, just as you would with test-driven development (TDD) at the code level. Starting with a simple but well-decoupled architecture allows for rapid delivery of working features, with the flexibility to incorporate more sophisticated technologies as needed. This approach avoids the pitfalls of Big Design Up Front (BDUF) by allowing architecture to evolve in response to actual requirements and feedback, rather than speculation.
+
+### Optimize Decision Making
+
+In large systems or projects, decision-making should be decentralized and informed by the most current information. Postponing decisions until the last responsible moment allows for choices to be made with the fullest understanding, benefiting from the latest customer feedback and project insights. This approach reduces the risk of premature decisions based on incomplete information, leading to more effective and adaptable solutions.
+
+### Use Standards Wisely, When They Add Demonstrable Value
+
+While standards can facilitate interoperability, knowledge transfer, and component reuse, they should be adopted with caution. The allure of using a standard just because it is a standard can lead to unnecessary complexity if the standard is not well-aligned with the project's actual needs. It's crucial to evaluate whether a standard genuinely adds value to the project and to remain flexible in our architectural choices, ensuring they serve the project's goals and not just compliance with a standard.
+
+### Systems Need Domain-Specific Languages
+
+Domain-Specific Languages (DSLs) allow for expressing domain logic in a way that closely mirrors the domain experts' understanding, reducing the translation gap between domain concepts and their implementation. A well-crafted DSL can make the code more readable and maintainable by encapsulating complex logic in a form that is both accessible to domain experts and executable by the system. DSLs elevate the level of abstraction, allowing developers to focus on expressing business rules and policies directly, fostering clearer communication and more precise implementations of domain logic.
