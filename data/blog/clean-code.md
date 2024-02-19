@@ -493,7 +493,7 @@ Maintaining clean tests is crucial for the sustainability of the test suite. Cle
 
 ### One Assert Per Test
 
-Keeping a single assert per test simplifies the test and makes it clear what is being tested. When a test fails, you know exactly what went wrong without sifting through multiple assertions.
+Keeping a single assert per test simplifies the test and makes it clear what is being tested. When a test fails, we know exactly what went wrong without sifting through multiple assertions.
 
 ### Single Concept Per Test
 
@@ -548,7 +548,7 @@ Software systems, like cities, evolve over time from simple to complex structure
 
 ### Test Drive the System Architecture
 
-Test-driving the system architecture involves developing it incrementally, just as you would with test-driven development (TDD) at the code level. Starting with a simple but well-decoupled architecture allows for rapid delivery of working features, with the flexibility to incorporate more sophisticated technologies as needed. This approach avoids the pitfalls of Big Design Up Front (BDUF) by allowing architecture to evolve in response to actual requirements and feedback, rather than speculation.
+Test-driving the system architecture involves developing it incrementally, just as we would with test-driven development (TDD) at the code level. Starting with a simple but well-decoupled architecture allows for rapid delivery of working features, with the flexibility to incorporate more sophisticated technologies as needed. This approach avoids the pitfalls of Big Design Up Front (BDUF) by allowing architecture to evolve in response to actual requirements and feedback, rather than speculation.
 
 ### Optimize Decision Making
 
@@ -560,4 +560,35 @@ While standards can facilitate interoperability, knowledge transfer, and compone
 
 ### Systems Need Domain-Specific Languages
 
-Domain-Specific Languages (DSLs) allow for expressing domain logic in a way that closely mirrors the domain experts' understanding, reducing the translation gap between domain concepts and their implementation. A well-crafted DSL can make the code more readable and maintainable by encapsulating complex logic in a form that is both accessible to domain experts and executable by the system. DSLs elevate the level of abstraction, allowing developers to focus on expressing business rules and policies directly, fostering clearer communication and more precise implementations of domain logic.
+Domain-Specific Languages (DSLs) allow for expressing domain logic in a way that closely mirrors the domain experts' understanding, reducing the translation gap between domain concepts and their implementation. A well-crafted DSL can make the code more readable and maintainable by encapsulating complex logic in a form that is both accessible to domain experts and executable by the system. DSLs elevate the level of abstraction, allowing us to focus on expressing business rules and policies directly, fostering clearer communication and more precise implementations of domain logic.
+
+## Chapter 12: Emergence
+
+### Getting Clean via Emergent Design
+
+Emergent design is a concept where the design of a system evolves over time, becoming more refined and clear as development progresses. This approach relies on the iterative improvement of the codebase, guided by a set of principles that promote good design. Kent Beck's four rules of Simple Design provide a framework for achieving clean, well-designed software through emergent design:
+
+- Runs all the tests
+- Contains no duplication
+- Expresses the intent of the programmer
+- Minimizes the number of classes and methods
+
+### Simple Design Rule 1: Runs All the Tests
+
+A well-designed system must be testable and pass all tests consistently. Testability leads to better designs by encouraging smaller, single-purpose classes and reducing coupling. Continuous testing ensures the system functions as intended and adheres to object-oriented principles like low coupling and high cohesion.
+
+### Simple Design Rules 2–4: Refactoring
+
+With a comprehensive suite of tests, we can refactor code with confidence. Refactoring involves cleaning and improving the code without changing its functionality. This process is supported by tests that ensure changes do not introduce new bugs. Refactoring aims to increase cohesion, decrease coupling, separate concerns, modularize, simplify functions and classes, choose better names, eliminate duplication, ensure expressiveness, and minimize the number of classes and methods.
+
+### No Duplication
+
+Duplication is a significant enemy of good design, leading to extra work, risk, and complexity. It can be obvious, like identical lines of code, or less apparent, like similar code structures that can be refactored. Eliminating duplication, even in small amounts, can lead to cleaner, more maintainable code. This might involve extracting common functionalities into separate methods or classes, which can then be reused, thus reducing system complexity.
+
+### Expressiveness
+
+The code should clearly communicate its purpose to facilitate understanding and reduce maintenance costs. It is crucial because the majority of a software project's expenses come from long-term maintenance. Clear code minimizes misunderstandings and defects. Techniques for enhancing expressiveness include using meaningful names, keeping functions and classes small, and adopting standard nomenclature, such as design pattern names, to quickly convey design intentions. Well-crafted unit tests also serve as practical documentation, offering insights into a class's functionality.
+
+### Minimal Classes and Methods
+
+While maintaining simplicity and clarity, we should avoid over-fragmentation. The pursuit of small, single-purpose classes and methods leads to an inflated number of both. It criticizes dogmatic approaches, like mandating interfaces for every class or rigidly separating data from behavior, advocating instead for pragmatism. The overarching aim is to balance the need for concise, understandable code units with the goal of keeping the overall system compact. This principle is considered the least critical among the four discussed, with the priority being on maintaining a comprehensive test suite, eliminating code duplication, and ensuring code expressiveness.
