@@ -681,3 +681,88 @@ Diving into the internals of a testing framework, this chapter offers valuable i
 ## Chapter 16: The Art of Refactoring
 
 Focusing on the practical aspects of refactoring, this chapter highlights the importance of clean, well-structured code and the impact of systematic enhancements. It's a compelling self-study chapter for those looking to grasp the intricacies of refactoring as a critical skill in software development, transcending specific programming languages.
+
+## Chapter 17: Smells and Heuristics
+
+While clean code comes from discipline and not a list or value system, here is a starting point.
+
+### Comments
+
+- **C1: Inappropriate Information:** Comments should only contain relevant technical notes.
+- **C2: Obsolete Comment:** Comments must be current or removed.
+- **C3: Redundant Comment:** Avoid comments that state the obvious.
+- **C4: Poorly Written Comment:** Ensure comments are clear, concise, and correctly spelled.
+- **C5: Commented-Out Code:** Remove unused code fragments.
+
+### Environment
+
+- **E1: Build Requires More Than One Step:** Simplify the build process to a single command.
+- **E2: Tests Require More Than One Step:** Testing should be straightforward, ideally a single command or click.
+
+### Functions
+
+- **F1: Too Many Arguments:** Functions should ideally have fewer arguments, preferably three or less.
+- **F2: Output Arguments:** Use return values for outputs, not argument modification.
+- **F3: Flag Arguments:** Avoid using boolean flags as parameters.
+- **F4: Dead Function:** Remove functions that are not called anywhere in the codebase.
+
+### General
+
+- **G1: Multiple Languages in One Source File** - Minimize language use per file to reduce complexity.
+- **G2: Obvious Behavior is Unimplemented** - Ensure intuitive behaviors are coded to avoid surprises.
+- **G3: Incorrect Behavior at the Boundaries** - Test boundary conditions thoroughly for reliability.
+- **G4: Overridden Safeties** - Avoid disabling safety mechanisms to prevent errors.
+- **G5: Duplication** - Abstract or refactor duplicate code for efficiency.
+- **G6: Code at Wrong Level of Abstraction** - Align code with its abstraction level for clarity.
+- **G7: Base Classes Depending on Their Derivatives** - Base classes should be independent of derivatives for modularity.
+- **G8: Too Much Information** - Limit class or function responsibilities for simplicity.
+- **G9: Dead Code** - Remove unused code to clean the codebase.
+- **G10: Vertical Separation** - Keep related code close for readability.
+- **G11: Inconsistency** - Follow consistent coding practices to avoid confusion.
+- **G12: Clutter** - Eliminate unnecessary code to reduce clutter.
+- **G13: Artificial Coupling** - Avoid unrelated code coupling for maintainability.
+- **G14: Feature Envy** - Minimize cross-class interactions to maintain encapsulation.
+- **G15: Selector Arguments** - Avoid complex function signatures with unnecessary arguments.
+- **G16: Obscured Intent** - Code should be self-explanatory and clear.
+- **G17: Misplaced Responsibility** - Place code logically for coherence.
+- **G18: Inappropriate Static** - Use static methods judiciously to avoid misuse.
+- **G19: Use Explanatory Variables** - Enhance clarity in complex expressions with descriptive variables.
+- **G20: Function Names Should Say What They Do** - Ensure function names accurately describe their actions.
+- **G21: Understand the Algorithm** - Fully grasp algorithms used for effective coding.
+- **G22: Make Logical Dependencies Physical** - Clarify code dependencies for better maintainability.
+- **G23: Prefer Polymorphism to If/Else or Switch/Case** - Use polymorphism for cleaner code structure.
+- **G24: Follow Standard Conventions** - Adhere to coding conventions for uniformity.
+- **G25: Replace Magic Numbers with Named Constants** - Enhance readability with named constants.
+- **G26: Be Precise** - Cover all possible scenarios thoroughly in the code.
+- **G27: Structure Over Convention** - Prioritize structured design decisions over mere conventions.
+- **G28: Encapsulate Conditionals** - Simplify conditionals for better readability.
+- **G29: Avoid Negative Conditionals** - Use positive conditionals for easier understanding.
+- **G30: Functions Should Do One Thing** - Don't do multiple things in a function.
+- **G31: Hidden Temporal Couplings** - Make temporal dependencies between code elements explicit.
+- **G32: Don’t Be Arbitrary** - Ensure code structure has a clear rationale.
+- **G33: Encapsulate Boundary Conditions** - Avoid exposing boundary specifics in code.
+- **G34: Functions Should Descend Only One Level of Abstraction** - Maintain a single abstraction level within functions.
+- **G35: Keep Configurable Data at High Levels** - Place configurable constants at high levels for easy modification.
+- **G36: Avoid Transitive Navigation** - Limit module interactions to direct neighbors to reduce dependencies.
+
+### Names
+
+- **N1: Choose Descriptive Names:** Use names that clearly and accurately describe their purpose.
+- **N2: Choose Names at the Appropriate Level of Abstraction:** Ensure names are clear in various contexts, maintaining clarity across different programs.
+- **N3: Use Standard Nomenclature Where Possible:** Adopt common and standard names that reflect their function, making the code more intuitive.
+- **N4: Unambiguous Names:** Opt for clarity and expressiveness in naming, even if it requires longer names.
+- **N5: Use Long Names for Long Scopes:** The scope of a name should influence its length; broader scope implies a need for more descriptive names.
+- **N6: Avoid Encodings:** Steer clear of including type or scope information in names, which can make them harder to understand and maintain.
+- **N7: Names Should Describe Side-Effects:** Names should also hint at any side-effects they may cause, providing a fuller understanding of their impact.
+
+### Tests
+
+- **T1: Insufficient Tests:** Aim to cover all conceivable cases that could lead to failure, ensuring robustness.
+- **T2: Use a Coverage Tool:** Leverage tools within IDE to measure test coverage and identify untested parts of code.
+- **T3: Don’t Skip Trivial Tests:** Even simple tests can prevent future bugs, so include them in testing suite.
+- **T4: An Ignored Test is a Question about an Ambiguity:** Ignoring a test may indicate unclear or ambiguous code behavior that needs addressing.
+- **T5: Test Boundary Conditions:** Besides common paths, thoroughly test the edges of input/output ranges to catch potential edge case failures.
+- **T6: Exhaustively Test Near Bugs:** Finding one bug may indicate more nearby; examine surrounding code for additional issues.
+- **T7: Patterns of Failure Are Revealing:** Organized testing can reveal failure patterns, helping diagnose underlying problems.
+- **T8: Test Coverage Patterns Can Be Revealing:** Coverage data can highlight neglected areas of the code, guiding further testing efforts.
+- **T9: Tests Should Be Fast:** Quick tests are run more frequently, providing faster feedback and aiding continuous development.
