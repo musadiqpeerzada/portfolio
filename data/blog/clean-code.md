@@ -1,9 +1,9 @@
 ---
 title: Clean Code
-date: '2024-02-10'
+date: '2024-02-23'
 tags:
   - clean code
-draft: true
+draft: false
 summary: Takeaway from Clean Code by Uncle Bob.
 images:
   - /static/blogs/clean-code.png
