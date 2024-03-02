@@ -18,3 +18,17 @@ Consider working on finance app where users can manage their investments. We get
 Domain-Driven Design (DDD) is an approach in software development that emphasizes on the importance of understanding and modeling the domain of the project as a central aspect of the development process. It was introduced by Eric Evans in his book "Domain-Driven Design: Tackling Complexity in the Heart of Software," published in 2003.
 
 At its core, it advocates for aligning the software model closely with the real-world domain it represents, focusing on the business or problem space rather than technical considerations. This approach helps software engineers and domain experts to collaborate effectively and create software that reflects the complexities and nuances of the domain.
+
+## Key Concepts:
+
+### Ubiquitous Language
+
+### Bounded Context
+
+### Entities and Value Objects
+
+### Aggregates
+
+### Repositories
+
+### Domain Events
