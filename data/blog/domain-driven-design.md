@@ -23,6 +23,19 @@ At its core, it advocates for aligning the software model closely with the real-
 
 ### Ubiquitous Language
 
+Ubiquitous Language is not a programming language, it is just a vocabulary. It is like having a common language that everyone involved in a project understands and uses consistently. People from different backgrounds work closely on any project. For example while working on a project in finance domain, there are certain stakeholders: engineers, financial analysts, and business managers. Each group has its own jargon and terminology.
+To ensure smooth communication and understanding among all the teams from varying backgrounds, all must agree to use a single, shared vocabulary, this shared vocabulary is the Ubiquitous Language. It includes terms that accurately describe concepts in the problem domain and are understood by everyone involved.
+
+For example, let's consider the term _transaction_. A transaction could mean different things to different people:
+
+- To an engineer, it might refer to a database operation.
+- To a financial analyst, it could mean buying or selling stocks or bonds.
+- To a business manager, it might represent any exchange of money within the company.
+
+This would lead to miscommunication within the stakeholders. In such scenario, establishing a Ubiquitous Language means agreeing on a precise definition for "transaction" that encompasses all these perspectives. So, whenever anyone talks about a "transaction" in the context of the project, everyone understands it in the same way.
+
+It is advisable to use terminology that aligns with the problem domain, it ensures clarity and understanding among all stakeholders involved in the project. When the language used in the software closely resembles the language used by domain experts, it becomes much easier for engineers, business analysts, domain experts, and other team members to communicate effectively. This alignment reduces the chances of misinterpretation and enhances collaboration throughout the development process.
+
 ### Bounded Context
 
 ### Entities and Value Objects
