@@ -38,6 +38,16 @@ It is advisable to use terminology that aligns with the problem domain, it ensur
 
 ### Bounded Context
 
+Bounded Context is crucial for designing software systems that accurately reflect the real-world domains. It involves drawing a boundary around a specific area within a larger system where certain terms, rules, and concepts apply. It helps to define clear boundaries and rules for different parts of a system, allowing them to operate independently without interfering with each other
+
+For instance, consider an app in the finance domain offering both banking and investment services. Each service represents a separate subdomain with its own Bounded Context. In the banking context, terms such as "account," "deposit," and "withdrawal" are common. Here, the focus is on managing customer accounts, tracking transactions, and calculating balances. Conversely, in the investments context, terms like "portfolio," "stock," and "trade" are often encountered, dealing with managing portfolios, executing trades, and monitoring market activity.
+
+However, a challenge arises when certain terms, such as "transaction," exist in both subdomains but carry different meanings. In the banking context, a "transaction" refers to actions like depositing or withdrawing funds, while in the investments context, it pertains to buying or selling stocks or bonds.
+
+By establishing these Bounded Contexts, each with its unique set of terms, rules, and constraints, clarity is ensured and confusion is prevented. While terms may have differing interpretations across contexts, within each context, they possess a clear and consistent definition.
+
+Each context has its own rules and vocabulary, making it easier to understand and manage. By clearly defining these boundaries, one ensures that each part of the system works independently without interfering with the other. Moreover, it helps everyone involved understand exactly what's happening in each area, leading to better communication and a more effective software system.
+
 ### Entities and Value Objects
 
 ### Aggregates
