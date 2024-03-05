@@ -50,6 +50,20 @@ Each context has its own rules and vocabulary, making it easier to understand an
 
 ### Entities and Value Objects
 
+#### Entities
+
+Entities are objects within a software system that have a distinct identity and lifecycle. They represent things in the domain that are unique and can be individually identified and tracked. In simpler terms, entities are the "nouns" in the problem domain.
+
+Consider a bank account. Each bank account is unique and has its own attributes, such as an account number, account holder's name, and balance. In the system, each bank account is an entity and can be identified and manipulated individually, such as depositing money into a specific account or transferring funds between accounts.
+
+#### Value Objects
+
+Value Objects, on the other hand, are objects within the system that are defined by their attributes rather than their identity. They represent concepts in the domain that are immutable and interchangeable. In simpler terms, value objects are the "adjectives" or "descriptors" in the problem domain.
+
+Consider a currency amount, like 100 INR. This amount is defined by its numerical value and currency type (INR). However, unlike a bank account, a specific amount of money doesn't have a unique identity, it is interchangeable with other amounts of the same value and currency. In the system, currency amounts would be represented as value objects. Operations like adding or subtracting amounts can be performed on it, but each individual amount is not tracked as a distinct entity.
+
+Overall, entities represent unique objects with identities, while value objects represent immutable concepts defined by their attributes. In the finance domain, entities could include bank accounts, customers, or transactions, while value objects could include currency amounts, dates, or addresses. These concepts help to accurately model the domain and design effective systems.
+
 ### Aggregates
 
 ### Repositories
