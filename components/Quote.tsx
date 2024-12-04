@@ -9,17 +9,17 @@ const QuoteComponent = () => {
     const fetchQuote = async () => {
       try {
         const response = await fetch(
-          'https://raw.githubusercontent.com/skolakoda/programming-quotes-api/master/Data/quotes.json',
+          'https://raw.githubusercontent.com/skolakoda/programming-quotes-api/master/data/quotes.json',
         );
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
         const quotes = await response.json();
         let randomIndex = Math.floor(Math.random() * quotes.length);
-        while (quotes[randomIndex].en.length > 200) {
+        while (quotes[randomIndex].text.length > 200) {
           randomIndex = Math.floor(Math.random() * quotes.length);
         }
-        setQuote(quotes[randomIndex].en);
+        setQuote(quotes[randomIndex].text);
         setAuthor(quotes[randomIndex].author);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -41,7 +41,7 @@ const QuoteComponent = () => {
           <p className='author'>- {author}</p>
         </blockquote>
       )}
-      <style jsx>{`
+      <style>{`
         .quote {
           border: 1px solid; /* Use inline style for border color */
           border-radius: 10px;
