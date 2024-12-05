@@ -66,6 +66,21 @@ Overall, entities represent unique objects with identities, while value objects 
 
 ### Aggregates
 
+Aggregates are groups of related objects that are treated as a single unit within a system. They help maintain consistency and ensure that certain operations are applied to a cluster of objects as a whole. In simpler terms, aggregates are like a bundled package of entities and value objects.
+
+Consider working on a banking system. In such system, an aggregate could be a customer and all bank accounts associated with it. The customer is the aggregate root the main point of access and control for the entire group.
+
+- **Customer (Aggregate Root)**:
+  - Attributes: CustomerID, Name, Email, etc.
+  - Related Entities: BankAccount1, BankAccount2, ...
+  - Related Value Objects: Address, Contact Number, ...
+
+In this example, a customer and their bank accounts form an aggregate. If we want to perform an operation that involves both the customer and their accounts—say, closing all accounts when a customer decides to leave the bank—we treat the entire aggregate as a single unit. The aggregate ensures that all related operations are consistently applied to maintain data integrity.
+
+It's important to note that within the aggregate, there's an entity that acts as the aggregate root. In our example, the customer is the aggregate root, providing the main access point for interacting with the entire aggregate.
+
+In summary, aggregates in the finance domain could be groups of related entities and value objects bundled together, ensuring that operations are applied consistently to maintain data integrity. They simplify complex interactions and help manage the relationships between different objects within a system.
+
 ### Repositories
 
 ### Domain Events
