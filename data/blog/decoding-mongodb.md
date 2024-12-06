@@ -1,5 +1,5 @@
 ---
-title: MongoDB Basics
+title: Decoding MongoDB
 date: 2024-11-23
 tags:
   - mongo
@@ -8,7 +8,7 @@ tags:
   - design
   - database
 draft: false
-summary: Understanding Basics of MongoDB storage and Scalability.
+summary: How MongoDB stores data? How BSON Revolutionizes Data Storage and Query Efficiency
 
 images:
   - /static/blogs/mongo_db.png
@@ -144,3 +144,5 @@ While MongoDB is a powerful and flexible NoSQL database that excels in many use 
    MongoDB prioritizes availability over consistency in its distributed system, meaning data might not always be immediately consistent across nodes. For some use cases, this can lead to consistency issues.
 7. **Indexing Overhead**:
    While indexes boost query performance, they also consume resources. More indexes can slow down write operations, requiring careful balancing.
+
+Want to know more about how indexing works, check [Database Indexing and B-Trees](/blog/database-indexing-and-btrees).
