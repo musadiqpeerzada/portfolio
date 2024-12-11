@@ -22,6 +22,7 @@ import rehypeKatex from 'rehype-katex';
 import rehypePresetMinify from 'rehype-preset-minify';
 import rehypePrismPlus from 'rehype-prism-plus';
 import rehypeSlug from 'rehype-slug';
+import { getAnalyticsData } from 'pages/api/googleAnalytics';
 
 const root = process.cwd();
 
@@ -111,7 +112,9 @@ export async function getFileBySlug<T>(
       return options;
     },
   });
-
+  const views = frontmatter.title
+    ? await getAnalyticsData(frontmatter.title)
+    : { views: 0 };
   return {
     mdxSource: code,
     toc,
@@ -121,6 +124,7 @@ export async function getFileBySlug<T>(
       fileName: fs.existsSync(mdxPath) ? `${slug}.mdx` : `${slug}.md`,
       ...frontmatter,
       date: frontmatter.date ? new Date(frontmatter.date).toISOString() : null,
+      views: views.views,
     },
   };
 }

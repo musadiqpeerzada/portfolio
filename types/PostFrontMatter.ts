@@ -9,6 +9,7 @@ export type PostFrontMatter = {
   authors?: string[];
   layout?: string;
   readingTime: any;
+  views?: number;
   canonicalUrl?: string;
   slug: string;
   fileName: string;
