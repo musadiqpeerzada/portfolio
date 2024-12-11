@@ -23,7 +23,7 @@ const Analytics = () => {
       )}
       {siteMetadata.analytics.simpleAnalytics && <SimpleAnalytics />}
       {isProduction && siteMetadata.analytics.umamiWebsiteId && <Umami />}
-      {isProduction && siteMetadata.analytics.googleAnalyticsId && <GA />}
+      {siteMetadata.analytics.googleAnalyticsId && <GA />}
     </>
   );
 };
