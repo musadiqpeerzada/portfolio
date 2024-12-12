@@ -69,8 +69,15 @@ export default function PostLayout({
               </div>
               <p className='text-base leading-6 text-gray-500 dark:text-gray-400'>
                 {readingTime?.text}
-                {views ? <span className='ml-10'> {views} views</span> : ''}
               </p>
+              {views ? (
+                <p className='text-base leading-6 text-gray-500 dark:text-gray-400'>
+                  {views} views
+                </p>
+              ) : (
+                ''
+              )}
+
               <Share title={title} url={url} />
             </div>
           </header>
