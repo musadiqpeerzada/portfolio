@@ -9,6 +9,7 @@ import {
 } from '@/lib/mdx';
 import fs from 'fs';
 import { GetStaticProps, InferGetStaticPropsType } from 'next';
+import { useEffect, useState } from 'react';
 import { AuthorFrontMatter } from 'types/AuthorFrontMatter';
 import { PostFrontMatter } from 'types/PostFrontMatter';
 import { Toc } from 'types/Toc';
@@ -73,6 +74,16 @@ export default function Blog({
   next,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { mdxSource, toc, frontMatter } = post;
+  const [views, setViews] = useState(0);
+  useEffect(() => {
+    fetch(`/api/views?pageTitle=${frontMatter.title}`)
+      .then(res => res.json())
+      .then(data => {
+        setViews(data.views);
+      });
+  }, [frontMatter]);
+
+  frontMatter.views = views;
 
   return (
     <>

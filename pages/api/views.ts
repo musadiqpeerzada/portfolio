@@ -1,7 +1,13 @@
 import siteMetadata from '@/data/siteMetadata';
 import { google } from 'googleapis';
 
-export async function getAnalyticsData(pageTitle) {
+export default async function handler(req, res) {
+  const { pageTitle } = req.query;
+  const { views } = await getAnalyticsData(pageTitle as string);
+  res.status(200).json({ views });
+}
+
+async function getAnalyticsData(pageTitle) {
   try {
     const credentials = JSON.parse(
       Buffer.from(process.env.GOOGLE_ANALYTICS_CREDENTIALS, 'base64').toString(
