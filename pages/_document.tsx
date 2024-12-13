@@ -28,7 +28,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang='en' className='scroll-smooth'>
+      <Html lang='en' dir='ltr' className='scroll-smooth'>
         <Head>
           <link
             rel='apple-touch-icon'

@@ -16,6 +16,7 @@ interface CommonSEOProps {
       }[];
   twImage: string;
   canonicalUrl?: string;
+  tags?: string[];
 }
 
 const CommonSEO = ({
@@ -25,6 +26,7 @@ const CommonSEO = ({
   ogImage,
   twImage,
   canonicalUrl,
+  tags,
 }: CommonSEOProps) => {
   const router = useRouter();
   return (
@@ -32,6 +34,7 @@ const CommonSEO = ({
       <title>{title}</title>
       <meta name='robots' content='follow, index' />
       <meta name='description' content={description} />
+      {tags && <meta name='keywords' content={tags.join(', ')} />}
       <meta
         property='og:url'
         content={`${siteMetadata.siteUrl}${router.asPath}`}
@@ -126,6 +129,7 @@ export const BlogSEO = ({
   url,
   images = [],
   canonicalUrl,
+  tags,
 }: BlogSeoProps) => {
   const publishedAt = new Date(date).toISOString();
   const modifiedAt = new Date(lastmod || date).toISOString();
@@ -192,6 +196,7 @@ export const BlogSEO = ({
         ogImage={featuredImages}
         twImage={twImageUrl}
         canonicalUrl={canonicalUrl}
+        tags={tags}
       />
       <Head>
         {date && (
