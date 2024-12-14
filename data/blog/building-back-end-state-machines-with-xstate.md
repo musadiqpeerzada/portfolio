@@ -1,7 +1,15 @@
 ---
 title: 'Building Back-End State Machines with XState'
 date: '2023-05-08'
-tags: ['state', 'automation', 'backend', 'xstate', 'javascript']
+tags:
+  [
+    'backend',
+    'xstate',
+    'javascript',
+    'State Management',
+    'state-machines',
+    'automation',
+  ]
 draft: false
 summary: 'Unlocking Back-End Efficiency: Utilizing XState for Powerful State Machine Management'
 images: ['/static/blogs/building-back-end-state-machines-with-xstate.png']
@@ -116,6 +124,7 @@ const orderStateMachine = Machine({
   },
 });
 ```
+
 - Specify Transactions:
 
 ```bash
@@ -185,6 +194,7 @@ const orderStateMachine = Machine({
   },
 });
 ```
+
 In this example, we created an order-processing state machine using XState. The machine starts in the "pending" state, and transitions occur based on events such as "startProcessing" and "cancelOrder." Actions are implemented for updating the database and sending notifications during state transitions. For instance, when transitioning to the "processing" state, the actions "updateDatabase" and "sendProcessingNotification" are executed. This order-processing state machine provides a structured approach to manage the different stages an order can go through, ensuring the correct state transitions and enabling backend-specific tasks. You can further customize the actions to include additional functionality based on your specific backend requirements. By using XState, you can create robust state machines for various use cases, including order processing, and benefit from the clarity, control, and maintainability it offers.
 
 ## Testing and Interacting with Backend State Machines
@@ -207,7 +217,7 @@ orderService.onTransition((state) => {
 orderService.send('startProcessing');
 ```
 
-  By sending the "startProcessing" event, you can observe the state machine transitioning from the "pending" state to the "processing" state. This allows you to interact with the state machine and trigger desired behaviors in your backend system.
+By sending the "startProcessing" event, you can observe the state machine transitioning from the "pending" state to the "processing" state. This allows you to interact with the state machine and trigger desired behaviors in your backend system.
 
 - Querying the Current State and Extracting Information: You can query the current state of the machine to extract useful information or make decisions based on the system's state. XState provides a state object that represents the current state of the machine, and you can access the state value, context, and other metadata.
 
