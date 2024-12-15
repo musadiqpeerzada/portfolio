@@ -28,7 +28,7 @@ This question led me down the rabbit hole of MongoDB’s storage engine and inde
 
 - Indexes enhance query performance by maintaining a sorted data structure.
 - They eliminate the need for full collection scans, reducing query time.
-- Example: Querying { age: { $gt: 19 } } with an index on age directly accesses the relevant range of values.
+- Example: Querying `{ age: { $gt: 19 } }` with an index on age directly accesses the relevant range of values.
 - MongoDB uses B+ trees for indexing.
 - B+ trees store the values in leaf nodes, enabling efficient range queries.
 - B+ trees provide logarithmic time complexity O(log n) for search, insert, and delete operations.
