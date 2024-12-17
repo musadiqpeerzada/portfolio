@@ -13,7 +13,7 @@ tags:
   - query optimization
   - database internals
 draft: false
-summary: Explore into the inner workings of MongoDB indexing to understand how data is structured, optimized, and stored on disk, enabling lightning-fast queries and seamless performance.
+summary: Explore MongoDB indexing to see how data is structured and optimized for fast queries. With WiredTiger, indexes use B-tree structures and efficient caching to minimize disk reads and boost performance.
 images:
   - /static/blogs/mongodb_indexing.png
 authors:
