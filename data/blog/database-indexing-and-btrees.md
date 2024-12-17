@@ -203,4 +203,4 @@ The performance of a database largely relies on its response to queries. There a
         -   **Range Queries**: MongoDB also takes advantage of B+ trees for range queries. Since the tree nodes are sorted, querying a range of student_id values (e.g., finding all students with IDs between 100 and 500) can be done by efficiently traversing the leaf nodes, avoiding a full collection scan.
         -   **Scalability**: As your data grows, MongoDB can continue to scale by adjusting the B+ tree’s structure. This means queries remain fast, even with millions of documents.
 
-Want to know more about how MongoDB stores data, check [Decoding MongoDB](/blog/decoding-mongodb).
+Want to know more about how MongoDB stores data, check [Decoding MongoDB](/blog/decoding-mongodb) and [MongoDB indexing](/blog/indexing-in-mongodb).

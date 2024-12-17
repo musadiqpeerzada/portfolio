@@ -1,5 +1,5 @@
 ---
-title: 'Behind the Scenes: MongoDB Indexing on Disk'
+title: 'Behind the Scenes: MongoDB Indexing'
 date: 2024-12-06
 tags:
   - mongodb
@@ -12,31 +12,33 @@ tags:
   - storage engine
   - query optimization
   - database internals
-draft: true
+draft: false
 summary: Explore into the inner workings of MongoDB indexing to understand how data is structured, optimized, and stored on disk, enabling lightning-fast queries and seamless performance.
 images:
-  - /static/blogs/mongo_db.png
+  - /static/blogs/mongodb_indexing.png
 authors:
   - default
 ---
 
 Curiosity has always been my driving force. While working with MongoDB, I couldn't help but wonder how do indexes actually work under the hood? Sure, I knew the basics: indexes improve query performance and are built on B+ trees, as discussed in [Database Indexing and B-Trees](/blog/database-indexing-and-btrees) and [Decoding MongoDB](/blog/decoding-mongodb). But what really happens at the disk level?
 
-This question led me down the rabbit hole of MongoDB's storage engine and indexing mechanics, and it is fascinating: the delicate balance between speed, efficiency, and disk optimization.
+This question led me down the rabbit hole of MongoDB's storage engine and indexing mechanics, and it is fascinating- the delicate balance between speed, efficiency, and disk optimization.
 
 ## A Quick Recap
 
     - Indexes enhance query performance by maintaining a sorted data structure.
-    - They eliminate the need for full collection scans, reducing query time.
-    - Example: Querying `{ age: { $gt: 19 } }` with an index on age directly accesses the relevant range of values.
+    - Indexes eliminate the need for full collection scans, reducing query time.
     - MongoDB uses B+ trees for indexing.
     - B+ trees store the values in leaf nodes, enabling efficient range queries.
     - B+ trees provide logarithmic time complexity O(log n) for search, insert, and delete operations.
     - B+ trees optimize the disk I/O by grouping related keys and pointers in compact structures.
 
-## Why Understanding Disk-Level Mechanics Matters?
+    For a deeper understanding of how these principles work in practice, let's explore MongoDB's default storage engine, WiredTiger, and how it manages indexing and disk I/O.
 
-    Understanding how MongoDB handles indexing at the disk level is crucial for several reasons.
+## Why Understanding Disk-Level Mechanics Matters
+
+    Understanding how MongoDB handles indexing at the disk level is crucial for several reasons:
+
     - **Optimizing Query Performance**
 
         Well-designed indexes utilize storage systems efficiently, minimizing disk I/O.
@@ -47,7 +49,7 @@ This question led me down the rabbit hole of MongoDB's storage engine and indexi
 
     - **Troubleshooting and Fine-Tuning**
 
-        Low-level mechanics help in diagnosing inefficiencies, such as excessive reads or poorly structured indexes.
+        Low-level mechanics help diagnose inefficiencies, such as excessive reads or poorly structured indexes.
 
     With this understanding, one can design, optimize, and maintain a high-performance MongoDB instance more effectively.
 
@@ -57,20 +59,19 @@ This question led me down the rabbit hole of MongoDB's storage engine and indexi
 
     - **Data and Index Storage**
 
-        WiredTiger uses a document-level concurrency model, enabling independent modifications without locking the entire collection. It stores document data and indexes in separate files, seamlessly managing memory-disk interactions for efficiency.
-        For example, a high-concurrency update operation on a collection with an index on age would modify only the relevant documents and their indexed value, without impacting unrelated queries or updates.
+        WiredTiger uses a document-level concurrency model, enabling independent modifications without locking the entire collection. It stores document data and indexes in separate files, seamlessly managing memory-disk interactions for efficiency. For example, a high-concurrency update operation on a collection with an index on age modifies only the relevant documents and their indexed value, without affecting unrelated queries or updates.
 
     - **In-Memory Caching**
 
-        WiredTiger utilizes an in-memory cache to store frequently accessed data and index pages. By caching data in memory, disk I/O operations are reduced, improving performance, especially for read-heavy workloads. When an index is queried or updated, WiredTiger first checks the in-memory cache before accessing the disk, ensuring faster query execution.
+        WiredTiger utilizes an in-memory cache to store frequently accessed data and index pages. By caching data in memory, disk I/O operations are reduced, improving performance for read-heavy workloads. When an index is queried or updated, WiredTiger checks the in-memory cache first before accessing the disk, ensuring faster query execution.
 
     - **Write-Ahead Logging (WAL)**
 
-        Before applying changes to disk, WiredTiger logs them in a transaction log, ensuring data durability. In case of a crash, MongoDB replays the WAL to restore consistency without data loss.
+        Before applying changes to disk, WiredTiger logs them in a transaction log, ensuring data durability. This journaling mechanism, based on Write-Ahead Logging, ensures that if a crash occurs, MongoDB can replay the log to restore consistency without data loss.
 
     - **Page Management and Compression**
 
-        Data and index entries are stored in disk pages. WiredTiger optimizes page management to balance performance with minimal read/write overhead. Additionally, compression reduces storage space without significantly impacting performance.
+        Data and index entries are stored in disk pages. WiredTiger optimizes page management to balance performance with minimal read/write overhead. It applies compression (e.g., Snappy, Zlib) to both data and indexes, reducing the amount of data stored and read from disk, thus improving storage efficiency and lowering I/O overhead.
 
     - **Checkpointing**
 
@@ -82,96 +83,96 @@ This question led me down the rabbit hole of MongoDB's storage engine and indexi
 
     1. **Document Insertion Request**
 
-        The client application sends an insert request to the MongoDB server. The document (data) to be inserted is included in this request. The request includes the document and the metadata like collection name.
+        The client application sends an insert request to the MongoDB server. The request includes the document and the metadata like collection name.
 
     2. **Validation**
 
-        MongoDB validates the document to ensure that it complies with any defined schema (if applicable) and constraints. If validation fails, the insert operation is aborted, and an error is returned to the client. For instance, if a unique index exists on email, inserting a document with a duplicate email value would fail validation.
+        MongoDB validates the document against defined schema (if applicable) and constraints. If a unique index exists on email, for example, inserting a duplicate email value would fail. If validation fails, the insert operation is aborted, and an error is returned to the client.
 
     3. **In-Memory Staging**
 
-        Validated documents are placed in an in-memory write buffer for efficient batch writes to disk. Simultaneously, MongoDB logs the operation in the Write-Ahead Log (WAL) to ensure durability, enabling recovery even before the data reaches disk.
+        Validated documents are placed in an in-memory write buffer for efficient batch writes to disk.  MongoDB also logs the operation in the WAL, ensuring recoverability before data hits disk.
 
-    4. **Write to Data Files** (Document Storage)
+    4. **Write to Data Files**
 
-        The document is written to data files in BSON format, which stores the fields and metadata compactly for efficient retrieval.
+        The document is written to data files in BSON format, storing fields and metadata.
 
     5. **Index Updates**
 
-        If the document contains values for any indexed fields, MongoDB must update the corresponding indexes. Steps involved in index updates:
+        If the document contains values for any indexed fields,  MongoDB updates the corresponding B+ tree indexes:
 
         a. **Locate the Correct Position in the B+ Tree**:
-            MongoDB identifies the location for the new value within the B+ tree by comparing the indexed field with existing values.
+            Find the correct position in the B+ tree.
 
         b. **Insert the Index Entry**:
-            The index entry, consisting of the field value and a pointer to the document, is added at the identified position.
+            Add the field value and a pointer to the document.
 
         c. **Balancing the B+ Tree**:
-            If an index node exceeds its capacity, MongoDB splits it into smaller nodes, keeping the tree balanced for efficient lookups.
+            If an index node is over capacity, it splits into smaller nodes, maintaining balance.
 
         d. **Updating Parent Nodes**:
-            The splits propagate upward, so after a page split, the parent nodes of the B+ tree are updated to ensure the that the entire tree reflects the new structure.
+            The splits propagate upward, parent nodes are adjusted to reflect the new structure after splits.
 
     6. **Index Write to Disk**
 
-        Once in-memory index updates are complete, WiredTiger writes them to disk, ensuring durability and efficiency.
+        Once in-memory index updates are complete, WiredTiger writes them to disk.
 
     7. **In-Memory Caching**
 
-        Frequently accessed documents and index pages remain in WiredTiger's in-memory cache, reducing the need for repeated disk reads during queries.”
+        Frequently accessed documents and index pages remain cached in memory.
 
     8. **Transaction Commit**
 
-        After writing the document and index changes to memory and disk, MongoDB commits the transaction, ensuring the data is permanently stored and visible to other operations.
+        After writing changes to memory and disk, MongoDB commits the transaction, ensuring data is permanent and visible to other operations.
 
     9. **Completion of Insert Operation**
 
-        MongoDB sends an acknowledgment back to the client, signaling the success of the insert operation. The document is now available for future queries.
+       MongoDB returns an acknowledgment to the client, indicating success.
 
     10. **Checkpointing and Durability**
 
-        MongoDB periodically creates checkpoints to snapshot the database's state, including inserted documents and updated indexes. During recovery, MongoDB replays the WAL to restore any data changes since the last checkpoint.
+        Periodic checkpoints snapshot the database's state. On recovery, MongoDB replays the WAL from the last checkpoint to restore recent changes.
 
-    This flow represents the complete insert operation in MongoDB, ensuring data is efficiently stored, indexed, and made durable. Combining high-performance disk I/O management, in-memory caching, and durability mechanisms like Write-Ahead Logging and checkpointing, MongoDB optimizes for both speed and reliability.
+    This flow represents the complete insert operation in MongoDB, ensuring data is efficiently stored, indexed, and made durable. Combining disk I/O management, in-memory caching, and mechanisms like Write-Ahead Logging and checkpointing, MongoDB optimizes for both speed and reliability.
 
 ## Handling Updates and Upserts
 
-    Updates and upserts in MongoDB are powerful operations designed to maintain data integrity and index consistency, even in high-concurrency environments. An upsert, updates an existing document or inserts a new one if no match is found, requires MongoDB to execute both read and write phases seamlessly.
+    Updates and upserts require careful coordination of data and index modifications. An upsert updates a document if it exists or inserts a new one if not.
 
     ### Challenges in Updates and Upserts
     - **Index Maintenance**
 
-        Updates to indexed fields involve removing outdated index entries and inserting new ones. Upserts require navigating the B+ tree to add new entries efficiently.
+        Updating indexed fields requires removing outdated entries and inserting new ones. Upserts add new entries efficiently into the B+ tree.
 
     - **Concurrency Handling**
 
-        Multi-user environments risk duplicate inserts or inconsistent index states. MongoDB addresses this through fine-grained locking and transactional mechanisms.
+        In multi-user environments, MongoDB uses locking and transactional mechanisms to prevent duplicate inserts or inconsistent index states.
 
     - **Disk-Intensive Operations**
 
-        Frequent updates to indexed fields can result in high disk I/O. MongoDB optimizes writes and caches index pages to reduce overhead.
+       Frequent indexed field updates can lead to high disk I/O. MongoDB optimizes writes and caches index pages to reduce overhead.
 
     ### The Process of Updates and Upserts
 
     1. **Locate the Document**
 
-        MongoDB queries the collection to find a matching document. For upserts, this determines whether to update or insert.
+        MongoDB queries the collection. For upserts, it checks if a match exists; otherwise, it prepares to insert.
 
     2. **Modify Data in Memory**
 
-        Updates modify the document in memory, based on the update operators (e.g., $set, $inc). If the update changes an indexed field, MongoDB prepares to update the corresponding index entries.
+        Updates modify the document according to the update operators (e.g., $set, $inc). If an indexed field changes, MongoDB prepares to update the index.
 
     3. **Update Indexes**
 
-        If an indexed field is modified, MongoDB removes the outdated index entry and inserts a new one. For upserts resulting in an insert, new index entries are created for all indexed fields.
+        Old index entries are removed, new ones are inserted. For upserts, new index entries are created for all indexed fields.
 
     4. **Transactional Logging**
 
-        Changes are logged in the write-ahead log (WiredTiger journal)
+        Changes are logged in the write-ahead log (WiredTiger journal).
 
     5. **Commit to Disk**
 
-        Modified documents and updated index pages are committed to disk to finalize the operation.
+        Modified documents and updated index pages are committed to disk.
 
     6. **Concurrency and Locking**:
 
@@ -185,20 +186,18 @@ This question led me down the rabbit hole of MongoDB's storage engine and indexi
 
     -  **B-Tree Index Structure**
 
-        MongoDB uses balanced B-trees for indexes, enabling efficient lookups, inserts, and updates. By keeping related data close together in memory and on disk, B-trees reduce the number of disk reads required, ensuring predictable query performance as data grows.
+    By keeping related data close together on disk, B+ trees reduce disk reads and ensure predictable performance.
 
     - **Write-Ahead Logging (WiredTiger)**
 
-        WiredTiger minimizes disk writes by logging changes to memory first and flushing them to disk in batches, reducing random I/O operations.
+        Changes are first logged in memory and flushed in batches, reducing random I/O.
 
     - **Compression**
 
-        WiredTiger compresses both data and indexes, reducing disk storage requirements and the number of pages loaded into memory during queries.
+        Data and index compression shrinks storage size and reduces I/O.
 
-
-    -  **Memory Mapping and Cache Management**
-
-        MongoDB uses memory-mapped files for disk I/O, allowing the operating system's virtual memory manager to manage caching. Frequently accessed portions of indexes are cached in memory, reducing the need for repeated disk reads.
+    -  **Caching and Reduced Reliance on Memory-Mapped Files**
+        WiredTiger relies on its own internal cache and filesystem-level I/O rather than traditional memory-mapped files, granting more granular control over memory usage and reducing unnecessary disk access.
 
     - **Prefetching and Sequential Access**
 
@@ -214,21 +213,21 @@ This question led me down the rabbit hole of MongoDB's storage engine and indexi
 
     - **Background Index Building**
 
-        MongoDB builds indexes in the background, minimizing disruptions to ongoing operations.
+        Indexes can be built in the background, minimizing disruptions.
 
     - **Hot Data Optimization**
 
-        Frequently accessed index data (“hot data”) is kept in memory, speeding up common queries by reducing disk access.
+        Frequently accessed "hot" index data stays in memory, speeding up common queries.
 
     These strategies help MongoDB optimize memory and disk usage, reducing disk I/O and ensuring indexes remain fast and efficient as the dataset grows.
 
 ## Concurrency Control and Performance Optimization
 
-    In multi-user environments, MongoDB ensures consistent and efficient operations through robust concurrency control mechanisms, primarily managed by the WiredTiger storage engine. Here's how MongoDB balances simultaneous operations and high performance:
+    In multi-user environments, MongoDB ensures consistent and efficient operations through concurrency control mechanisms, primarily managed by the WiredTiger storage engine. Here's how MongoDB balances simultaneous operations and high performance:
 
     ### How WiredTiger Ensures Multi-User Efficiency
 
-    WiredTiger uses fine-grained concurrency controls to allow multiple users to perform read and write operations concurrently without conflicts or bottlenecks:
+    WiredTiger's concurrency controls allow multiple users to perform read and write operations concurrently without conflicts or bottlenecks:
 
     - **Document-Level Locking**
 
@@ -236,7 +235,7 @@ This question led me down the rabbit hole of MongoDB's storage engine and indexi
 
     - **Optimistic Concurrency Control**
 
-        Write-ahead logging (WAL) enables to record changes before applying them, ensuring durability while allowing concurrent reads to proceed without waiting for writes to finish.
+        Write-Ahead Logging (WAL) enables to record changes before applying them, ensuring durability while allowing concurrent reads to proceed without waiting for writes to finish.
 
     - **Snapshot Isolation**
 
@@ -254,7 +253,7 @@ This question led me down the rabbit hole of MongoDB's storage engine and indexi
 
     - **Dirty Page Management**
 
-        Modified index pages are kept in memory until it's efficient to flush them to disk, ensuring frequently accessed pages remain cached.
+        Modified index pages remain in memory until efficiently flushed to disk.
 
     - **Asynchronous Disk Writes**
 
@@ -264,17 +263,20 @@ This question led me down the rabbit hole of MongoDB's storage engine and indexi
 
         MongoDB dynamically manages write throughput, preventing index updates from overwhelming disk or memory resources.
 
-    By combining document-level locking, snapshot isolation, and efficient batching of index updates, MongoDB ensures high performance and concurrency, even in write-intensive environments.
+    Combining document-level locking, snapshot isolation, and efficient batching of index updates, MongoDB ensures high performance and concurrency, even in write-intensive environments.
 
 ## Scaling Index Performance
 
     When working with large collections, efficient index management becomes paramount for ensuring performance. Here's how MongoDB handles disk-level optimizations:
+
     - **Sparse vs. Dense Indexes**
 
         Sparse indexes help save disk space and improve performance by indexing only non-null values, which can be particularly useful for large datasets with many optional fields.
+
     - **Sharding**
 
         MongoDB can distribute data and indexes across multiple shards in a cluster, allowing horizontal scaling to improve performance. Sharding not only optimizes query execution but also ensures that no single node is overwhelmed with data storage or query requests.
+
     - **Index Partitioning**
 
         To further optimize query performance, MongoDB places related B+ tree nodes together on disk, reducing the number of random reads necessary during query execution.
@@ -318,7 +320,7 @@ This question led me down the rabbit hole of MongoDB's storage engine and indexi
 
         Write amplification occurs when a single write triggers multiple disk writes, such as for updating indexes. Batch writes and limit updates to indexed fields to reduce this overhead.
 
-    By understanding disk-level behaviors and adopting thoughtful index design strategies, an efficient, scalable, and reliable performant database can be ensured.
+    Understanding disk-level behaviors and adopting thoughtful index design strategies, ensure an efficient, scalable, and reliable database.
 
 ## Further Reading and Resources
 

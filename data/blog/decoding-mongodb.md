@@ -145,4 +145,4 @@ While MongoDB is a powerful and flexible NoSQL database that excels in many use 
 7. **Indexing Overhead**:
    While indexes boost query performance, they also consume resources. More indexes can slow down write operations, requiring careful balancing.
 
-Want to know more about how indexing works, check [Database Indexing and B-Trees](/blog/database-indexing-and-btrees).
+Want to know more about how indexing works, check [Database Indexing and B-Trees](/blog/database-indexing-and-btrees) and [MongoDB indexing](/blog/indexing-in-mongodb).
