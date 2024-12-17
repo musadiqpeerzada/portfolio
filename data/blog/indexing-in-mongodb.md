@@ -1,6 +1,6 @@
 ---
 title: 'Behind the Scenes: MongoDB Indexing'
-date: 2024-12-06
+date: 2024-12-17
 tags:
   - mongodb
   - indexing
