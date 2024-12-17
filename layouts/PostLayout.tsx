@@ -13,6 +13,8 @@ import { AuthorFrontMatter } from 'types/AuthorFrontMatter';
 import { PostFrontMatter } from 'types/PostFrontMatter';
 import { Toc } from 'types/Toc';
 
+const minViewsToShow = 50;
+
 const postDateTemplate: Intl.DateTimeFormatOptions = {
   weekday: 'long',
   year: 'numeric',
@@ -70,7 +72,7 @@ export default function PostLayout({
               <p className='text-base leading-6 text-gray-500 dark:text-gray-400'>
                 {readingTime?.text}
               </p>
-              {views ? (
+              {views && views > minViewsToShow ? (
                 <p className='text-base leading-6 text-gray-500 dark:text-gray-400'>
                   {views} views
                 </p>
