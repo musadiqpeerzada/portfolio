@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import GA from './GoogleAnalytics';
 import Plausible from './Plausible';
+import RybbitScript from './Rybbit';
 import SimpleAnalytics from './SimpleAnalytics';
 import Umami from './Umami';
 import siteMetadata from '@/data/siteMetadata';
@@ -24,6 +25,7 @@ const Analytics = () => {
       {siteMetadata.analytics.simpleAnalytics && <SimpleAnalytics />}
       {isProduction && siteMetadata.analytics.umamiWebsiteId && <Umami />}
       {siteMetadata.analytics.googleAnalyticsId && <GA />}
+      {siteMetadata.analytics.rybbitSiteId && <RybbitScript />}
     </>
   );
 };
