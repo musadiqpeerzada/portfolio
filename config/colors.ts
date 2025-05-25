@@ -16,6 +16,7 @@ export const Colors = {
   node: '#68A063',
   django: '#092E20',
   nest: '#092E20',
+  fastapi: '#009485',
 
   // Tools, Libs
   webpack: '#8DD6F9',

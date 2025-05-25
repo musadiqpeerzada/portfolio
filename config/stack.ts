@@ -17,7 +17,7 @@ export enum Stack {
   node,
   django,
   nest,
-
+  fastapi,
   // Cloud
   aws,
   gcp,
@@ -37,7 +37,7 @@ export enum Stack {
   docker,
   kubernetes,
   terraform,
-  git
+  git,
 }
 
 export const WorkStack = [
@@ -152,10 +152,14 @@ export const StackInfo: Record<Stack, StackInfoMap> = {
   },
   [Stack.java]: {
     value: 'Java',
-    color: Colors.java
+    color: Colors.java,
   },
   [Stack.git]: {
     value: 'Git',
-    color: Colors.git
-  }
+    color: Colors.git,
+  },
+  [Stack.fastapi]: {
+    value: 'FastAPI',
+    color: Colors.fastapi,
+  },
 };
