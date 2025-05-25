@@ -31,7 +31,7 @@ export default function AuthorLayout({ children, frontMatter }: Props) {
               height='192px'
               className='h-48 w-48 rounded-full'
             />
-            <h3 className='pt-4 pb-2 text-2xl font-bold leading-8 tracking-tight'>
+            <h3 className='pb-2 pt-4 text-2xl font-bold leading-8 tracking-tight'>
               {name}
             </h3>
             <div className='font-medium text-gray-500 dark:text-gray-400'>
@@ -40,7 +40,7 @@ export default function AuthorLayout({ children, frontMatter }: Props) {
             <div className='text-gray-500 dark:text-gray-400'>{company}</div>
           </div>
 
-          <div className='prose max-w-none pt-8 pb-8 dark:prose-dark xl:col-span-2'>
+          <div className='prose max-w-none pb-8 pt-8 dark:prose-dark xl:col-span-2'>
             {children}
             <p className='mt-8'>
               <a
@@ -60,7 +60,7 @@ export default function AuthorLayout({ children, frontMatter }: Props) {
                   Resume
                 </RoughNotation>
               </a>
-              <h2 className='mt-8 mb-4 text-2xl font-semibold dark:text-white'>
+              <h2 className='mb-4 mt-8 text-2xl font-semibold dark:text-white'>
                 Skills
               </h2>
               <StackList stack={WorkStack} />
