@@ -9,7 +9,7 @@ function Card({
   banner,
   href,
   repository,
-  deployment,
+  website,
 }): React.ReactElement {
   const image = (
     <Image
@@ -50,10 +50,10 @@ function Card({
             {shortDescription}
           </p>
           <div className='flex items-center justify-center gap-20'>
-            {deployment && (
+            {website && (
               <a
                 className='!font-normal !text-black !no-underline dark:!text-white'
-                href={deployment}
+                href={website}
                 target='_blank'
                 rel='noreferrer'
               >

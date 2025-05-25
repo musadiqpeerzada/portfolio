@@ -22,7 +22,7 @@ export default function Projects() {
                 banner,
                 shortDescription,
                 repository,
-                deployment,
+                website,
               }) => (
                 <Card
                   key={slug}
@@ -31,7 +31,7 @@ export default function Projects() {
                   banner={banner}
                   href={`/projects/${slug}`}
                   repository={repository}
-                  deployment={deployment.web}
+                  website={website}
                 />
               ),
             )}
