@@ -8,19 +8,13 @@ const QuoteComponent = () => {
   useEffect(() => {
     const fetchQuote = async () => {
       try {
-        const response = await fetch(
-          'https://raw.githubusercontent.com/skolakoda/programming-quotes-api/master/data/quotes.json',
-        );
+        const response = await fetch('/api/quote?maxlength=200');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
-        const quotes = await response.json();
-        let randomIndex = Math.floor(Math.random() * quotes.length);
-        while (quotes[randomIndex].text.length > 200) {
-          randomIndex = Math.floor(Math.random() * quotes.length);
-        }
-        setQuote(quotes[randomIndex].text);
-        setAuthor(quotes[randomIndex].author);
+        const quote = await response.json();
+        setQuote(quote.text);
+        setAuthor(quote.author);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
